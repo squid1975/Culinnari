@@ -2,158 +2,132 @@ DROP DATABASE IF EXISTS culinnari;
 CREATE DATABASE IF NOT EXISTS culinnari
 DEFAULT CHARACTER SET utf8mb4
 DEFAULT COLLATE utf8mb4_unicode_ci;
-
+USE culinnari;
 
 
 CREATE TABLE `user` (
-  `user_id` pk,
-  `username` varchar(15) UNIQUE,
-  `user_email_address` varchar(50) UNIQUE,
-  `user_hash_password` varchar(255),
-  `user_first_name` varchar(50),
-  `user_last_name` varchar(50),
-  `user_create_account_date` timestamp,
-  `user_role` ENUM(member,admin,super admin) DEFAULT 'member',
-  `user_is_active` bool DEFAULT true
+  `user_id`  INT PRIMARY KEY AUTO_INCREMENT,
+  `username` VARCHAR(15) UNIQUE,
+  `user_email_address` VARCHAR(50) UNIQUE,
+  `user_hash_password` VARCHAR(255),
+  `user_first_name` VARCHAR(50),
+  `user_last_name` VARCHAR(50),
+  `user_create_account_date` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  `user_role` ENUM('member', 'admin','super admin') DEFAULT 'member',
+  `user_is_active` BOOLEAN DEFAULT true
 );
 
 CREATE TABLE `recipe` (
-  `recipe_id` pk,
-  `recipe_name` varchar(255),
+  `recipe_id`  INT PRIMARY KEY AUTO_INCREMENT,
+  `recipe_name` VARCHAR(255),
   `recipe_description` text,
-  `recipe_total_servings` int,
-  `recipe_post_date` timestamp,
-  `recipe_prep_time_seconds` int,
-  `recipe_cook_time_seconds` int,
-  `recipe_difficulty` ENUM(beginner,intermediate,advanced),
-  `user_id` int
+  `recipe_total_servings` INT,
+  `recipe_post_date` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  `recipe_prep_time_seconds` INT,
+  `recipe_cook_time_seconds` INT,
+  `recipe_difficulty` ENUM('beginner','intermediate','advanced'),
+  `user_id` INT NOT NULL,
+  CONSTRAINT recipe_fk_user FOREIGN KEY (user_id) REFERENCES user(user_id) ON DELETE CASCADE
 );
 
 CREATE TABLE `recipe_image` (
-  `recipe_image_id` pk,
-  `recipe_image` varchar(255),
-  `recipe_id` int
+  `recipe_image_id`  INT PRIMARY KEY AUTO_INCREMENT,
+  `recipe_image` VARCHAR(255),
+  `recipe_id` INT NOT NULL, 
+  CONSTRAINT recipe_image_fk_recipe FOREIGN KEY (recipe_id) REFERENCES recipe(recipe_id) ON DELETE CASCADE
 );
 
 CREATE TABLE `recipe_video` (
-  `recipe_video_id` pk,
-  `recipe_video_url` varchar(255),
-  `recipe_id` int
+  `recipe_video_id`  INT PRIMARY KEY AUTO_INCREMENT,
+  `recipe_video_url` VARCHAR(255),
+  `recipe_id` INT,
+  CONSTRAINT recipe_video_fk_recipe FOREIGN KEY (recipe_id) REFERENCES recipe(recipe_id) ON DELETE CASCADE
 );
 
 CREATE TABLE `rating` (
-  `rating_id` pk,
-  `user_id` int,
-  `recipe_id` int,
-  `rating_value` decimal(2,1),
-  `rating_date` timestamp
+  `rating_id`  INT PRIMARY KEY AUTO_INCREMENT,
+  `user_id` INT,
+  `recipe_id` INT,
+  `rating_value` DECIMAL(2,1) DEFAULT 0.0,
+  `rating_date` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT rating_fk_user FOREIGN KEY (user_id) REFERENCES user(user_id) ON DELETE CASCADE,
+  CONSTRAINT rating_fk_recipe FOREIGN KEY (recipe_id) REFERENCES recipe(recipe_id) ON DELETE CASCADE
 );
 
 CREATE TABLE `recipe_rating_summary` (
-  `recipe_rating_summary_id` pk,
-  `recipe_rating_average` decimal(3,2),
-  `recipe_rating_total_ratings` int,
-  `recipe_id` int
+  `recipe_rating_summary_id`  INT PRIMARY KEY AUTO_INCREMENT,
+  `recipe_rating_average` DECIMAL(3,2) DEFAULT 0.00,
+  `recipe_rating_total_ratings` INT,
+  `recipe_id` INT,
+  CONSTRAINT recipe_rating_summary_fk_recipe FOREIGN KEY (recipe_id) REFERENCES recipe(recipe_id) ON DELETE CASCADE
 );
 
 CREATE TABLE `ingredient` (
-  `ingredient_id` pk,
-  `ingredient_name` varchar(255),
-  `ingredient_quantity` decimal(5,2),
-  `measurement_id` int,
-  `recipe_id` int
+  `ingredient_id`  INT PRIMARY KEY AUTO_INCREMENT,
+  `ingredient_name` VARCHAR(255) NOT NULL,
+  `ingredient_quantity` DECIMAL(5,2) CHECK(ingredient_quantity > 0),
+  `measurement_id` INT,
+  `recipe_id` INT,
+  FOREIGN KEY (measurement_id) REFERENCES measurement(measurement_id) ON DELETE CASCADE,
+  FOREIGN KEY (recipe_id) REFERENCES recipe(recipe_id) ON DELETE CASCADE
 );
 
 CREATE TABLE `measurement` (
-  `measurement_id` pk,
-  `measurement_name` varchar(50)
+  `measurement_id`  INT PRIMARY KEY AUTO_INCREMENT,
+  `measurement_name` VARCHAR(50) NOT NULL
 );
 
 CREATE TABLE `step` (
-  `step_id` pk,
-  `recipe_id` int,
-  `step_number` int,
-  `step_description` text
+  `step_id`  INT PRIMARY KEY AUTO_INCREMENT,
+  `recipe_id` INT,
+  `step_number` INT,
+  `step_description` text,
+  FOREIGN KEY (recipe_id) REFERENCES 
 );
 
 CREATE TABLE `diet` (
-  `diet_id` pk,
-  `diet_name` varchar(50),
-  `diet_icon_url` varchar(255)
+  `diet_id`  INT PRIMARY KEY AUTO_INCREMENT,
+  `diet_name` VARCHAR(50),
+  `diet_icon_url` VARCHAR(255)
 );
 
 CREATE TABLE `recipe_meal_type` (
-  `recipe_meal_type_id` pk,
-  `recipe_id` int,
-  `meal_type_id` int
+  `recipe_meal_type_id`  INT PRIMARY KEY AUTO_INCREMENT,
+  `recipe_id` INT,
+  `meal_type_id` INT
 );
 
 CREATE TABLE `meal_type` (
-  `meal_type_id` pk,
-  `meal_type_name` varchar(50)
+  `meal_type_id`  INT PRIMARY KEY AUTO_INCREMENT,
+  `meal_type_name` VARCHAR(50)
 );
 
 CREATE TABLE `style` (
-  `style_id` pk,
-  `style_name` varchar(50)
+  `style_id`  INT PRIMARY KEY AUTO_INCREMENT,
+  `style_name` VARCHAR(50)
 );
 
 CREATE TABLE `cookbook` (
-  `cookbook_id` int PRIMARY KEY,
-  `cookbook_name` varchar(50),
-  `user_id` int
+  `cookbook_id` INT  INT PRIMARY KEY AUTO_INCREMENT,
+  `cookbook_name` VARCHAR(50),
+  `user_id` INT
 );
 
 CREATE TABLE `cookbook_recipe` (
-  `cookbook_recipe_id` pk,
-  `cookbook_id` int,
-  `recipe_id` int
+  `cookbook_recipe_id`  INT PRIMARY KEY AUTO_INCREMENT,
+  `cookbook_id` INT,
+  `recipe_id` INT
 );
 
 CREATE TABLE `recipe_diet` (
-  `recipe_diet_id` pk,
-  `recipe_id` int,
-  `diet_id` int
+  `recipe_diet_id`  INT PRIMARY KEY AUTO_INCREMENT,
+  `recipe_id` INT,
+  `diet_id` INT
 );
 
 CREATE TABLE `recipe_style` (
-  `recipe_style_id` pk,
-  `recipe_id` int,
-  `style_id` int
+  `recipe_style_id`  INT PRIMARY KEY AUTO_INCREMENT,
+  `recipe_id` INT,
+  `style_id` INT
 );
 
-ALTER TABLE `recipe` ADD FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`);
-
-ALTER TABLE `cookbook` ADD FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`);
-
-ALTER TABLE `cookbook_recipe` ADD FOREIGN KEY (`cookbook_id`) REFERENCES `cookbook` (`cookbook_id`);
-
-ALTER TABLE `cookbook_recipe` ADD FOREIGN KEY (`recipe_id`) REFERENCES `recipe` (`recipe_id`);
-
-ALTER TABLE `ingredient` ADD FOREIGN KEY (`recipe_id`) REFERENCES `recipe` (`recipe_id`);
-
-ALTER TABLE `step` ADD FOREIGN KEY (`recipe_id`) REFERENCES `recipe` (`recipe_id`);
-
-ALTER TABLE `recipe_diet` ADD FOREIGN KEY (`recipe_id`) REFERENCES `recipe` (`recipe_id`);
-
-ALTER TABLE `recipe_meal_type` ADD FOREIGN KEY (`recipe_id`) REFERENCES `recipe` (`recipe_id`);
-
-ALTER TABLE `recipe_diet` ADD FOREIGN KEY (`diet_id`) REFERENCES `diet` (`diet_id`);
-
-ALTER TABLE `recipe_meal_type` ADD FOREIGN KEY (`meal_type_id`) REFERENCES `meal_type` (`meal_type_id`);
-
-ALTER TABLE `recipe_style` ADD FOREIGN KEY (`recipe_id`) REFERENCES `recipe` (`recipe_id`);
-
-ALTER TABLE `style` ADD FOREIGN KEY (`style_id`) REFERENCES `recipe_style` (`style_id`);
-
-ALTER TABLE `recipe_image` ADD FOREIGN KEY (`recipe_id`) REFERENCES `recipe` (`recipe_id`);
-
-ALTER TABLE `ingredient` ADD FOREIGN KEY (`measurement_id`) REFERENCES `measurement` (`measurement_id`);
-
-ALTER TABLE `recipe_video` ADD FOREIGN KEY (`recipe_id`) REFERENCES `recipe` (`recipe_id`);
-
-ALTER TABLE `rating` ADD FOREIGN KEY (`recipe_id`) REFERENCES `recipe` (`recipe_id`);
-
-ALTER TABLE `rating` ADD FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`);
-
-ALTER TABLE `recipe_rating_summary` ADD FOREIGN KEY (`recipe_id`) REFERENCES `recipe` (`recipe_id`);
