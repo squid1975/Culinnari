@@ -1,10 +1,11 @@
+-- CREATE DATABASE
 DROP DATABASE IF EXISTS culinnari;
 CREATE DATABASE IF NOT EXISTS culinnari
 DEFAULT CHARACTER SET utf8mb4
 DEFAULT COLLATE utf8mb4_unicode_ci;
 USE culinnari;
 
-
+-- CREATE TABLES
 CREATE TABLE `user` (
   `user_id`  INT PRIMARY KEY AUTO_INCREMENT,
   `username` VARCHAR(15) UNIQUE,
@@ -66,15 +67,10 @@ CREATE TABLE `ingredient` (
   `ingredient_id`  INT PRIMARY KEY AUTO_INCREMENT,
   `ingredient_name` VARCHAR(255) NOT NULL,
   `ingredient_quantity` DECIMAL(5,2) CHECK(ingredient_quantity > 0),
-  `measurement_id` INT,
+  `ingredient_measurement_name` ENUM('teaspoon', 'tablespoon','fluid ounce', 'cup', 'pint','quart','gallon','milliter','liter','ounce','pound'),
+  `ingredient_measurement_order` INT
   `recipe_id` INT,
-  CONSTRAINT ingredient_fk_measurement FOREIGN KEY (measurement_id) REFERENCES measurement(measurement_id) ON DELETE CASCADE,
   CONSTRAINT ingredient_fk_recipe FOREIGN KEY (recipe_id) REFERENCES recipe(recipe_id) ON DELETE CASCADE
-);
-
-CREATE TABLE `measurement` (
-  `measurement_id`  INT PRIMARY KEY AUTO_INCREMENT,
-  `measurement_name` VARCHAR(50) NOT NULL
 );
 
 CREATE TABLE `step` (
@@ -139,3 +135,5 @@ CREATE TABLE `recipe_style` (
   CONSTRAINT recipe_style_fk_recipe FOREIGN KEY (recipe_id) REFERENCES recipe(recipe_id) ON DELETE CASCADE,
   CONSTRAINT recipe_style_fk_style FOREIGN KEY (style_id) REFERENCES style(style_id) ON DELETE CASCADE
 );
+
+-- CREATE USERS
