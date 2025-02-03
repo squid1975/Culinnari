@@ -136,4 +136,8 @@ CREATE TABLE `recipe_style` (
   CONSTRAINT recipe_style_fk_style FOREIGN KEY (style_id) REFERENCES style(style_id) ON DELETE CASCADE
 );
 
+--INSERT (TESTING) TABLE DATA
+INSERT INTO user(user_id, username, user_email_address, user_first_name, user_last_name)
+VALUES (1, 'testinguser', 'test@testing.com', 'Jane', 'Doe')
+
 -- CREATE USERS
