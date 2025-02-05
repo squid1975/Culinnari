@@ -58,7 +58,7 @@ CREATE TABLE `rating` (
 CREATE TABLE `recipe_rating_summary` (
   `recipe_rating_summary_id`  INT PRIMARY KEY AUTO_INCREMENT,
   `recipe_rating_average` DECIMAL(3,2) DEFAULT 0.00,
-  `recipe_rating_total_ratings` INT,
+  `recipe_rating_total_ratings` INT DEFAULT 0,
   `recipe_id` INT,
   CONSTRAINT recipe_rating_summary_fk_recipe FOREIGN KEY (recipe_id) REFERENCES recipe(recipe_id) ON DELETE CASCADE
 );
@@ -66,10 +66,10 @@ CREATE TABLE `recipe_rating_summary` (
 CREATE TABLE `ingredient` (
   `ingredient_id`  INT PRIMARY KEY AUTO_INCREMENT,
   `ingredient_name` VARCHAR(255) NOT NULL,
-  `ingredient_quantity` DECIMAL(5,2) CHECK(ingredient_quantity > 0),
-  `ingredient_measurement_name` ENUM('teaspoon', 'tablespoon','fluid ounce', 'cup', 'pint','quart','gallon','milliter','liter','ounce','pound'),
+  `ingredient_quantity` DECIMAL(5,2),
+  `ingredient_measurement_name` ENUM('teaspoon', 'tablespoon','fluid ounce', 'cup', 'pint','quart','gallon','milliliter','liter','ounce','pound'),
   `ingredient_measurement_order` INT,
-  `recipe_id` INT,
+  `recipe_id` INT NOT NULL,
   CONSTRAINT ingredient_fk_recipe FOREIGN KEY (recipe_id) REFERENCES recipe(recipe_id) ON DELETE CASCADE
 );
 
@@ -78,7 +78,8 @@ CREATE TABLE `step` (
   `recipe_id` INT,
   `step_number` INT,
   `step_description` text,
-  CONSTRAINT step_fk_recipe FOREIGN KEY (recipe_id) REFERENCES recipe(recipe_id) ON DELETE CASCADE 
+  CONSTRAINT step_fk_recipe FOREIGN KEY (recipe_id) REFERENCES recipe(recipe_id) ON DELETE CASCADE,
+  CONSTRAINT unique_step_num_per_recipe UNIQUE(recipe_id, step_number) 
 );
 
 CREATE TABLE `diet` (
@@ -136,13 +137,13 @@ CREATE TABLE `recipe_style` (
   CONSTRAINT recipe_style_fk_style FOREIGN KEY (style_id) REFERENCES style(style_id) ON DELETE CASCADE
 );
 
---INSERT (TESTING) TABLE DATA
+-- INSERT TESTING TABLE DATA
 INSERT INTO user(user_id, username, user_email_address, user_first_name, user_last_name)
 VALUES (1, 'testinguser', 'test@testing.com', 'Jane', 'Doe');
 
 -- CREATE USERS
 CREATE USER IF NOT EXISTS culinnari_user@localhost
-IDENTIFIED BY 'testingpass123'
+IDENTIFIED BY 'testingpass123';
 
 GRANT SELECT, INSERT, UPDATE, DELETE
 on culinnari.*
