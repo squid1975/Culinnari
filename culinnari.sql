@@ -1,9 +1,9 @@
 -- CREATE DATABASE
-DROP DATABASE IF EXISTS culinnari;
+DROP DATABASE IF EXISTS `culinnari`;
 CREATE DATABASE IF NOT EXISTS culinnari
 DEFAULT CHARACTER SET utf8mb4
-DEFAULT COLLATE utf8mb4_unicode_ci;
-USE culinnari;
+COLLATE utf8mb4_unicode_ci;
+USE `culinnari`;
 
 -- CREATE TABLES
 CREATE TABLE `user` (
