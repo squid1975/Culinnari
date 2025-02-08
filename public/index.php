@@ -1,4 +1,8 @@
-<?php require_once('../private/initialize.php')?>
+<?php 
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+require_once('../private/initialize.php');
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -7,7 +11,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Culinnari Home</title>
         <link href="css/styles.css" rel="stylesheet">
-        <script src="js/script.js">
+        <script src="js/script.js" defer></script>
     </head>
 
     <body>
@@ -31,6 +35,6 @@
                 <td><?php echo(h($user->user_create_account_date));?> </td>
                 <td><?php echo(h($user->user_role));?> </td>
        <?php } ?>
-
+      </table>
     </body>
 </html>
