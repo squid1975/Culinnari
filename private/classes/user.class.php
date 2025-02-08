@@ -1,10 +1,10 @@
 <?php
 
-class user extends DatabaseObject
+class User extends DatabaseObject
 {
 
   static protected $table_name = 'user';
-  static protected $db_columns = ['id', 'common_name', 'habitat', 'food', 'conservation_id', 'backyard_tips'];
+  static protected $db_columns = ['id', 'username', 'user_email_address', 'user_hash_password', 'user_first_name', 'user_last_name', 'user_create_account_date', 'user_role', 'user_is_active'];
 
   public $id;
   public $username;
