@@ -1,40 +1,30 @@
-<?php 
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
-require_once('../private/initialize.php');
-?>
-
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Culinnari Home</title>
-        <link href="css/styles.css" rel="stylesheet">
-        <script src="js/script.js" defer></script>
-    </head>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Culinnari: Coming Soon</title>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
 
-    <body>
-    <h1>Database Connect Display</h1>
-    <table border="1">
-      <tr>
-        <th>Username</th>
-        <th>User First Name</th>
-        <th>User Last Name</th>
-        <th>Created Account Date</th>
-        <th>User Role</th>
-      </tr>
-    <?php 
-        $users = User::find_all();
-        foreach($users as $user) {
-            ?>
-            <tr>
-                <td><?php echo(h($user->username));?> </td>
-                <td><?php echo(h($user->user_first_name));?> </td>
-                <td><?php echo(h($user->user_last_name));?> </td>
-                <td><?php echo(h($user->user_create_account_date));?> </td>
-                <td><?php echo(h($user->user_role));?> </td>
-       <?php } ?>
-      </table>
-    </body>
+      body {
+        background-color: #f0f0f0;
+      }
+      div {
+        text-align: center;
+        box-shadow: 10px 5px 5px #d6d6d6;
+        padding: 30px;
+      }
+    </style>
+  </head>
+  <body>
+    <div>
+      <h1>Coming Soon</h1>
+      <img src="logo.svg" width="500" alt="culinnari logo">
+      <p>This website is currently under construction.</p>
+      <p><a href="db-connection.php">View database connection</a></p>
+    </div>
+  </body>
 </html>
