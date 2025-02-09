@@ -68,7 +68,7 @@ CREATE TABLE `ingredient` (
   `ingredient_name` VARCHAR(255) NOT NULL,
   `ingredient_quantity` DECIMAL(5,2),
   `ingredient_measurement_name` ENUM('teaspoon', 'tablespoon','fluid ounce', 'cup', 'pint','quart','gallon','milliliter','liter','ounce','pound'),
-  `ingredient_measurement_order` INT,
+  `ingredient_recipe_order` INT,
   `recipe_id` INT NOT NULL,
   CONSTRAINT ingredient_fk_recipe FOREIGN KEY (recipe_id) REFERENCES recipe(recipe_id) ON DELETE CASCADE
 );
@@ -140,11 +140,3 @@ CREATE TABLE `recipe_style` (
 -- INSERT TESTING TABLE DATA
 INSERT INTO user(user_id, username, user_email_address, user_first_name, user_last_name)
 VALUES (1, 'testinguser', 'test@testing.com', 'Jane', 'Doe');
-
--- CREATE USERS
-CREATE USER IF NOT EXISTS culinnari_user@localhost
-IDENTIFIED BY 'testingpass123';
-
-GRANT SELECT, INSERT, UPDATE, DELETE
-on culinnari.*
-TO culinnari_user@localhost;
