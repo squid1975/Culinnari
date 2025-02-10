@@ -22,7 +22,7 @@
   <body>
     <div>
       <h1>Coming Soon</h1>
-      <img src="logo.svg" width="500" alt="culinnari logo">
+      <img src="images/logo.svg" width="500" alt="culinnari logo">
       <p>This website is currently under construction.</p>
       <p><a href="db-connection.php">View database connection</a></p>
     </div>
