@@ -1,0 +1,40 @@
+<?php $pageTitle = 'Login/Sign Up | Culinnari'; ?>
+
+<main role="main" tabindex="-1">
+    <h2>Join the Culinnari Community.</h2>
+    <section id="createAccount">
+        <h3>Create an Account</h3>
+        <form action="login_signup.php" method="post">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required>
+
+            <label for="userFirstName">First Name:</label>
+            <input type="text" id="userFirstName" name="userFirstName" required>
+
+            <label for="userLastName">Last Name:</label>
+            <input type="text" id="userLastName" name="userLastName" required>
+
+            <label for="userEmailAddress">Email Address:</label>
+            <input type="email" id="userEmailAddress" name="userEmailAddress" required>
+
+            <label for="password">Password:</label>
+            <input type="password" id="userPassword" name="userPassword" required>
+
+            <label for="confirmPassword">Confirm Password</label>
+            <input type="password" id="confirmPassword" name="confirmPassword" required>
+            
+        </form>
+    </section>
+    <section id="login">
+        <h3>Already a member? Log in Here!</h3>
+        <form action="login_signup.php" method="post">
+            <label for="username">Username:</label>
+            <input type="text" name="username" value="<?php echo h($username); ?>">
+
+            <label for="password">Password:</label>
+            <input type="password" name="password" value="">
+
+            <input type="submit" name="login" value="Log In">
+        </form>
+    </section>
+</main>
