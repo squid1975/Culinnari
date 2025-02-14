@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Culinnari Home</title>
+</head>
+<body>
+    <main role="main" tabindex="-1">
+        <section id="mainHero">
+            <h2>Cook, Share, Enjoy</h2>
+            <p>With simple, easy-to-read recipes, our goal  is to make cooking focused on food again. No fluff, just feasts.</p>
+        </section>
+
+        <section class="search">
+            <h2>Search</h2>
+            <form action="search_recipes.php" method="GET">
+                <label for="search">Search:</label>
+                <input type="text" id="search" name="recipeQuery" required>
+
+                <label for="mealType">Meal Type</label>
+                <select id="mealType" name="mealType[]" multiple>
+                    <option value="appetizer">Appetizer</option>
+                    <option value="breakfast">Breakfast</option>
+                    <option value="brunch">Brunch</option>
+                    <option value="dessert">Desser</option>
+                    <option value="dinner">Dinner</option>
+                    <option value="lunch">Lunch</option>
+                    <option value="snack">Snack</option>
+                </select>
+
+                <label for="style">Style</label>
+                <select id="style" name="style">
+                    <option value="asian">Asian</option>
+                    <option value="caribbean">Caribbean</option>
+                    <option value="fusion">Fusion</option>
+                    <option value="italian">Italian</option>
+                    <option value="latinAmerican">Latin American</option>
+                    <option value="mediterranean">Mediterranean</option>
+                    <option value="thai">Thai</option>
+                </select>
+
+                <label for="diet">Diet</label>
+                <select id="diet" name="diet" multiple>
+                    <option value="glutenFree">Gluten-Free</option>
+                    <option value="keto">Keto</option>
+                    <option value="low-carb">Low Carb</option>
+                    <option value="paleo">Paleo</option>
+                    <option value="sugarFree">Sugar-Free</option>
+                    <option value="vegan">Vegan</option>
+                    <option value="vegetarian">Vegetarian</option>
+                </select>
+            </form>
+        </section>
+
+        <section id="dietKey"
+            <h2>Find what works for your diet.</h2>
+            <img src="#">
+            <p>Gluten-Free</p>
+        </section>
+
+        <section class="bestRated">
+
+        </section>
+
+        <section>
+            <h2>Prep right for your next meal.</h2>
+            <a href="#">Breakfast</a>
+            <a href="#">Lunch</a>
+            <a href="#">Dinner</a>
+            <a href="#">Desserts</a>
+        </section>
+        <div>
+            <section>
+                <h2>Become a member today!</h2>
+                <ul>
+                    <li>Post your own recipes</li>
+                    <li>Rate others recipes</li>
+                    <li>Create cookbooks</li>
+                </ul>
+            </section>
+        </div>
+    </main>
+</body>
+</html>
