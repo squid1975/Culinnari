@@ -19,14 +19,14 @@ class User extends DatabaseObject
 
   public function __construct($args = [])
   {
-    $this->username = $args[''] ?? '';
-    $this->user_email_address = $args['username'] ?? '';
+    $this->username = $args['username'] ?? '';
+    $this->user_email_address = $args['user_email_address'] ?? '';
     $this->user_hash_password = $args['user_hash_password'] ?? '';
     $this->user_first_name = $args['user_first_name'] ?? '';
     $this->user_last_name = $args['user_last_name'] ?? '';
     $this->user_create_account_date = $args['user_create_account_date'] ?? '';
     $this->user_role = $args['user_role'] ?? 'member';
-    $this->user_is_active = $args['user_is_active'] ?? '';
+    $this->user_is_active = $args['user_is_active'] ?? 1;
   }
 
 
