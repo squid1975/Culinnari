@@ -1,4 +1,5 @@
-<?php include_once('head.php') ?>
+<?php include_once('head.php');?>
+
 
 <header role="banner">
     <h1>Culinnari: Recipe Sharing</h1>
