@@ -60,4 +60,14 @@ class Recipe extends DatabaseObject
 
     return $this->errors;
   }
+
+  public function getDiets() {
+    $sql = "SELECT d.diet_name, d.diet_icon_url
+            FROM recipe_diet_type rd
+            JOIN diet d ON  rd.diet_id = d.diet_id
+            WHERE rd.recipe_id ='" . self::$database->escape_string($this->id) . "'";
+    
+    return self::find_by_sql($sql);
+  }
+
 }
