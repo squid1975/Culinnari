@@ -1,0 +1,116 @@
+div.mainSearch {
+    background-color: #fdfcfc;
+    margin: 0 auto;
+    position: relative;
+    bottom: 20px;
+}
+
+.mainSearch {
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 20px;
+    border: 1px solid #333;
+}
+
+#search {
+    width: 1200px;
+    margin-bottom: 5px;
+}
+
+.filters {
+    display: flex;
+    justify-content: space-around;
+    padding: 10px;
+    margin: 10px;
+}
+
+h3#filterHeading{
+    text-align: center;
+    font-family: 'Lato', serif;
+    font-weight: 500;
+}
+
+.searchFilter {
+    width: 200px;
+}
+
+input#mainSearch {
+    height: 40px;
+}
+
+#searchBox {
+    position: relative;
+    display: flex;
+}
+
+input#mainSearch, select, .dropdown-toggle {
+    width: 100%;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    font-size: 18px;
+}
+
+.dropdown {
+    position: relative;
+    margin-top: 5px;
+}
+
+.dropdown-toggle {
+    background: #fff;
+    cursor: pointer;
+}
+
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 100%;
+    max-height: 200px;
+    overflow-y: auto;
+    z-index: 100;
+}
+
+.dropdown.active .dropdown-menu {
+    display: block;
+}
+
+.dropdown label {
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    width: 80%;
+}
+
+button {
+    color: #333;
+    border: none;
+    background: none;
+    padding: 10px;
+    cursor: pointer;
+    font-variant:small-caps;
+}
+
+button:hover {
+    background: #aebdae;
+}
+
+/*********************************** LOGIN & SIGNUP PAGE ********************/
+
+
+#loginSignup {
+    padding: 20px;
+    display: flex;
+    margin: auto 0;
+    justify-content: space-around;
+}
+
+#loginSignup section {
+    padding: 30px;
+    flex: 1;
+}
+
+#loginSignup input {
+    display: block;
+}
