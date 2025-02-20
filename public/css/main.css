@@ -1,0 +1,135 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Lustria&display=swap');
+@import url('components/forms.css');
+@import url('components/shared.css');
+@import url('components/cards.css');
+
+/************** GLOBAL SETTINGS*******************/
+* {
+    box-sizing: border-box;
+}
+
+html {
+    font-family: "Lato", serif;
+}
+
+body {
+    background-color: #FFFAF0;
+    min-width: 350px;
+    margin: 0;
+    padding: 0;
+}
+
+h2, h3, h4 {
+    font-family: 'Lustria', serif;
+    font-weight: 300;
+}
+
+h2 {
+    font-size: 28px;
+}
+
+a {
+    text-decoration: none;
+    color: #333;
+}
+
+li {
+    list-style-type: none;
+}
+
+
+.visuallyHidden:not(:focus):not(:active) {
+    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+    height: 1px;
+    overflow: hidden;
+    position: absolute;
+    white-space: nowrap;
+    width: 1px;
+}
+
+/******************** HOMEPAGE MAIN ELEMENTS *********************/
+
+#homeHero {
+    background-color: #8B9B8B;
+    height: 200px;
+    margin: 0;
+    padding: 0;
+}
+
+#heroText {
+    padding-top: 30px;
+    text-align: center;
+}
+
+#wrapper {
+    max-width: 1200px;
+    margin: auto;
+    background-color: white;
+    padding: 20px;
+}
+
+.dietKey {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.dietIconWithName {
+    align-items: center;
+    display: flex;
+}
+
+.dietIconWithName p {
+    padding-left: 5px;
+}
+
+#suggestionsContent {
+    display: flex;
+    margin: 30px 10px 5px 20px;
+    justify-content: space-evenly;
+}
+
+#homeMealTypeSuggestions {
+    flex: 1;
+}
+
+#homeMealTypeSuggestions a {
+    background-color: #E0DDAA;
+    padding: 20px;
+    color: #333;
+    display: block;
+    margin: 10px;
+}
+
+#ctaPublic {
+    padding: 30px;
+    box-shadow: 0 0 5px #3C2F2F;
+    height: %;
+}
+
+#ctaPublic ul {
+    padding-bottom: 30px;
+}
+
+#ctaPublic li {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    font-size: 20px;
+}
+
+#ctaPublic img {
+    margin-right: 10px;
+}
+
+.primaryButton {
+    background-color: rgb(141, 206, 214);
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 0 5px #3C2F2F;
+}
+
+/**** PROFILE *****/
+
+#profileSectionHead {
+    display: flex;
+}

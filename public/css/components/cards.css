@@ -1,0 +1,34 @@
+div.recipeCardDisplay {
+    display: flex;
+
+}
+
+.recipeCard {
+    width: 270px;
+    height: 360px;
+    box-shadow: 0 0 5px #3C2F2F;
+}
+
+.recipeCard h3 {
+    margin: 5px;
+}
+
+.recipeCard .recipeImage {
+    box-shadow: 0 0 5px #3C2F2F;
+    margin: 10px 5px 0;
+}
+
+.recipeCardDietIcons {
+    margin-left: 5px;
+}
+
+.recipeCardUsernameRatings {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+
+.recipeCardUsername {
+    margin-left: 5px;
+}
+
