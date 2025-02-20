@@ -140,3 +140,35 @@ CREATE TABLE `recipe_style` (
 -- INSERT TESTING TABLE DATA
 INSERT INTO user(user_id, username, user_email_address, user_first_name, user_last_name)
 VALUES (1, 'testinguser', 'test@testing.com', 'Jane', 'Doe');
+
+
+--INSERT CATEGORY DETAILS
+
+INSERT INTO diet(diet_id, diet_name, diet_icon_url)
+VALUES (1,'Gluten-Free', ),
+       (2, 'Keto',),
+       (3, 'Low Carb',)
+       (4, 'Paleo',)
+       (5, 'Sugar-Free',),
+       (6, 'Vegan',),
+       (7, 'Vegetarian',);
+
+INSERT INTO meal_type(meal_type_id, meal_type_name)
+VALUES (1, 'Appetizer'),
+       (2, 'Breakfast'),
+       (3, 'Brunch'),
+       (4, 'Dessert'),
+       (5, 'Dinner'),
+       (6, 'Lunch'),
+       (7, 'Snack');
+
+INSERT INTO style(style_id, style_name)
+VALUES (1, 'Asian'),
+       (2, 'Caribbean'),
+       (3, 'Fusion'),
+       (4, 'Greek'),
+       (5, 'Italian'),
+       (6, 'Latin American'),
+       (7, 'Mediterranean'),
+       (8, 'Thai');
+
