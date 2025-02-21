@@ -28,11 +28,6 @@
   require_once('database_functions.php');
   require_once('validation_functions.php');
 
-  // Load class definitions manually
-
-  // -> Individually
-  // require_once('classes/bicycle.class.php');
-
   // -> All classes in directory
   foreach(glob('classes/*.class.php') as $file) {
     require_once($file);
@@ -50,6 +45,6 @@
   $database = db_connect();
   DatabaseObject::set_database($database);
 
-  //$session = new Session;
+  $session = new Session;
 
 ?>
