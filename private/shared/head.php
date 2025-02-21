@@ -4,6 +4,5 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php isset($pageTitle) ? $pageTitle : 'Culinnari'; ?></title>
-    <link href="../public/css/main.css" rel="stylesheet">
-    <script src="../public/js/script.js" defer></script>
+    <link href="<?php echo url_for('css/main.css'); ?>" rel="stylesheet">
 </head>
