@@ -2,20 +2,27 @@
 function require_login (){
   global $session;
   if(!$session->is_logged_in()) {
-    redirect_to(url_for('/login.php'));
+    redirect_to(url_for('/login_signup.php'));
   }
 }
 
 function require_admin_login() {
   global $session;
   if(!$session->is_admin_logged_in()) {
-    redirect_to(url_for('/login.php'));
+    redirect_to(url_for('/login_signup.php'));
   } else {
     // Do nothing, let the rest of the page proceed
   }
 }
 
-
+function require_super_admin_login() {
+  global $session;
+  if(!$session->is_super_admin_logged_in()){
+    redirect_to(url_for('/login_signup.php'));
+  } else {
+    //
+  }
+}
 
 function display_errors($errors=array()) {
   $output = '';
