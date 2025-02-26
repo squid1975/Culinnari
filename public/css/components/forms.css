@@ -1,116 +1,234 @@
-div.mainSearch {
+label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+input[type="submit"] {
+    display: block;
+    margin: 10px;
+}
+
+/** SEARCH FORM **/
+div#searchWithFilters {
     background-color: #fdfcfc;
     margin: 0 auto;
-    position: relative;
-    bottom: 20px;
-}
-
-.mainSearch {
     max-width: 1200px;
-    margin: 20px auto;
-    padding: 20px;
-    border: 1px solid #333;
+    padding: 10px;
+    position: relative;
+    box-shadow: 0 0 5px #3C2F2F;
+    
 }
 
-#search {
-    width: 1200px;
+div#searchBox {
+    display: grid;
+    grid-auto-flow: column;
+    grid-template-columns: 1fr;
+}
+
+input#mainSearch {
+    width: 100%;
+    padding: 10px;
     margin-bottom: 5px;
+}
+
+.mainSearchButton {
+    border: none;
+    background: none;
+    position: relative;
+    right: 50px;
+    bottom: 2px;
+}
+
+#filterHeading {
+    text-align: center;
+    font-family: 'Lato', sans-serif;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+#filterToggle,
+#filterToggleLabel {
+    display: none;
 }
 
 .filters {
     display: flex;
-    justify-content: space-around;
-    padding: 10px;
-    margin: 10px;
-}
-
-h3#filterHeading{
-    text-align: center;
-    font-family: 'Lato', serif;
-    font-weight: 500;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
 }
 
 .searchFilter {
-    width: 200px;
-}
-
-input#mainSearch {
-    height: 40px;
-}
-
-#searchBox {
-    position: relative;
+    width: 150px;
     display: flex;
+    flex-direction: column;
+    padding: 10px;
 }
 
-input#mainSearch, select, .dropdown-toggle {
-    width: 100%;
-    margin-top: 5px;
-    border: 1px solid #ccc;
-    font-size: 18px;
+.searchFilter > label {
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    text-align: center;
 }
 
+
+/* Style for the dropdown button */
 .dropdown {
     position: relative;
-    margin-top: 5px;
 }
 
-.dropdown-toggle {
-    background: #fff;
+.dropdown-button {
+    color: rgb(0, 0, 0);
+    padding: 10px;
+    border: 1px solid #333;
     cursor: pointer;
+    font-size: 16px;
+    width: 100%;
 }
 
-.dropdown-menu {
+/* Style for the dropdown content (hidden by default) */
+.dropdown-content {
     display: none;
     position: absolute;
-    background: white;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    width: 100%;
-    max-height: 200px;
-    overflow-y: auto;
-    z-index: 100;
+    background-color: white;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+    z-index: 1;
 }
 
-.dropdown.active .dropdown-menu {
+/* Display the dropdown content when the dropdown button is clicked */
+.dropdown:hover .dropdown-content {
     display: block;
 }
 
-.dropdown label {
-    cursor: pointer;
-    display: inline-flex;
-    align-items: center;
-    width: 80%;
+/* Style for the checkboxes inside the dropdown */
+.dropdown-content label {
+    display: block;
+    padding: 8px;
+    font-size: 16px;
 }
 
-button {
-    color: #333;
+.dropdown-content input[type="checkbox"] {
+    margin-right: 10px;
+}
+
+
+.searchReset {
     border: none;
-    background: none;
-    padding: 10px;
+    font-size: 18px;
+    margin-top: 10px;
+    text-align: center;
+    text-decoration: underline;
     cursor: pointer;
-    font-variant:small-caps;
+    background: none;
 }
 
-button:hover {
-    background: #aebdae;
-}
 
 /*********************************** LOGIN & SIGNUP PAGE ********************/
 
-
 #loginSignup {
-    padding: 20px;
     display: flex;
-    margin: auto 0;
-    justify-content: space-around;
+    background-color: white;
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
-#loginSignup section {
-    padding: 30px;
+#loginSignup div {
+    margin: 10px;
     flex: 1;
+    box-shadow: 0 0 5px #3C2F2F;
+    padding: 5px 10px;
 }
 
-#loginSignup input {
+#loginSignup div h3 {
+    text-align: center;
+}
+
+#loginSignup input[type="submit"] {
+    margin-top: 10px;
+    padding: 10px 5px;
+    box-shadow: 0 0 5px #3C2F2F;
+    transition: 0.2s;
+}
+
+#loginSignup input[type="submit"]:hover {
+    background-color: #333;
+    color: white;
+}
+/*********************************** CREATE/EDIT RECIPE PAGE ********************/
+
+.recipeFormWrapper {
+    max-width: 800px;
+    margin: 0 auto;
+    background: white;
+    padding: 10px;
+    box-shadow: 0 0 5px #3C2F2F;
+}
+
+#createRecipeForm {
+    padding: 20px;
+}
+
+#createRecipeForm span {
+    display: block;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+#createRecipeForm input {
+    margin-bottom: 10px;
+}
+
+.recipePartName {
+    font-size: 20px;
+    display: block;
+    margin: 10px 0;
+}
+
+#checkboxes {
+    display: flex;
+    margin: 20px;
+    flex-wrap:wrap;
+}
+
+.checkboxContainer {
+    flex: 1;
+    padding: 10px;
+    
+}
+
+.checkboxContainer label {
     display: block;
 }
+
+.prep-time-container {
+    display: flex;
+    align-items: baseline;
+    
+}
+.prep-time-container span {
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+
+/***************************************************************** MEDIA QUERIES ******************************************************************/
+
+@media screen and (max-width: 650px) {
+    .filters {
+        display: none;
+        
+    }
+
+    #filterToggle + label {
+        display: block;
+        text-align: center;
+        text-decoration: underline;
+        cursor: pointer;
+    }
+
+    #filterToggle:checked ~ .filters {
+        display: block;
+        align-items: center;
+    }
+}    

@@ -1,0 +1,119 @@
+
+header {
+    align-items: center;
+    display: flex;
+    padding: 10px;
+    justify-content: space-evenly;
+    height: 100px;
+}
+
+h1 {
+    font-family: "Lustria", serif;
+}
+
+#hamburgerIcon {
+    display: none;
+}
+
+#mainMenu img {
+    display: none;
+}
+
+nav ul {
+    padding: 0;
+}
+
+nav ul li {
+    display: inline-block;
+}
+
+nav ul li a {
+    color: #333;
+    font: 20px 'Lustria', serif;
+    padding: 10px;
+}
+
+nav ul li a:hover {
+    color: #666;
+}
+
+
+/** Login / Member **/
+
+#headerLoginSignup a {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+}
+
+#headerLoginSignup a img {
+    margin-right: 5px;
+}
+
+
+#headerLoginSignup ul a {
+    font-size: 17px;
+}
+
+#memberNav {
+    display: flex;
+    align-items: center;
+}
+
+#memberNav div {
+    margin: 5px;
+}
+
+#memberNav div a:first-of-type {
+    display: flex;
+    align-items: center;
+    margin-right: 10px;
+    font-size: 18px;
+}
+
+#memberNav div:nth-of-type(2) a {
+    display: block;
+    padding: 5px;
+}
+
+
+#adminNav {
+    display: flex;
+    align-items: center;
+}
+
+#adminNav div:nth-of-type(2) {
+    padding-top: 10px;
+}
+
+#adminNav div:nth-of-type(2) a{
+    display: block;
+    padding: 5px;
+}
+
+#adminNav div a:first-of-type {
+    display: flex;
+    align-items: center;
+    margin-right: 10px;
+    font-size: 18px;
+}
+/******** FOOTER ************/
+footer {
+    align-items: center;
+    display: flex;
+    padding: 20px;
+    background-color: #8B9B8B;
+}
+
+footer div {
+    flex: 1;
+}
+
+footer li {
+    font-size: 18px;
+    margin-top: 10px;
+}
+
+
+/**************************************************** MEDIA QUERIES *****************************************************/  
+
