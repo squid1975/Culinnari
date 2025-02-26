@@ -1,19 +1,25 @@
 div.recipeCardDisplay {
     display: flex;
-
+    max-width: 1200px;
+    overflow:hidden;
+    margin: 0 auto;
 }
 
 .recipeCard {
     width: 270px;
-    height: 360px;
+    height: 380px;
     box-shadow: 0 0 5px #3C2F2F;
+    margin: 10px;
 }
 
-.recipeCard h3 {
-    margin: 5px;
+.recipeCard p {
+    margin: 10px 5px;
+    font-size: 20px;
+    max-width: 250px;
+    overflow: wrap;
 }
 
-.recipeCard .recipeImage {
+.recipeCardImage {
     box-shadow: 0 0 5px #3C2F2F;
     margin: 10px 5px 0;
 }
@@ -32,3 +38,6 @@ div.recipeCardDisplay {
     margin-left: 5px;
 }
 
+.profileCards {
+    height: 300px;
+}
