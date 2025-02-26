@@ -4,12 +4,12 @@ class User extends DatabaseObject
 {
     static protected $table_name = 'user';
     static protected $db_columns = [
-        'id', 'username', 'user_email_address', 'user_hash_password',
+        'user_id', 'username', 'user_email_address', 'user_hash_password',
         'user_first_name', 'user_last_name', 'user_create_account_date',
         'user_role', 'user_is_active'
     ];
 
-    public $id;
+    public $user_id;
     public $username;
     public $user_email_address;
     public $user_hash_password;
@@ -123,12 +123,18 @@ class User extends DatabaseObject
         return $this->errors;
     }
 
-    static public function find_by_username($username)
-    {
+    static public function find_by_username($username) {
         $sql = "SELECT * FROM " . static::$table_name . " ";
-        $sql .= "WHERE username='" . static::$database->escape_string($username) . "' LIMIT 1";
+        $sql .= "WHERE username='" . self::$database->escape_string($username) . "'";
         $obj_array = static::find_by_sql($sql);
-        return !empty($obj_array) ? array_shift($obj_array) : false;
+        if(!empty($obj_array)) {
+            return array_shift($obj_array);
+        } else {
+            return false;
+        }   
     }
+
+    
+
 }
 ?>
