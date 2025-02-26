@@ -34,14 +34,12 @@ class DatabaseObject {
   }
 
   static public function find_by_id($id) {
-    $sql = "SELECT * FROM " . static::$table_name . " ";
-    $sql .= "WHERE id='" . self::$database->escape_string($id) . "'";
-    $obj_array = static::find_by_sql($sql);
-    if(!empty($obj_array)) {
-      return array_shift($obj_array);
-    } else {
-      return false;
+    if ($id === null) {
+      return null;
     }
+    $sql = "SELECT * FROM " . static::$table_name . " WHERE id='" . self::$database->escape_string($id) . "'";
+    $result_array = static::find_by_sql($sql);
+    return !empty($result_array) ? array_shift($result_array) : false;
   }
 
   static protected function instantiate($record) {
