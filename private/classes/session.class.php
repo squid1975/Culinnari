@@ -5,12 +5,12 @@ class Session {
   private $user_id;
   public $username;
   private $last_login;
-  private $user_level;
+  private $user_role;
 
   public const MAX_LOGIN_AGE = 60*60*24; // 1 day
 
   public function __construct() {
-    session_start();
+   session_start();
     $this->check_stored_login();
   }
 
@@ -18,25 +18,24 @@ class Session {
     if($user) {
       // prevent session fixation attacks
       session_regenerate_id();
-      $this->user_id = $_SESSION['user_id'] = $user->id;
+      $this->user_id = $_SESSION['user_id'] = $user->user_id;
       $this->username = $_SESSION['username'] = $user->username;
-      $this->user_level = $_SESSION['user_level'] = $user->user_level;
+      $this->user_role = $_SESSION['user_role'] = $user->user_role;
       $this->last_login = $_SESSION['last_login'] = time();
     }
     return true;
   }
 
   public function is_logged_in() {
-    // return isset($this->user_id);
-    return isset($this->user_id) && $this->last_login_is_recent();
+    return isset($this->member_id) && $this->last_login_is_recent();
   }
 
   public function is_admin_logged_in() {
-    return $this->is_logged_in() && $this->user_level == 'admin';
+    return $this->is_logged_in() && $this->user_role == 'admin';
 }
 
 public function is_super_admin_logged_in() {
-  return $this->is_logged_in() && $this->user_level == 'super admin';
+  return $this->is_logged_in() && $this->user_role == 'super admin';
 }
 
 
@@ -44,11 +43,11 @@ public function is_super_admin_logged_in() {
   public function logout() {
     unset($_SESSION['user_id']);
     unset($_SESSION['username']);
-    unset($_SESSION['user_level']);
+    unset($_SESSION['user_role']);
     unset($_SESSION['last_login']);
     unset($this->user_id);
     unset($this->username);
-    unset($this->user_level);
+    unset($this->user_role);
     unset($this->last_login);
     return true;
   }
@@ -57,7 +56,7 @@ public function is_super_admin_logged_in() {
     if(isset($_SESSION['user_id'])) {
       $this->user_id = $_SESSION['user_id'];
       $this->username = $_SESSION['username'];
-      $this->user_level = $_SESSION['user_level'];
+      $this->user_role = $_SESSION['user_role'];
       $this->last_login = $_SESSION['last_login'];
     }
   }
