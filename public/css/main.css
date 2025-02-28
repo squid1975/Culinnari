@@ -14,29 +14,32 @@ html {
 }
 
 body {
+    margin: 0;
     min-width: 400px;
-    margin: 0;
     padding: 0;
-}
-
-h2, h3, h4 {
-    font-family: 'Lustria', serif;
-    font-weight: 300;
-    margin: 0;
-    
 }
 
 h2 {
     font-size: 28px;
 }
 
+h2, h3, h4 {
+    font-family: 'Lustria', serif;
+    font-weight: 300;
+    margin: 0;
+}
+
 a {
-    text-decoration: none;
     color: #333;
+    text-decoration: none;
 }
 
 li {
     list-style-type: none;
+}
+
+main {
+    background-color: #c3d3c3;
 }
 
 section {
@@ -44,25 +47,19 @@ section {
     padding: 0;
 }
 
-main {
-    background-color: #c3d3c3;
-    
-}
-
 .primaryButton {
-        background-color: rgb(141, 206, 214);
-        padding: 5px;
-        border-radius: 15px;
-        box-shadow: 0 0 5px #333;
-        text-align: center;
+    background-color: rgb(141, 206, 214);
+    border-radius: 15px;
+    box-shadow: 0 0 5px #333;
+    padding: 5px;
+    text-align: center;
 }
 
 .secondaryButton {
+    border-radius: 15px;
     box-shadow: 0 0 5px #333;
     padding: 10px;
-    border-radius: 15px;
 }
-
 
 .visuallyHidden:not(:focus):not(:active) {
     clip: rect(0 0 0 0);
@@ -75,7 +72,6 @@ main {
 }
 
 /******************** HOMEPAGE MAIN ELEMENTS *********************/
-
 .hero {
     background-image: url('../images/culinnari_hero.webp');
     background-size: cover;
@@ -85,9 +81,9 @@ main {
 }
 
 #heroText {
-    text-align: center;
     color: white;
     padding: 0;
+    text-align: center;
 }
 
 #heroText h2 {
@@ -97,9 +93,9 @@ main {
 }
 
 #wrapper {
-    max-width: 1200px;
-    margin: auto;
     background-color: white;
+    margin: auto;
+    max-width: 1200px;
     padding: 20px;
 }
 
@@ -120,8 +116,8 @@ main {
 
 #suggestionsContent {
     display: flex;
-    margin: 30px 10px 5px 20px;
     justify-content: space-evenly;
+    margin: 30px 10px 5px 20px;
 }
 
 #homeMealTypeSuggestions {
@@ -130,13 +126,12 @@ main {
 
 #homeMealTypeSuggestions a {
     background-color: #E0DDAA;
-    padding: 20px;
     color: #333;
     display: block;
-    margin: 10px;
-    text-align: center;
     font-size: 20px;
-    
+    margin: 10px;
+    padding: 20px;
+    text-align: center;
 }
 
 #homeMealTypeSuggestions a:hover {
@@ -150,30 +145,27 @@ main {
 }
 
 #searchHero h2 {
-    text-align: center;
     color: white;
     margin: 0;
     padding: 0;
+    text-align: center;
 }
 
-
 /**** PROFILE *****/
-
 #profileHeading {
-    text-align: center;
     padding: 10px;
+    text-align: center;
 }
 
 #profileHeading + h3 {
     text-align: center;
-    
 }
 
 #profileWrapper {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 10px;
     background-color: white;
+    margin: 0 auto;
+    max-width: 1200px;
+    padding: 10px;
 }
 
 .profileInfo p {
@@ -181,9 +173,9 @@ main {
 }
 
 .profileSectionHead {
-    display: flex;
-    flex-wrap: no-wrap;
     align-items: center;
+    display: flex;
+    flex-wrap: nowrap;
 }
 
 .profileSectionHead h3 {
@@ -192,22 +184,22 @@ main {
 
 #profileMgmt {
     display: flex;
-    justify-content: space-evenly;
     flex-wrap: wrap;
+    justify-content: space-evenly;
     margin: 0 20px;
 }
 
 div.profileMgmtButton {
-    box-shadow: 0 0 5px #333;
     background-color: #E0DDAA;
+    box-shadow: 0 0 5px #333;
     margin: 10px;
     width: 200px;
 }
 
 div.profileMgmtButton a {
-    padding: 10px;
-    display: flex;
     align-items: center;
+    display: flex;
+    padding: 10px;
 }
 
 div.profileMgmtButton a img {
@@ -218,17 +210,10 @@ div.profileMgmtButton a img {
     text-decoration: underline;
 }
 
-
-
-
-
-
-
 /******** admin **********/
-
 #adminHero {
     background-color: #3c2F2f;
-    padding: 20px;
     color: white;
+    padding: 20px;
     text-align: center;
 }

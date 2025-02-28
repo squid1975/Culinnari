@@ -161,8 +161,14 @@ input#mainSearch {
     max-width: 800px;
     margin: 0 auto;
     background: white;
-    padding: 10px;
+    padding: 15px;
     box-shadow: 0 0 5px #3C2F2F;
+}
+
+.recipeFormHeading {
+    text-align: center;
+    border-bottom: 1px solid #3C2F2F;
+    width: 100%;
 }
 
 #createRecipeForm {
@@ -173,16 +179,44 @@ input#mainSearch {
     display: block;
     margin-top: 5px;
     margin-bottom: 5px;
+    font-size: 16px;
 }
 
-#createRecipeForm input {
+#createRecipeForm input + label {
     margin-bottom: 10px;
+    font-size: 17px;
 }
 
-.recipePartName {
-    font-size: 20px;
+#createRecipeForm textarea {
+    width: 100%;
+}
+
+
+input#recipeName {
+    width: 100%;
+    padding: 5px;
+}
+
+.radio-group {
+    display: flex;
+    align-items: flex-start;
+}
+
+.radio-group label {
+    margin-right: 20px;
+}
+
+.checkboxContainer label  {
     display: block;
-    margin: 10px 0;
+    white-space: nowrap;
+}
+
+label.recipePartName {
+    font-size: 20px;
+    
+    margin-top: 20px;
+    font-family: 'Lustria', serif;
+    max-width: 200px;
 }
 
 #checkboxes {
@@ -201,14 +235,57 @@ input#mainSearch {
     display: block;
 }
 
+.checkboxContainer input[type="checkbox"] {
+    /* Styles for all checkboxes inside .checkboxContainer */
+    margin-right: 5px;
+    width: 16px;
+    height: 18px;
+}
+
+#timeInput {
+    display: flex;
+}
+
+#timeInput div {
+    padding: 5px;
+    flex: 1;
+}
+
 .prep-time-container {
     display: flex;
     align-items: baseline;
-    
+}
+
+.prep-time-container input#prep_time,
+.prep-time-container input#cook_time {
+    width: 50px;
 }
 .prep-time-container span {
     margin-left: 5px;
     margin-right: 5px;
+}
+
+input#measurementAmount {
+    width: 50px;
+}
+
+.remove-button {
+    background: none;
+    border: none;
+    text-decoration:underline;
+}
+
+input#youtube_link {
+    width: 100%;
+}
+
+input#createRecipe {
+    background: rgb(0, 255, 98);
+    box-shadow: 0 0 2px #3C2F2F;
+    border: none;
+    padding: 10px;
+    width: 150px;
+    display: inline;
 }
 
 
