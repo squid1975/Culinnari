@@ -37,7 +37,6 @@ class Recipe extends DatabaseObject
   }
 
   function createRecipe($recipeData, $ingredients, $steps, $categories) {
-    global $database; // Ensure database connection is available
 
     $recipe = new Recipe();
     $recipe->recipe_name = $recipeData['recipe_name'];

@@ -18,7 +18,7 @@ class Session {
     if($user) {
       // prevent session fixation attacks
       session_regenerate_id();
-      $this->user_id = $_SESSION['user_id'] = $user->user_id;
+      $this->user_id = $_SESSION['user_id'] = $user->id;
       $this->username = $_SESSION['username'] = $user->username;
       $this->user_role = $_SESSION['user_role'] = $user->user_role;
       $this->last_login = $_SESSION['last_login'] = time();
@@ -27,7 +27,7 @@ class Session {
   }
 
   public function is_logged_in() {
-    return isset($this->member_id) && $this->last_login_is_recent();
+    return isset($this->user_id) && $this->last_login_is_recent();
   }
 
   public function is_admin_logged_in() {

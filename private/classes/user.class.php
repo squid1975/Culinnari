@@ -4,15 +4,15 @@ class User extends DatabaseObject
 {
     static protected $table_name = 'user';
     static protected $db_columns = [
-        'user_id', 'username', 'user_email_address', 'user_hash_password',
+        'username', 'user_email_address', 'user_hash_password',
         'user_first_name', 'user_last_name', 'user_create_account_date',
         'user_role', 'user_is_active'
     ];
 
-    public $user_id;
+    public $id;
     public $username;
     public $user_email_address;
-    public $user_hash_password;
+    protected $user_hash_password;
     public $user_first_name;
     public $user_last_name;
     public $user_create_account_date;
@@ -26,11 +26,11 @@ class User extends DatabaseObject
     {
         $this->username = $args['username'] ?? '';
         $this->user_email_address = $args['user_email_address'] ?? '';
-        $this->user_password = $args['user_password'] ?? ''; // Store plain password
+        $this->user_password = $args['user_password'] ?? ''; 
         $this->confirm_password = $args['confirm_password'] ?? '';
         $this->user_first_name = $args['user_first_name'] ?? '';
         $this->user_last_name = $args['user_last_name'] ?? '';
-        $this->user_create_account_date = $args['user_create_account_date'] ?? date('Y-m-d H:i:s');
+        $this->user_create_account_date = $args['user_create_account_date'] ?? date('Y-m-d');
         $this->user_role = $args['user_role'] ?? 'member';
         $this->user_is_active = $args['user_is_active'] ?? 1;
     }
@@ -68,7 +68,7 @@ class User extends DatabaseObject
         return parent::update();
     }
 
-    protected function validate()
+    public function validate()
     {
         $this->errors = [];
 
