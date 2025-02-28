@@ -64,6 +64,7 @@ class DatabaseObject {
   protected function create() {
     $this->validate();
     if(!empty($this->errors)) { return false; }
+    
 
     $attributes = $this->sanitized_attributes();
     $sql = "INSERT INTO " . static::$table_name . " (";
