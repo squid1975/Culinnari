@@ -3,7 +3,7 @@
 class User extends DatabaseObject
 {
     static protected $table_name = 'user';
-    static protected $db_columns = [
+    static protected $db_columns = [ 
         'username', 'user_email_address', 'user_hash_password',
         'user_first_name', 'user_last_name', 'user_create_account_date',
         'user_role', 'user_is_active'
@@ -42,7 +42,8 @@ class User extends DatabaseObject
     }
 
     public function set_hashed_password() {
-        $this->user_hash_password = password_hash($this->password, PASSWORD_BCRYPT);
+        $hashed_pass = password_hash($this->password, PASSWORD_BCRYPT);
+        return $this->user_hash_password = $hashed_pass;
     }
 
    public function verify_password($password) {
