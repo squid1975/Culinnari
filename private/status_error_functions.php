@@ -2,7 +2,6 @@
 function require_login (){
   global $session;
   if(!$session->is_logged_in()) {
-    echo ('You must be a user to access this resource.');
     redirect_to(url_for('/login.php'));
   }
 }
@@ -10,7 +9,7 @@ function require_login (){
 function require_mgmt_login() {
   global $session;
   if(!$session->is_mgmt_logged_in()) {
-    redirect_to(url_for('/login_signup.php'));
+    redirect_to(url_for('/login.php'));
   } else {
     // Do nothing, let the rest of the page proceed
   }
@@ -19,7 +18,7 @@ function require_mgmt_login() {
 function require_super_admin_login() {
   global $session;
   if(!$session->is_super_admin_logged_in()){
-    redirect_to(url_for('/login_signup.php'));
+    redirect_to(url_for('/login.php'));
   } else {
     //
   }
