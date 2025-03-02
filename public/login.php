@@ -30,7 +30,7 @@ if (is_post_request()) {
         // Mark user as logged in
         $session->login($user);
 
-        if ($session->is_admin_logged_in()) {
+        if ($session->is_mgmt_logged_in()) {
           redirect_to(url_for('/admin/index.php')); // Admin page
         } else {
           redirect_to(url_for('/member/profile.php')); // Regular user page
@@ -54,10 +54,10 @@ if (is_post_request()) {
 
       <form action="<?php echo url_for('/login.php'); ?>" method="POST">
         <label for="username">Username:</label>
-        <input type="text" name="username" value="<?php echo h($username); ?>">
+        <input type="text" id="username"name="username" value="<?php echo h($username); ?>">
         
         <label for="password">Password:</label> 
-        <input type="password" name="password" value="">
+        <input type="password" id="password" name="password" >
         
         <input type="submit" name="login" value="Log in">
       </form>
