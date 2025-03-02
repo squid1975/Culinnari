@@ -1,6 +1,12 @@
 "use strict";
 
-/** Global Variables */
+/******************** Global Variables **********************/
+const error = document.createElement('p');
+error.id = 'error';
+
+
+/** Checkboxes */
+const checkboxes = document.querySelector("#checkboxes");
 /**Ingredient */
 const addIngredientButton = document.querySelector("#addIngredient");
 const ingredientDirections = document.querySelector("#ingredientDirections");
@@ -14,34 +20,36 @@ const stepDirections = document.querySelector("#stepDirections");
 const addStepButton = document.querySelector("#addStep");
 let stepsList = document.querySelector("#stepsContainer");
 let stepInput = document.querySelector("#stepInput");
+let stepsArray = [];
 
 function limitCheckboxSelection(category) {
-    const checkboxes = document.querySelectorAll(`input[name^="${category}"]`);
+    const checkboxes = document.querySelectorAll(`input[name="${category}[]"]`);
 
     checkboxes.forEach((checkbox) => {
         checkbox.addEventListener("change", function () {
-            let checkedBoxes = document.querySelectorAll(`input[name^="${category}"]:checked`);
+            let checkedBoxes = document.querySelectorAll(`input[name="${category}[]"]:checked`);
 
             if (checkedBoxes.length > 3) {
                 this.checked = false; // Uncheck the last selected checkbox
-                alert(`You can select up to 3 options for this category.`);
             }
         });
     });
 }
 
-limitCheckboxSelection("mealType");
-limitCheckboxSelection("style");
-limitCheckboxSelection("diet");
-/**
- * Adds the recipe step entered by user under the input element
- * @returns 
- */
-let stepsArray = [];
+// Apply the function to each category
+document.addEventListener("DOMContentLoaded", function () {
+    limitCheckboxSelection("meal_types");
+    limitCheckboxSelection("styles");
+    limitCheckboxSelection("diets");
+});
+
+
+
 
 function addRecipeStep() {
     if (stepInput.value === "") {
-        alert("Please enter a step before adding it to the recipe.");
+        error.textContent = "Please enter a step."
+        stepDirections.appendChild(error);
         return;
     } else {
         let stepText = stepInput.value.trim();
@@ -83,7 +91,8 @@ let ingredientsArray = [];
 
 function addRecipeIngredient() {
     if (ingredientName.value === "" || measurementAmount.value === "") {
-        alert("Please enter a measurement amount and ingredient name.");
+        error.textContent = "Please enter a measurement amount and ingredient name.";
+        ingredientDirections.appendChild(error);
         return;
     } else {
         let ingredientData = {
