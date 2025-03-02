@@ -12,13 +12,13 @@ class User extends DatabaseObject
     public $id;
     public $username;
     public $user_email_address;
-    protected $user_hash_password;
+    public $user_hash_password;
     public $user_first_name;
     public $user_last_name;
     public $user_create_account_date;
     public $user_role;
     public $user_is_active;
-    public $user_password;
+    public $password;
     public $confirm_password;
     protected $password_required = true;
 
@@ -26,12 +26,13 @@ class User extends DatabaseObject
     {
         $this->username = $args['username'] ?? '';
         $this->user_email_address = $args['user_email_address'] ?? '';
-        $this->user_password = $args['user_password'] ?? ''; 
+        $this->user_hash_password = $args['user_hash_password'] ?? '';
+        $this->password = $args['password'] ?? ''; 
         $this->confirm_password = $args['confirm_password'] ?? '';
         $this->user_first_name = $args['user_first_name'] ?? '';
         $this->user_last_name = $args['user_last_name'] ?? '';
         $this->user_create_account_date = $args['user_create_account_date'] ?? date('Y-m-d');
-        $this->user_role = $args['user_role'] ?? 'member';
+        $this->user_role = $args['user_role'] ?? 'm';
         $this->user_is_active = $args['user_is_active'] ?? 1;
     }
 
@@ -40,17 +41,13 @@ class User extends DatabaseObject
         return $this->user_first_name . " " . $this->user_last_name;
     }
 
-    public function set_hashed_password()
-    {
-        if (!empty($this->user_password)) {
-            $this->user_hash_password = password_hash($this->user_password, PASSWORD_BCRYPT);
-        }
+    public function set_hashed_password() {
+        $this->user_hash_password = password_hash($this->password, PASSWORD_BCRYPT);
     }
 
-    public function verify_password($password)
-    {
-        return password_verify($password, $this->user_hash_password);
-    }
+   public function verify_password($password) {
+    return password_verify($password, $this->user_hash_password ?? '');
+   }
 
     protected function create()
     {
@@ -60,7 +57,7 @@ class User extends DatabaseObject
 
     protected function update()
     {
-        if (!empty($this->user_password)) {
+        if ($this->password != '') {
             $this->set_hashed_password();
         } else {
             $this->password_required = false;
@@ -99,23 +96,23 @@ class User extends DatabaseObject
         }
 
         if ($this->password_required) {
-            if (is_blank($this->user_password)) {
+            if (is_blank($this->password)) {
                 $this->errors[] = "Password cannot be blank.";
-            } elseif (!has_length($this->user_password, ['min' => 12])) {
+            } elseif (!has_length($this->password, ['min' => 12])) {
                 $this->errors[] = "Password must contain 12 or more characters.";
-            } elseif (!preg_match('/[A-Z]/', $this->user_password)) {
+            } elseif (!preg_match('/[A-Z]/', $this->password)) {
                 $this->errors[] = "Password must contain at least 1 uppercase letter.";
-            } elseif (!preg_match('/[a-z]/', $this->user_password)) {
+            } elseif (!preg_match('/[a-z]/', $this->password)) {
                 $this->errors[] = "Password must contain at least 1 lowercase letter.";
-            } elseif (!preg_match('/[0-9]/', $this->user_password)) {
+            } elseif (!preg_match('/[0-9]/', $this->password)) {
                 $this->errors[] = "Password must contain at least 1 number.";
-            } elseif (!preg_match('/[^A-Za-z0-9\s]/', $this->user_password)) {
+            } elseif (!preg_match('/[^A-Za-z0-9\s]/', $this->password)) {
                 $this->errors[] = "Password must contain at least 1 symbol.";
             }
 
             if (is_blank($this->confirm_password)) {
                 $this->errors[] = "Confirm password cannot be blank.";
-            } elseif ($this->user_password !== $this->confirm_password) {
+            } if ($this->password !== $this->confirm_password) {
                 $this->errors[] = "Password and confirm password must match.";
             }
         }
@@ -133,6 +130,11 @@ class User extends DatabaseObject
             return false;
         }   
     }
+
+    public static function getUserRecipes($user_id){
+        $sql = "SELECT * FROM recipe WHERE user_id ='" . self::$database->escape_string($user_id) . "'";
+        return self::find_by_sql($sql);
+      }
 
     
 

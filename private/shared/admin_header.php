@@ -1,3 +1,4 @@
+<?php require_login(); ?> 
 <div id="adminNav">
     <div>
     <a href="<?php echo url_for('/member/profile.php'); ?>" >

@@ -2,13 +2,14 @@
 function require_login (){
   global $session;
   if(!$session->is_logged_in()) {
-    redirect_to(url_for('/login_signup.php'));
+    echo ('You must be a user to access this resource.');
+    redirect_to(url_for('/login.php'));
   }
 }
 
-function require_admin_login() {
+function require_mgmt_login() {
   global $session;
-  if(!$session->is_admin_logged_in()) {
+  if(!$session->is_mgmt_logged_in()) {
     redirect_to(url_for('/login_signup.php'));
   } else {
     // Do nothing, let the rest of the page proceed

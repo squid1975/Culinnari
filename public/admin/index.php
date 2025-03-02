@@ -1,6 +1,7 @@
 <?php require_once('../../private/initialize.php'); ?>
 <?php $pageTitle = "Management Area | Culinnari"; ?>
 <?php include(SHARED_PATH . '/public_header.php'); ?>
+<?php require_mgmt_login(); ?>
 
 <main role="main" tabindex="-1">
     <div id="adminHero">

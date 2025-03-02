@@ -133,6 +133,10 @@ input#mainSearch {
     margin: 0 auto;
 }
 
+#loginSignup h2 {
+    text-align: center;
+}
+
 #loginSignup div {
     margin: 10px;
     flex: 1;
@@ -156,6 +160,8 @@ input#mainSearch {
     color: white;
 }
 /*********************************** CREATE/EDIT RECIPE PAGE ********************/
+
+
 
 .recipeFormWrapper {
     max-width: 800px;
@@ -267,6 +273,20 @@ label.recipePartName {
 
 input#measurementAmount {
     width: 50px;
+}
+
+textarea#stepInput {
+    max-width: 350px;
+}
+
+ul#ingredientsContainer li {
+    padding: 5px;
+    list-style-type: circle;
+}
+
+ol#stepsContainer li {
+    padding: 5px;
+    list-style-type: decimal;
 }
 
 .remove-button {

@@ -49,4 +49,14 @@ if(!function_exists('money_format')) {
   }
 }
 
+function timeToSeconds($hours, $minutes){
+  return ($hours * 3600) + ($minutes * 60);
+}
+
+function convertSeconds($seconds) {
+  $hours = floor($seconds / 3600); // Calculate hours
+  $minutes = floor(($seconds % 3600) / 60); // Calculate minutes
+
+  return "{$hours} hours and {$minutes} minutes";
+}
 ?>

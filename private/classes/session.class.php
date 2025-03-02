@@ -2,10 +2,10 @@
 
 class Session {
 
-  private $user_id;
+  public $user_id;
   public $username;
-  private $last_login;
-  private $user_role;
+  public $last_login;
+  public $user_role;
 
   public const MAX_LOGIN_AGE = 60*60*24; // 1 day
 
@@ -30,12 +30,12 @@ class Session {
     return isset($this->user_id) && $this->last_login_is_recent();
   }
 
-  public function is_admin_logged_in() {
-    return $this->is_logged_in() && $this->user_role == 'admin';
+  public function is_mgmt_logged_in() {
+    return $this->is_logged_in() && in_array($this->user_role, ['a', 's']);
 }
 
 public function is_super_admin_logged_in() {
-  return $this->is_logged_in() && $this->user_role == 'super admin';
+  return $this->is_logged_in() && $this->user_role === 's';
 }
 
 
@@ -52,7 +52,7 @@ public function is_super_admin_logged_in() {
     return true;
   }
 
-  private function check_stored_login() {
+  public function check_stored_login() {
     if(isset($_SESSION['user_id'])) {
       $this->user_id = $_SESSION['user_id'];
       $this->username = $_SESSION['username'];
@@ -61,7 +61,7 @@ public function is_super_admin_logged_in() {
     }
   }
 
-  private function last_login_is_recent() {
+  public function last_login_is_recent() {
     if(!isset($this->last_login)) {
       return false;
     } elseif(($this->last_login + self::MAX_LOGIN_AGE) < time()) {
@@ -69,21 +69,6 @@ public function is_super_admin_logged_in() {
     } else {
       return true;
     }
-  }
-
-  public function message($msg="") {
-    if(!empty($msg)) {
-      // Then this is a "set" message
-      $_SESSION['message'] = $msg;
-      return true;
-    } else {
-      // Then this is a "get" message
-      return $_SESSION['message'] ?? '';
-    }
-  }
-
-  public function clear_message() {
-    unset($_SESSION['message']);
   }
 }
 
