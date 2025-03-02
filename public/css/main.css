@@ -169,7 +169,7 @@ section {
 #profileWrapper {
     background-color: white;
     margin: 0 auto;
-    max-width: 1200px;
+    max-width: 1400px;
     padding: 10px;
 }
 
@@ -184,30 +184,6 @@ section {
     margin: 10px;
 }
 
-#profileMgmt {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-evenly;
-    margin: 0 20px;
-}
-
-div.profileMgmtButton {
-    background-color: #E0DDAA;
-    box-shadow: 0 0 5px #333;
-    margin: 10px;
-    width: 200px;
-}
-
-div.profileMgmtButton a {
-    align-items: center;
-    display: flex;
-    padding: 10px;
-}
-
-div.profileMgmtButton a img {
-    margin-right: 10px;
-}
-
 .createLink:hover {
     text-decoration: underline;
 }
@@ -220,5 +196,9 @@ div.profileMgmtButton a img {
     text-align: center;
 }
 
+
+#categoriesContainer {
+    display: flex;
+}
 
 /********************************************   media queries ****************************/
