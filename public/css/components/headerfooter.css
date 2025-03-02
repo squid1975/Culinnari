@@ -40,19 +40,30 @@ nav ul li a:hover {
 
 /** Login / Member **/
 
-#headerLoginSignup a {
-    display: flex;
-    flex-wrap: nowrap;
-    align-items: center;
+
+
+#headerLoginSignup ul li{
+    padding: 10px 20px;
+    margin: 0 5px;
+    border: 1px solid #bdbdbd;
+    display: inline-block;
+    border-radius: 10px;
 }
 
-#headerLoginSignup a img {
-    margin-right: 5px;
+#headerLoginSignup ul li:first-of-type{
+    background: #fffaf0;
 }
 
+#headerLoginSignup ul li:nth-of-type(2){
+    background: #556B2F;
+}
 
 #headerLoginSignup ul a {
     font-size: 17px;
+}
+
+#headerLoginSignup ul li:nth-of-type(2) a {
+    color: #fff;
 }
 
 #memberNav {
@@ -98,6 +109,8 @@ nav ul li a:hover {
     margin-right: 10px;
     font-size: 18px;
 }
+
+
 /******** FOOTER ************/
 footer {
     align-items: center;
