@@ -1,31 +1,40 @@
-<?php require_once('../private/initialize.php'); ?>
-<?php $pageTitle = "Recipe: Recipe Name | Culinnari"; ?>
-<?php include(SHARED_PATH . '/public_header.php'); ?>
+<?php require_once('../private/initialize.php'); 
+$pageTitle = "Recipe:  | Culinnari"; 
+include(SHARED_PATH . '/public_header.php'); ?>
 
-<main role="main" tabindex="-1"
-<img src="<?php echo url_for('/images/default_recipe_image.webp'); ?>">
-<h2>Recipe Name</h2>
+<main role="main" tabindex="-1">
+
 <div id="recipePageDisplayWrapper">
-        <div id="recipeDisplayDietIcons">
-            <img src="<?php echo url_for('/images/icon/dietIcons/glutenFree.svg'); ?>">
-            <img src="<?php echo url_for('/images/icon/dietIcons/glutenFree.svg'); ?>">
-            <img src="<?php echo url_for('/images/icon/dietIcons/glutenFree.svg'); ?>">
-            <img src="<?php echo url_for('/images/icon/dietIcons/glutenFree.svg'); ?>">
-            <img src="<?php echo url_for('/images/icon/dietIcons/glutenFree.svg'); ?>">
-            <img src="<?php echo url_for('/images/icon/dietIcons/glutenFree.svg'); ?>">
-        </div>
-        <div id="recipeDisplayRatingStars">
-            <img src="<?php echo url_for('/images/icon/star.svg'); ?>">
-            <img src="<?php echo url_for('/images/icon/star.svg'); ?>">
-            <img src="<?php echo url_for('/images/icon/star.svg'); ?>">
-            <img src="<?php echo url_for('/images/icon/star.svg'); ?>">
-            <img src="<?php echo url_for('/images/icon/star.svg'); ?>">
+    <div id="recipeNameImageDesc">
+        <img src="<?php echo url_for('/images/default_recipe_image.webp'); ?>" width="300" height="300">
+        <h2>Gluten Free Oreo No Bake Cheesecake</h2>
+        <p id="recipeDisplayrecipeDescription">This gluten-free no-bake Oreo cheesecake features a crunchy Oreo crust, a creamy, smooth cheesecake filling, and a topping of crushed Oreos. Quick to make and perfect for any occasion, it's a delicious treat for those avoiding gluten!</p>
+        <div id="iconsStars">
+            <div id="recipeDisplayDietIcons">
+                <img src="<?php echo url_for('/images/icon/dietIcons/glutenFree.svg'); ?>">
+                <img src="<?php echo url_for('/images/icon/dietIcons/glutenFree.svg'); ?>">
+                <img src="<?php echo url_for('/images/icon/dietIcons/glutenFree.svg'); ?>">
+                <img src="<?php echo url_for('/images/icon/dietIcons/glutenFree.svg'); ?>">
+                <img src="<?php echo url_for('/images/icon/dietIcons/glutenFree.svg'); ?>">
+                <img src="<?php echo url_for('/images/icon/dietIcons/glutenFree.svg'); ?>">
+            </div>
+            <div id="recipeDisplayRatingStars">
+                <img src="<?php echo url_for('/images/icon/star.svg'); ?>">
+                <img src="<?php echo url_for('/images/icon/star.svg'); ?>">
+                <img src="<?php echo url_for('/images/icon/star.svg'); ?>">
+                <img src="<?php echo url_for('/images/icon/star.svg'); ?>">
+                <img src="<?php echo url_for('/images/icon/star.svg'); ?>">
+            </div>
+            <div id="recipeDisplayDifficulty">
+                <p>Beginner</p>
+            </div>
         </div>
         <div id="recipeDisplayprepCook">
             <p>Prep Time: 15 Minutes</p>
             <p>Cook Time: 3 Hours</p>
         </div>
-        <p id="recipeDisplayrecipeDescription">This gluten-free no-bake Oreo cheesecake features a crunchy Oreo crust, a creamy, smooth cheesecake filling, and a topping of crushed Oreos. Quick to make and perfect for any occasion, it's a delicious treat for those avoiding gluten!</p>
+    </div>
+    
         <div id="recipeDisplayOptions">
             <a href="about:blank" onclick="window.print(); return false;">
                 <img src="<?php echo url_for('/images/icon/print.svg'); ?>" width="24" height="24" alt="Printer icon" title="Print recipe">
@@ -46,24 +55,24 @@
             <div id="recipeDisplayIngredients">
                 <h3>Ingredients</h3>
                 <div id="recipeDisplayTotalServings">
-                    <h4>Total Servings: 8</h4>
+                    <h4>Total Servings: <span id="servingAmt">8</span></h4>
                     <div id="recipeDisplayChangeServingAmt">
-                        <button>1/2</button>
-                        <button>1x</button>
-                        <button>2x</button>
-                        <button>3x</button>
+                        <button id="halfButton">1/2</button>
+                        <button id="1time">1x</button>
+                        <button id="2time">2x</button>
+                        <button id="3time">3x</button>
                     </div>
                 </div>
                 <ul>
-                    <li><span>20</span> Eggs</li>
-                    <li><span>20</span> Eggs</li>
-                    <li><span>20</span> Eggs</li>
-                    <li><span>20</span> Eggs</li>
-                    <li><span>20</span> Eggs</li>
-                    <li><span>20</span> Eggs</li>
-                    <li><span>20</span> Eggs</li>
-                    <li><span>20</span> Eggs</li>
-                    <li><span>20</span> Eggs</li>
+                    <li class="recipeIngredientListing"><span id="measurementAmount">20</span> Eggs</li>
+                    <li class="recipeIngredientListing"><span id="measurementAmount">20</span> Eggs</li>
+                    <li class="recipeIngredientListing"><span id="measurementAmount">20</span> Eggs</li>
+                    <li class="recipeIngredientListing"><span id="measurementAmount">20</span> Eggs</li>
+                    <li class="recipeIngredientListing"><span id="measurementAmount">20</span> Eggs</li>
+                    <li class="recipeIngredientListing"><span id="measurementAmount">20</span> Eggs</li>
+                    <li class="recipeIngredientListing"><span id="measurementAmount">20</span> Eggs</li>
+                    <li class="recipeIngredientListing"><span id="measurementAmount">20</span> Eggs</li>
+                    <li class="recipeIngredientListing"><span id="measurementAmount">20</span> Eggs</li>
                 </ul>
             </div>
 
