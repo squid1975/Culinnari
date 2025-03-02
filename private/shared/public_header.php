@@ -18,12 +18,16 @@
         </div>
     </nav>
     <div id="userHeader">
-        <?php if(!$session->is_logged_in()){
-            include(SHARED_PATH . '/gen_public_header.php');
-        } elseif ($session->is_admin_logged_in() or $session->is_super_admin_logged_in()){  
-            include(SHARED_PATH . '/admin_header.php');
-        } else {
-            include(SHARED_PATH . '/member_header.php');
-        }?>
-    </div>
+    <?php
+    if(!$session->is_logged_in()) {
+        include(SHARED_PATH . '/gen_public_header.php');
+    }
+    if ($session->is_mgmt_logged_in()) {  
+        include(SHARED_PATH . '/admin_header.php');
+    }
+    if($session->is_logged_in()) {  
+        include(SHARED_PATH . '/member_header.php');
+    }
+    ?>
+</div>
 </header>

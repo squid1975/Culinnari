@@ -110,9 +110,9 @@ footer div {
     flex: 1;
 }
 
-footer li {
+footer li  {
     font-size: 18px;
-    margin-top: 10px;
+    padding: 5px;
 }
 
 

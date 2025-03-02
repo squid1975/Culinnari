@@ -17,15 +17,36 @@
     foreach($mealtypes as $mealtype) { ?>
         <tr>
             <td><?php echo h($mealtype->meal_type_name); ?></td>
+            <td><a class="action" href="<?php echo url_for('/admin/categories/show_mealtype.php?id=' . h(u($mealtype->id))); ?>">View</a></td>
+            <td><a class="action" href="<?php echo url_for('/admin/edit_mealtype.php?id=' . h(u($mealtype->id))); ?>">Edit</a></td>
+            <td><a class="action" href="<?php echo url_for('/admin/delete_mealtype.php?id=' . h(u($mealtype->id))); ?>">Delete</a></td>
+        </tr>
+    <?php } ?>
+    </table>
+    <h3>Style</h3>
+    <table>
+    <?php $styles = Style::find_all(); 
+    foreach($styles as $style) { ?>
+        <tr>
+            <td><?php echo h($style->style_name); ?></td>
             <td><a class="action" href="<?php echo url_for('/admin/show_mealtype.php?id=' . h(u($mealtype->id))); ?>">View</a></td>
             <td><a class="action" href="<?php echo url_for('/admin/edit_mealtype.php?id=' . h(u($mealtype->id))); ?>">Edit</a></td>
             <td><a class="action" href="<?php echo url_for('/admin/delete_mealtype.php?id=' . h(u($mealtype->id))); ?>">Delete</a></td>
         </tr>
     <?php } ?>
-    <table> 
     </table>
-
-    <h3>Style</h3>
+    <h3>Diet</h3>
+    <table>
+    <?php $diets = Diet::find_all(); 
+    foreach($diets as $diet) { ?>
+        <tr>
+            <td><?php echo h($diet->diet_name); ?></td>
+            <td><a class="action" href="<?php echo url_for('/admin/show_mealtype.php?id=' . h(u($diet->id))); ?>">View</a></td>
+            <td><a class="action" href="<?php echo url_for('/admin/edit_mealtype.php?id=' . h(u($diet->id))); ?>">Edit</a></td>
+            <td><a class="action" href="<?php echo url_for('/admin/delete_mealtype.php?id=' . h(u($diet->id))); ?>">Delete</a></td>
+        </tr>
+    <?php } ?>
+    </table>
 </main>
 
 

@@ -1,3 +1,4 @@
+
 <div class="recipeCard">
     <a href="<?php echo url_for('/recipe.php'); ?>">
         <img class="recipeCardImage" src="<?php echo url_for('/images/uploads/recipe_image/food_placeholder.jpg');?>" width="250" height="250" alt="recipe" title="recipe ">

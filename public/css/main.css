@@ -73,17 +73,17 @@ section {
 
 /******************** HOMEPAGE MAIN ELEMENTS *********************/
 .hero {
-    background-image: url('../images/culinnari_hero.webp');
-    background-size: cover;
+    background-color: rgb(79, 139, 129);
     height: 200px;
     margin: 0;
     padding: 0;
 }
 
 #heroText {
-    color: white;
-    padding: 0;
-    text-align: center;
+    padding-top: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 #heroText h2 {
@@ -93,7 +93,7 @@ section {
 }
 
 #wrapper {
-    background-color: white;
+    background-color: rgb(245, 245, 245);
     margin: auto;
     max-width: 1200px;
     padding: 20px;
@@ -103,6 +103,7 @@ section {
     display: flex;
     justify-content: space-evenly;
     max-width: 1000px;
+    margin: 10px 0;
 }
 
 .dietIconWithName {
@@ -145,7 +146,7 @@ section {
 }
 
 #searchHero h2 {
-    color: white;
+    color: rgb(0, 0, 0);
     margin: 0;
     padding: 0;
     text-align: center;
@@ -153,12 +154,16 @@ section {
 
 /**** PROFILE *****/
 #profileHeading {
+    border-top: 1px solid black;
     padding: 10px;
     text-align: center;
 }
 
 #profileHeading + h3 {
     text-align: center;
+    border-bottom: 1px solid black;
+    
+    padding: 10px 0;
 }
 
 #profileWrapper {
@@ -168,9 +173,6 @@ section {
     padding: 10px;
 }
 
-.profileInfo p {
-    display: block;
-}
 
 .profileSectionHead {
     align-items: center;
@@ -179,7 +181,7 @@ section {
 }
 
 .profileSectionHead h3 {
-    margin-right: 10px;
+    margin: 10px;
 }
 
 #profileMgmt {
@@ -217,3 +219,6 @@ div.profileMgmtButton a img {
     padding: 20px;
     text-align: center;
 }
+
+
+/********************************************   media queries ****************************/

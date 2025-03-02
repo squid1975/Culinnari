@@ -127,7 +127,7 @@ class DatabaseObject {
   protected function sanitized_attributes() {
     $sanitized = [];
     foreach($this->attributes() as $key => $value) {
-      $sanitized[$key] = self::$database->escape_string($value);
+      $sanitized[$key] = is_null($value) ? null : self::$database->escape_string($value);
     }
     return $sanitized;
   }
@@ -138,14 +138,19 @@ class DatabaseObject {
     $sql .= "LIMIT 1";
     $result = self::$database->query($sql);
     return $result;
-
-    // After deleting, the instance of the object will still
-    // exist, even though the database record does not.
-    // This can be useful, as in:
-    //   echo $user->first_name . " was deleted.";
-    // but, for example, we can't call $user->update() after
-    // calling $user->delete().
   }
+  static public function begin_transaction() {
+    return self::$database->begin_transaction();
+}
+
+
+public function commit() {
+  return self::$database->commit();
+}
+
+public function rollback() {
+  return self::$database->rollback();
+}
 
 }
 

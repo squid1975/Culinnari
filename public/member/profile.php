@@ -6,26 +6,27 @@
  require_login();
  $username = $session->username;
  $user = User::find_by_username($username);
+ $role = $session->user_role;
+ 
  ?> 
 
 
 <main id="userProfile" role="main" tabindex="-1">
     <div id="profileWrapper">
         <h2 id="profileHeading">My Culinnari Profile</h2>
-        <h3>Hello, <?php echo h($user->username); ?>!</h3>
-        <section>
+        <h3>Hello, <?php echo h($user->username);  ?>!</h3>
+        
             <div class="profileInfo">
                 <h3>My Account</h3>
-                     <p>Username : <?php  echo h($user->username); ?></p> 
                      <p>Full Name :  <?php  echo h($user->full_name()); ?> </p>
                      <p>Email Address :  <?php  echo h($user->user_email_address); ?></p>
                      <p>Joined :  <?php  echo h($user->user_create_account_date); ?> </p>
-                     <p>User role: <?php echo h($user->user_role); ?></p>
+                     <p> <?php echo h($user->user_role); ?> </p>
             </div>
-            <a href="<?php echo url_for('/logout.php'); ?>">Logout</a>
+            
                     
-            <div>
-                 <?php if ($session->is_admin_logged_in() || $session->is_super_admin_logged_in()) {
+           
+                 <?php if ($session->is_mgmt_logged_in()) {
                     ?>
                 <h3>Management</h3>
                 <div id="profileMgmt">
@@ -44,7 +45,7 @@
                      <?php  }  ?>
                 </div>
             </div>     
-        </section>
+        
             
             <div class="profileSectionHead">
                 <h3>My Recipes</h3>
@@ -52,17 +53,29 @@
                     Create recipe</a>
             </div>
             <div class="profileCards">
-                
-            </div>
-        </section>
+                <?php 
+                $userRecipes = User::getUserRecipes($session->user_id);
 
-        <section>
+                if (empty($userRecipes)) {
+                    echo "It's pretty empty here... Let's write some recipes!";
+                } else { ?>
+                    <?php foreach ($userRecipes as $userRecipe): ?>
+                        <?php include(SHARED_PATH . '/recipe_card.php'); ?>
+                        <a href="<?php echo url_for('/member/edit_recipe.php?id=' . h(u($userRecipe->id))); ?>">Edit</a>
+                        <a href="<?php echo url_for('/member/delete_recipe.php?id=' . h(u($userRecipe->id))); ?>">Delete</a>
+                    <?php endforeach; ?>
+                <?php } ?>
+
+            </div>
+        
+
+        
             <div class="profileSectionHead">
                 <h3>My Cookbook</h3>
-                <a href="create_cookbook.php" class="createLink" >Create cookbook</a>
-                <div class="profileCards">
-                </div>
-        </section>
+                <a href="edit_cookbook.php" class="createLink" >Edit cookbook</a>
+                <div class="profileCards"></div>
+            </div>
+        
     </div>
 </main>
 

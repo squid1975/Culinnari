@@ -10,18 +10,18 @@ CREATE TABLE `user` (
   `user_id`  INT PRIMARY KEY AUTO_INCREMENT,
   `username` VARCHAR(15) UNIQUE,
   `user_email_address` VARCHAR(50) UNIQUE,
-  `user_hash_password` VARCHAR(255),
+  `user_hash_password` TEXT,
   `user_first_name` VARCHAR(50),
   `user_last_name` VARCHAR(50),
   `user_create_account_date` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  `user_role` ENUM('member', 'admin','super admin') DEFAULT 'member',
+  `user_role` ENUM('m', 'a','s') DEFAULT 'm',
   `user_is_active` BOOLEAN DEFAULT true
 );
 
 CREATE TABLE `recipe` (
   `recipe_id`  INT PRIMARY KEY AUTO_INCREMENT,
   `recipe_name` VARCHAR(255),
-  `recipe_description` text,
+  `recipe_description` TEXT,
   `recipe_total_servings` INT,
   `recipe_post_date` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   `recipe_prep_time_seconds` INT,
@@ -68,7 +68,6 @@ CREATE TABLE `ingredient` (
   `ingredient_name` VARCHAR(255) NOT NULL,
   `ingredient_quantity` DECIMAL(5,2),
   `ingredient_measurement_name` ENUM('teaspoon', 'tablespoon','fluid ounce', 'cup', 'pint','quart','gallon','milliliter','liter','ounce','pound'),
-  `ingredient_recipe_order` INT,
   `recipe_id` INT NOT NULL,
   CONSTRAINT ingredient_fk_recipe FOREIGN KEY (recipe_id) REFERENCES recipe(recipe_id) ON DELETE CASCADE
 );
@@ -77,7 +76,7 @@ CREATE TABLE `step` (
   `step_id`  INT PRIMARY KEY AUTO_INCREMENT,
   `recipe_id` INT,
   `step_number` INT,
-  `step_description` text,
+  `step_description` TEXT,
   CONSTRAINT step_fk_recipe FOREIGN KEY (recipe_id) REFERENCES recipe(recipe_id) ON DELETE CASCADE,
   CONSTRAINT unique_step_num_per_recipe UNIQUE(recipe_id, step_number) 
 );
@@ -137,38 +136,33 @@ CREATE TABLE `recipe_style` (
   CONSTRAINT recipe_style_fk_style FOREIGN KEY (style_id) REFERENCES style(style_id) ON DELETE CASCADE
 );
 
--- INSERT TESTING TABLE DATA
-INSERT INTO user(user_id, username, user_email_address, user_first_name, user_last_name)
-VALUES (1, 'testinguser', 'test@testing.com', 'Jane', 'Doe');
 
 
---INSERT CATEGORY DETAILS
+INSERT INTO diet(diet_name, diet_icon_url)
+VALUES ('Gluten-Free', 'images/icon/dietIcons/gluten-free.svg'),
+       ('Keto', 'images/icon/dietIcons/keto.svg'),
+       ('Low Carb', 'images/icon/dietIcons/low-carb.svg'),
+       ('Paleo', 'images/icon/dietIcons/paleo.svg'),
+       ('Sugar-Free', 'images/icon/dietIcons/sugar-free.svg'),
+       ('Vegan', 'images/icon/dietIcons/vegan.svg'),
+       ('Vegetarian', 'images/icon/dietIcons/vegetarian.svg');
 
-INSERT INTO diet(diet_id, diet_name, diet_icon_url)
-VALUES (1,'Gluten-Free', ),
-       (2, 'Keto',),
-       (3, 'Low Carb',)
-       (4, 'Paleo',)
-       (5, 'Sugar-Free',),
-       (6, 'Vegan',),
-       (7, 'Vegetarian',);
+INSERT INTO meal_type( meal_type_name)
+VALUES ('Appetizer'),
+       ('Breakfast'),
+       ('Brunch'),
+       ('Dessert'),
+       ('Dinner'),
+       ('Lunch'),
+       ('Snack');
 
-INSERT INTO meal_type(meal_type_id, meal_type_name)
-VALUES (1, 'Appetizer'),
-       (2, 'Breakfast'),
-       (3, 'Brunch'),
-       (4, 'Dessert'),
-       (5, 'Dinner'),
-       (6, 'Lunch'),
-       (7, 'Snack');
-
-INSERT INTO style(style_id, style_name)
-VALUES (1, 'Asian'),
-       (2, 'Caribbean'),
-       (3, 'Fusion'),
-       (4, 'Greek'),
-       (5, 'Italian'),
-       (6, 'Latin American'),
-       (7, 'Mediterranean'),
-       (8, 'Thai');
+INSERT INTO style( style_name)
+VALUES ('Asian'),
+       ('Caribbean'),
+       ('Fusion'),
+       ('Greek'),
+       ('Italian'),
+       ('Latin American'),
+       ('Mediterranean'),
+       ('Thai');
 

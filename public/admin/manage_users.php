@@ -9,7 +9,7 @@
         <h2>Management Area: Users</h2>
     </div>
     <div class="actions">
-      <a class="action" href="<?php echo url_for('/admin/new_user.php');
+      <a class="action" href="<?php echo url_for('/admin/users/new.php');
       ?>">Add user</a>
     </div>
 
@@ -37,11 +37,12 @@ foreach($users as $user) {
         <td><?php echo h($user->user_first_name); ?></td>
         <td><?php echo h($user->user_last_name); ?></td>
         <td><?php echo h($user->user_email_address); ?></td>
-        <td><a class="action" href="<?php echo url_for('/admin/show_user.php?id=' . h(u($user->id)));
+        <td><?php echo h($user->user_role); ?></td>
+        <td><a class="action" href="<?php echo url_for('/admin/users/show_user.php?id=' . h(u($user->id)));
         ?>">View</a></td>
-        <td><a class="action" href="<?php echo url_for('/users/edit.php?id=' . h(u($user->id)));
+        <td><a class="action" href="<?php echo url_for('/admin/users/edit.php?id=' . h(u($user->id)));
         ?>">Edit</a></td>
-        <td><a class="action" href="<?php echo url_for('/users/delete.php?id=' . h(u($user->id)));
+        <td><a class="action" href="<?php echo url_for('/admin/users/delete.php?id=' . h(u($user->id)));
         ?>">Delete</a></td>
       </tr>
       <?php } ?>
