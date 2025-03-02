@@ -59,4 +59,8 @@ function convertSeconds($seconds) {
 
   return "{$hours} hours and {$minutes} minutes";
 }
+
+function formatDate($timestamp) {
+  return date("d/m/Y", strtotime($timestamp));
+}
 ?>
