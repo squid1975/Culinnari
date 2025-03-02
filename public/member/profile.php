@@ -20,31 +20,9 @@
                 <h3>My Account</h3>
                      <p>Full Name :  <?php  echo h($user->full_name()); ?> </p>
                      <p>Email Address :  <?php  echo h($user->user_email_address); ?></p>
-                     <p>Joined :  <?php  echo h($user->user_create_account_date); ?> </p>
-                     <p> <?php echo h($user->user_role); ?> </p>
-            </div>
-            
-                    
-           
-                 <?php if ($session->is_mgmt_logged_in()) {
-                    ?>
-                <h3>Management</h3>
-                <div id="profileMgmt">
-                    <div class="profileMgmtButton">
-                        <a href="<?php echo url_for('/admin/manage_categories.php'); ?>">
-                            <img src="<?php echo url_for('/images/icon/categories.svg'); ?>">
-                            Manage Categories
-                        </a>
-                    </div>
-                    <div class="profileMgmtButton">
-                        <a href="<?php echo url_for('/admin/manage_users.php'); ?>">
-                            <img src="<?php echo url_for('/images/icon/users.svg'); ?>">
-                            Manage Users
-                        </a>
-                    </div>    
-                     <?php  }  ?>
-                </div>
-            </div>     
+                     <p>Joined :  <?php  echo formatDate(h($user->user_create_account_date)); ?> </p>
+            </div>        
+                   
         
             
             <div class="profileSectionHead">
@@ -56,9 +34,9 @@
                 <?php 
                 $userRecipes = User::getUserRecipes($session->user_id);
 
-                if (empty($userRecipes)) {
-                    echo "It's pretty empty here... Let's write some recipes!";
-                } else { ?>
+                if (empty($userRecipes)) { ?>
+                    <p>It's pretty empty here..Let's write some recipes!</p>
+                <?php } else { ?>
                     <?php foreach ($userRecipes as $userRecipe): ?>
                         <?php include(SHARED_PATH . '/recipe_card.php'); ?>
                         <a href="<?php echo url_for('/member/edit_recipe.php?id=' . h(u($userRecipe->id))); ?>">Edit</a>
