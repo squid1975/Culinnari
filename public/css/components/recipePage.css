@@ -5,3 +5,122 @@
     margin: 0 auto;
     padding: 20px;
 }
+
+#recipeNameImageDesc {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-bottom: 1px dotted black;
+    border-top: 1px solid black;
+    padding: 10px;
+}
+
+#recipeDisplayrecipeDescription {
+    max-width: 500px;
+    text-align: center;
+}
+
+#iconsStars {
+    display: flex;
+    align-items: center;
+}
+
+#iconsStars div {
+    padding: 10px;
+}
+
+#recipeDisplayprepCook {
+    display: flex;
+}
+
+#recipeDisplayOptions {
+    margin: 10px;
+}
+
+#recipeDisplayOptions a {
+    padding: 10px;
+    margin: 10px;
+}
+
+#recipeDisplayprepCook p {
+    margin-right: 10px;
+    padding-right: 5px;
+}
+
+#recipeDisplayprepCook p:first-of-type {
+    border-right: 1px solid #333;
+}
+
+#recipeDisplayIngredientsSteps {
+    margin: 20px 10px;
+    display: flex;
+    min-height: 400px;
+}
+
+#recipeDisplayTotalServings {
+    display: flex;
+    width: 100%;
+    align-items: center;
+}
+
+#recipeDisplayChangeServingAmt {
+    background: rgb(209, 209, 209, 0.2);
+    box-shadow: 0 2px 2px #333;
+    margin-left: 10px;
+    width: 160px;
+    padding: 5px;
+    border-radius: 10px;
+}
+
+#recipeDisplayChangeServingAmt button {
+    text-align: center;
+    padding: 5px;
+}
+
+li.recipeIngredientListing {
+    list-style-type: circle;
+}
+
+
+#recipeDisplaySteps ol li {
+    list-style-type: decimal;
+    margin: 15px 0;
+}
+
+
+@media print {
+    #recipePageDisplayWrapper {
+        max-width: 100%;
+        padding: 0;
+    }
+
+    #recipeDisplayrecipeDescription {
+        text-align: left;
+    }
+
+    #recipeDisplayprepCook p:first-of-type {
+        border: none;
+    }
+
+    #recipeNameImageDesc, #recipeDisplayDietIcons, #recipeDisplayprepCook, #recipeDisplayIngredientsSteps {
+        display: block;
+    }
+
+    #recipeDisplayIngredients, #recipeDisplaySteps {
+        width: 100%;
+        max-width: 100%;
+        padding: 0;
+    }
+
+    /* Hide elements that are not needed in print */
+    header,
+    #recipeNameImageDesc img,
+    #recipeDisplayRatingStars,
+    #recipeDisplayOptions,
+    #recipeDisplayChangeServingAmt,
+    #recipeDisplayYouTubeVideo,
+    footer {
+        display: none;
+    }
+
+}
