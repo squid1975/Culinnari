@@ -8,7 +8,6 @@ if(is_post_request()) {
 // Create record using post parameters
 $args = $_POST['user'];
 $user = new user($args);
-$user->set_hashed_password();
 $result = $user->save();
 
 if($result === true) {
