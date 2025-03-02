@@ -25,7 +25,7 @@
     if ($session->is_mgmt_logged_in()) {  
         include(SHARED_PATH . '/admin_header.php');
     }
-    if($session->is_logged_in()) {  
+    elseif($session->is_logged_in()) {  
         include(SHARED_PATH . '/member_header.php');
     }
     ?>
