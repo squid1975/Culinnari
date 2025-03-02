@@ -12,12 +12,17 @@
     </div>
     <div id="footerUserNav">
         <ul>
-            <li><a href="<?php echo url_for('/login_signup.php');?>">Log In / Sign Up</a></li>
-            <li><a href="<?php echo url_for('/member/profile.php'); ?>">Profile</a></li>
+            <?php if(!$session->is_logged_in()){ ?>
+            <li><a href="<?php echo url_for('/login_signup.php');?>">Log In</a></li>
+            <li><a href="<?php echo url_for('/login_signup.php');?>">Create Account</a></li>
+            <?php } elseif($session->is_logged_in()) { ?>
+            <li><a href="<?php echo url_for('/member/profile.php'); ?>">My Profile</a></li>
             <li><a href="<?php echo url_for('/member/create_recipe.php'); ?> ">Create Recipe</a></li>
-            <li><a href="<?php echo url_for('/member/edit_recipe.php'); ?>" >Edit Recipe</a></li>
-
-
+            <li><a href="<?php echo url_for('/member/edit_recipe.php'); ?>">My Cookbook</a></li>
+            <?php } ?>
+            <?php if($session->is_mgmt_logged_in()){ ?>
+            <li><a href="<?php echo url_for('/admin/index.php'); ?>">Management Area</a></li>
+            <?php } ?>
         </ul>        
     </div>
     <div id="businessInfo">
