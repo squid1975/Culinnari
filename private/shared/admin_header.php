@@ -4,7 +4,7 @@
     <a href="<?php echo url_for('/member/profile.php'); ?>" >
         <img src="<?php echo url_for('/images/icon/adminIcon.svg');
              ?>" width="30" height="30" alt="User Icon" title="User Profile">
-             Username  (Admin)</a>
+             <?php echo h($session->username); ?> (Admin)</a>
     </div>
     <div>         
         <a href="<?php echo url_for('/member/create_recipe.php'); ?>">
