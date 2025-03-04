@@ -16,18 +16,15 @@
       ?>">Add user</a>
     </div>
 
-    <table class="list" border=1>
-      <tr>
-        
+    <table>
+      <tr>    
         <th>Username</th>
         <th>First name</th>
         <th>Last name</th>
         <th>Email</th>
         <th>Create Account Date</th>
-        <th>Role</th>
-        
+        <th>Role</th>        
       </tr>
-
 <?php
 
 // Create a new user object that uses the find_all() method
@@ -83,9 +80,9 @@ foreach($users as $user) {
             foreach($styles as $style) { ?>
                 <tr>
                     <td><?php echo h($style->style_name); ?></td>
-                    <td><a class="action" href="<?php echo url_for('/admin/show_mealtype.php?id=' . h(u($mealtype->id))); ?>">View</a></td>
-                    <td><a class="action" href="<?php echo url_for('/admin/edit_mealtype.php?id=' . h(u($mealtype->id))); ?>">Edit</a></td>
-                    <td><a class="action" href="<?php echo url_for('/admin/delete_mealtype.php?id=' . h(u($mealtype->id))); ?>">Delete</a></td>
+                    <td><a class="action" href="<?php echo url_for('/admin/show_style.php?id=' . h(u($style->id))); ?>">View</a></td>
+                    <td><a class="action" href="<?php echo url_for('/admin/edit_style.php?id=' . h(u($style->id))); ?>">Edit</a></td>
+                    <td><a class="action" href="<?php echo url_for('/admin/delete_style.php?id=' . h(u($style->id))); ?>">Delete</a></td>
                 </tr>
             <?php } ?>
             </table>

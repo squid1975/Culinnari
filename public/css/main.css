@@ -11,6 +11,7 @@
 
 html {
     font-family: "Lato", serif;
+    min-width: 400px;
 }
 
 body {
@@ -47,6 +48,10 @@ section {
     padding: 0;
 }
 
+table {
+    border: 1px solid black;
+}
+
 .primaryButton {
     background-color: rgb(141, 206, 214);
     border-radius: 15px;
@@ -71,6 +76,11 @@ section {
     width: 1px;
 }
 
+
+div.errors {
+    border: 1px solid #eb0f0f;
+    box-shadow: 0 0 5px #eb0f0f;
+}
 /******************** HOMEPAGE MAIN ELEMENTS *********************/
 .hero {
     background-color: rgb(79, 139, 129);

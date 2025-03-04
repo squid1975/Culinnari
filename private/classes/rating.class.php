@@ -3,9 +3,9 @@
 class Rating extends DatabaseObject {
     
     static protected $table_name = 'rating';
-    static protected $db_columns = ['rating_id','user_id', 'recipe_id', 'rating_value', 'rating_date'];
+    static protected $db_columns = ['user_id', 'recipe_id', 'rating_value', 'rating_date'];
 
-    public $rating_id;
+    public $id;
     public $user_id;
     public $recipe_id;
     public $rating_value;
@@ -46,14 +46,6 @@ class Rating extends DatabaseObject {
         return $this->recipe;
     }
 
-    public function getUser()
-    {
-        if (!$this->user) {
-            $this->user = User::find_by_id($this->user_id);
-        }
-        return $this->user;
-    }
-
     public function getRatingCount()
     {
         $sql = "SELECT COUNT(*) FROM rating ";
@@ -81,7 +73,8 @@ class Rating extends DatabaseObject {
 
         $result = self::$database->query($sql);
         $row = $result->fetch_row();
-        return
+        return;
+    }
 }
 
 

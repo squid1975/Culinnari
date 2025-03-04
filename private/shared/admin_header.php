@@ -13,7 +13,7 @@
         <a href="<?php echo url_for('/admin/index.php'); ?>">
             <img src="<?php echo url_for('/images/icon/settings.svg'); ?>" width="20" height="20" alt="Admin Icon" title="Admin Management">
             Management</a>
-        <a href="<?php echo url_for('/public/logout.php'); ?> ">
+        <a href="<?php echo url_for('/logout.php'); ?> ">
             <img src="<?php echo url_for('/images/icon/logout.svg'); ?>" width="20" height="20" alt="Logout Icon" title="Logout">
             Logout</a>
     </div>

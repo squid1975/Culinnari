@@ -55,13 +55,6 @@ CREATE TABLE `rating` (
   CONSTRAINT rating_fk_recipe FOREIGN KEY (recipe_id) REFERENCES recipe(id) ON DELETE CASCADE
 );
 
-CREATE TABLE `recipe_rating_summary` (
-  `id`  INT PRIMARY KEY AUTO_INCREMENT,
-  `recipe_rating_average` DECIMAL(3,2) DEFAULT 0.00,
-  `recipe_rating_total_ratings` INT DEFAULT 0,
-  `recipe_id` INT,
-  CONSTRAINT recipe_rating_summary_fk_recipe FOREIGN KEY (recipe_id) REFERENCES recipe(id) ON DELETE CASCADE
-);
 
 CREATE TABLE `ingredient` (
   `id`  INT PRIMARY KEY AUTO_INCREMENT,

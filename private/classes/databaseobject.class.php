@@ -127,7 +127,13 @@ class DatabaseObject {
   protected function sanitized_attributes() {
     $sanitized = [];
     foreach($this->attributes() as $key => $value) {
-      $sanitized[$key] = is_null($value) ? null : self::$database->escape_string($value);
+      // If the value is an integer, leave it as is
+      if (is_int($value)) {
+        $sanitized[$key] = $value;
+      } else {
+        // If it's not an integer, escape it as a string
+        $sanitized[$key] = is_null($value) ? null : self::$database->escape_string($value);
+      }
     }
     return $sanitized;
   }

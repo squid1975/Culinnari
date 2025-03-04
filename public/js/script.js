@@ -4,23 +4,109 @@
 const error = document.createElement('p');
 error.id = 'error';
 
+const createRecipeForm = document.querySelector("#createRecipeForm");
 
 /** Checkboxes */
 const checkboxes = document.querySelector("#checkboxes");
-/**Ingredient */
+
+/** Ingredient */
 const addIngredientButton = document.querySelector("#addIngredient");
 const ingredientDirections = document.querySelector("#ingredientDirections");
 const measurementAmount = document.querySelector("#measurementAmount");
 const measurementUnit = document.querySelector("#ingredientUnit");
 const ingredientName = document.querySelector("#ingredientName");
-const ingredientList = document.querySelector("#ingredientsContainer");
+
+const ingredientSet = document.querySelector("#ingredientInputSet");
+const enteredIngredients = document.querySelector("#enteredIngredients");
 
 /** Steps */
 const stepDirections = document.querySelector("#stepDirections");
 const addStepButton = document.querySelector("#addStep");
-let stepsList = document.querySelector("#stepsContainer");
-let stepInput = document.querySelector("#stepInput");
-let stepsArray = [];
+const stepsList = document.querySelector("#stepsContainer");
+const stepInput = document.querySelector("#stepInput");
+const enteredSteps = document.querySelector("#enteredSteps");
+
+
+/**Submit, Reset, Validation */
+const resetRecipeFormButton = document.querySelector("#clearRecipeFormButton");
+const submitRecipeButton = document.querySelector("#createRecipeButton");
+
+
+const newIngredientSet = document.createElement("div");
+
+addIngredientButton.addEventListener('click', function () {
+    
+    let lastQuantity = measurementAmount.value;
+    let lastUnit = measurementUnit.value;
+    let lastName = ingredientName.value;
+    // Create a new ingredient set
+    const newIngredientSet = document.createElement("div");
+    newIngredientSet.classList.add("addedIngredients");
+
+    // Populate the new ingredient set with the last input values
+    newIngredientSet.innerHTML = `
+        <div id="ingredientInputSet">
+            <label for="measurementAmount">Amount:
+                <input type="text" name="ingredient[][ingredient_quantity]" pattern="^\\d+(\\s\\d+/\\d+)?$|^\\d+/\\d+$" placeholder="1/2" maxlength="4" class="measurementAmount" value="${lastQuantity}">
+            </label>
+            <label for="ingredientUnit">Unit:
+                <select name="ingredient[][ingredient_measurement_name]" class="ingredientUnit">
+                    <option value="n/a" ${lastUnit === "n/a" ? "selected" : ""}></option>
+                    <option value="teaspoons" ${lastUnit === "teaspoons" ? "selected" : ""}>teaspoon(s)</option>
+                    <option value="tablespoon" ${lastUnit === "tablespoon" ? "selected" : ""}>tablespoon(s)</option>
+                    <option value="fluid ounce" ${lastUnit === "fluid ounce" ? "selected" : ""}>fluid ounce(s)</option>
+                    <option value="cup" ${lastUnit === "cup" ? "selected" : ""}>cup(s)</option>                           
+                    <option value="pint" ${lastUnit === "pint" ? "selected" : ""}>pint(s)</option>
+                    <option value="quart" ${lastUnit === "quart" ? "selected" : ""}>quart(s)</option>
+                    <option value="gallon" ${lastUnit === "gallon" ? "selected" : ""}>gallon(s)</option>
+                    <option value="milliliter" ${lastUnit === "milliliter" ? "selected" : ""}>milliliter(s)</option>                                    
+                    <option value="liter" ${lastUnit === "liter" ? "selected" : ""}>liter(s)</option>
+                    <option value="ounce" ${lastUnit === "ounce" ? "selected" : ""}>ounce(s)</option>
+                    <option value="pound" ${lastUnit === "pound" ? "selected" : ""}>pound(s)</option>
+                </select>
+            </label>
+            <label for="ingredientName">Name:
+                <input type="text" name="ingredient[][ingredient_name]" placeholder="Cookies (crushed)" class="ingredientName" value="${lastName}">
+            </label>
+            <button type="button" class="removeIngredient">- Remove</button>
+        </div>
+    `;
+
+    // Add the remove functionality for the new ingredient input set
+    newIngredientSet.querySelector(".removeIngredient").addEventListener('click', function () {
+        enteredIngredients.removeChild(newIngredientSet);
+    });
+
+    // Append the new ingredient input set to the ingredientDirections container
+    enteredIngredients.appendChild(newIngredientSet);
+    measurementAmount.value = "";
+    ingredientName.value = "";
+    measurementAmount.value = "";
+});
+
+
+addStepButton.addEventListener('click', function () {
+    let stepInputValue = stepInput.value;
+    const newStep = document.createElement("div");
+    newStep.classList.add("addedSteps");
+    // Create and add the fields for the new ingredient
+    newStep.innerHTML = `
+        <label for="stepInput" class="visuallyHidden">Step:</label>
+                <textarea name="step[]"  id="stepInput" rows="2" cols="25" maxlength="255">${stepInputValue}</textarea>
+                <button type="button" class="removeStep">- Remove </button>                     
+    `;
+
+    // Add the remove functionality for the new ingredient input set
+    newStep.querySelector(".removeStep").addEventListener('click', function () {
+        enteredSteps.removeChild(newStep);
+    });
+
+    // Append the new ingredient input set to the ingredientDirections container
+    enteredSteps.appendChild(newStep);
+    stepInput.value = "";
+});
+
+
 
 function limitCheckboxSelection(category) {
     const checkboxes = document.querySelectorAll(`input[name="${category}[]"]`);
@@ -36,118 +122,16 @@ function limitCheckboxSelection(category) {
     });
 }
 
-// Apply the function to each category
-document.addEventListener("DOMContentLoaded", function () {
-    limitCheckboxSelection("meal_types");
-    limitCheckboxSelection("styles");
-    limitCheckboxSelection("diets");
-});
+limitCheckboxSelection("meal_types");
+limitCheckboxSelection("styles");
+limitCheckboxSelection("diets");
 
 
 
 
-function addRecipeStep() {
-    if (stepInput.value === "") {
-        error.textContent = "Please enter a step."
-        stepDirections.appendChild(error);
-        return;
-    } else {
-        let stepText = stepInput.value.trim();
-        let newStep = document.createElement("li");
-        newStep.textContent = `${stepText}`;
-        
-        // Create Remove button for step
-        let removeButton = document.createElement("button");
-        removeButton.textContent = "Remove";
-        removeButton.classList.add("remove-button");
-        
-        // Add event listener to remove the step when clicked
-        removeButton.addEventListener('click', function() {
-            stepsList.removeChild(newStep);
-            // Remove the step from the array when it is deleted
-            stepsArray = stepsArray.filter(step => step !== stepText);
-            updateStepsArray();
-        });
 
-        // Append the remove button to the step and then to the list
-        newStep.appendChild(removeButton);
-        stepsList.appendChild(newStep);
 
-        // Add the step to the array
-        stepsArray.push(stepText);
-        stepInput.value = "";
-
-        // Update hidden input field with the current steps array as a JSON string
-        updateStepsArray();
-    }
-}
-
-function updateStepsArray() {
-    // Update the hidden input field with the current steps array
-    document.querySelector("#stepsInput").value = JSON.stringify(stepsArray);
-}
-
-let ingredientsArray = [];
-
-function addRecipeIngredient() {
-    if (ingredientName.value === "" || measurementAmount.value === "") {
-        error.textContent = "Please enter a measurement amount and ingredient name.";
-        ingredientDirections.appendChild(error);
-        return;
-    } else {
-        let ingredientData = {
-            ingredient_quantity: measurementAmount.value.trim(),
-            ingredient_measurement_name: measurementUnit.value.trim(),
-            ingredient_name: ingredientName.value.trim(),
-        };
-
-        let newIngredient = document.createElement("li");
-
-        if (measurementUnit.value === "n/a") {
-            newIngredient.textContent = `${measurementAmount.value.trim()} ${ingredientName.value.trim()}`;
-        } else {
-            newIngredient.textContent = `${measurementAmount.value.trim()} ${measurementUnit.value.trim()} ${ingredientName.value.trim()}`;
-        }
-
-        // Create Remove button for ingredient
-        let removeButton = document.createElement("button");
-        removeButton.textContent = "Remove";
-        removeButton.classList.add("remove-button");
-
-        // Add event listener to remove the ingredient when clicked
-        removeButton.addEventListener('click', function() {
-            ingredientList.removeChild(newIngredient);
-            // Remove the ingredient from the array when it is deleted
-            ingredientsArray = ingredientsArray.filter(ingredient => ingredient.ingredient_name !== ingredientData.ingredient_name);
-            updateIngredientsArray();
-        });
-
-        // Append the remove button to the ingredient and then to the list
-        newIngredient.appendChild(removeButton);
-        ingredientList.appendChild(newIngredient);
-
-        // Add the ingredient to the array
-        ingredientsArray.push(ingredientData);
-
-        // Clear input fields for the next ingredient
-        ingredientName.value = "";
-        measurementAmount.value = "";
-        measurementUnit.value = "N/A";
-
-        // Update hidden input field with the current ingredients array as a JSON string
-        updateIngredientsArray();
-    }
-}
-
-function updateIngredientsArray() {
-    // Update the hidden input field with the current ingredients array
-    document.querySelector("#ingredientsInput").value = JSON.stringify(ingredientsArray);
-}
-
-addIngredientButton.addEventListener('click', addRecipeIngredient);
-addStepButton.addEventListener('click', addRecipeStep);
-
-const recipeImageInput = document.getElementById('recipeImage');
+const recipeImageInput = document.getElementById('recipe_image');
 const imagePreview = document.getElementById('imagePreview');
 
 // Add event listener for the file input
@@ -168,3 +152,32 @@ recipeImageInput.addEventListener('change', function(event) {
         imagePreview.style.display = 'none'; // Hide preview if no file is selected
     }
 });
+
+
+
+
+
+function limitCheckboxSelection(category) {
+    const checkboxes = document.querySelectorAll(`input[name="${category}[]"]`);
+
+    checkboxes.forEach((checkbox) => {
+        checkbox.addEventListener("change", function () {
+            let checkedBoxes = document.querySelectorAll(`input[name="${category}[]"]:checked`);
+
+            if (checkedBoxes.length > 3) {
+                this.checked = false; // Uncheck the last selected checkbox
+            }
+        });
+    });
+}
+
+limitCheckboxSelection("meal_types");
+limitCheckboxSelection("styles");
+limitCheckboxSelection("diets");
+
+function validateRecipeForm(){
+    if(document.querySelector(".ingredient-input-list")){
+        error.textContent = "Please enter an ingredient to add to your recipe.";
+        return;
+    } 
+}

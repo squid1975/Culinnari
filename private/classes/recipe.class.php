@@ -24,28 +24,32 @@ class Recipe extends DatabaseObject
   public $recipe_difficulty;
   public $user_id;
 
-  public static function createRecipe($recipeData, $ingredients, $steps, $image, $video, $diets, $styles, $meal_types) {
-    $recipe = new Recipe();
-    $recipe->recipe_name = $recipeData['recipe_name'];
-    $recipe->recipe_description = $recipeData['recipe_description'];
-    $recipe->recipe_total_servings = $recipeData['recipe_total_servings'];
-    $recipe->recipe_prep_time_seconds = $recipeData['recipe_prep_time_seconds'];
-    $recipe->recipe_cook_time_seconds = $recipeData['recipe_cook_time_seconds'];
-    $recipe->recipe_difficulty = $recipeData['recipe_difficulty'];
-    $recipe->user_id = $recipeData['user_id'];
-
+  public function __construct($args = [])
+    {
+        $this->recipe_name = $args['recipe_name'] ?? '';
+        $this->recipe_description = $args['recipe_description'] ?? '';
+        $this->recipe_total_servings = $args['recipe_total_servings'] ?? '';
+        $this->recipe_post_date = $args['recipe_post_date'] ?? date('Y-m-d h:m:s');
+        $this->recipe_prep_time_seconds = $args['recipe_prep_time_seconds'] ?? NULL;
+        $this->recipe_cook_time_seconds = $args['recipe_cook_time_seconds'] ?? NULL;
+        $this->recipe_difficulty = $args['recipe_difficulty'] ?? '';
+        $this->user_id = $args['user_id'] ?? '';
+    }
+  
+  public static function saveRecipe($recipeData, $ingredients, $steps, $image, $video, $diets, $styles, $meal_types) {
+    
     try {
+      $recipeData->save();
+      $recipe_id = $recipeData->id;
         self::$database->begin_transaction();
-        $recipe->save();
-        $recipe_id = $recipe->id;
 
         // Save ingredients
         foreach ($ingredients as $ingredient) {
-            $sql = "INSERT INTO recipe_ingredient (recipe_id, ingredient_name, ingredient_measurement_amount, ingredient_measurement_unit) VALUES (";
+            $sql = "INSERT INTO ingredient (ingredient_name, ingredient_quantity, ingredient_measurement_name, recipe_id) VALUES (";
+            $sql .= "'" . self::$database->escape_string($ingredient['ingredient_name']) . "', ";
+            $sql .= "'" . self::$database->escape_string(fractionToDecimal($ingredient['ingredient_quantity'])) . "', ";
+            $sql .= "'" . self::$database->escape_string($ingredient['ingredient_measurement_name']) . "')";
             $sql .= "'" . self::$database->escape_string($recipe_id) . "', ";
-            $sql .= "'" . self::$database->escape_string($ingredient['name']) . "', ";
-            $sql .= "'" . self::$database->escape_string($ingredient['amount']) . "', ";
-            $sql .= "'" . self::$database->escape_string($ingredient['unit']) . "')";
             if (!self::$database->query($sql)) {
                 throw new Exception("Failed to save ingredient: " . $ingredient['name']);
             }
@@ -53,18 +57,20 @@ class Recipe extends DatabaseObject
 
         // Save steps
         foreach ($steps as $step_number => $step) {
-            $sql = "INSERT INTO recipe_step (recipe_id, step_number, step_description) VALUES (";
-            $sql .= "'" . self::$database->escape_string($recipe_id) . "', ";
-            $sql .= "'" . self::$database->escape_string($step_number + 1) . "', ";
-            $sql .= "'" . self::$database->escape_string($step) . "')";
-            if (!self::$database->query($sql)) {
-                throw new Exception("Failed to save step: " . $step);
-            }
-        }
+          // Step number is already an integer; we just add 1 to make sure it's 1-based
+          $sql = "INSERT INTO step (recipe_id, step_number, step_description) VALUES (";
+          $sql .= "'" . self::$database->escape_string($recipe_id) . "', ";  // Recipe ID for the step
+          $sql .= "'" . self::$database->escape_string($step_number + 1) . "', ";  // 1-based step number
+          $sql .= "'" . self::$database->escape_string($step) . "')";  // Step description
+      
+          if (!self::$database->query($sql)) {
+              throw new Exception("Failed to save step: " . $step);
+          }
+      }
 
         // Save image
-        if ($imageURL) {
-          $sql = "INSERT INTO recipe_image (recipe_image, recipe_id) VALUES ('" . self::$database->escape_string($imageURL) . "', '" . self::$database->escape_string($recipe_id) . "')";
+        if ($image) {
+          $sql = "INSERT INTO recipe_image (recipe_image, recipe_id) VALUES ('" . self::$database->escape_string($image) . "', '" . self::$database->escape_string($recipe_id) . "')";
           if (!self::$database->query($sql)) {
               throw new Exception("Failed to save recipe image.");
           }
