@@ -32,7 +32,7 @@ $user = new User;
 
 <div id="content">
 
-  <a class="back-link" href="<?php echo url_for('/admin/manage_users.php'); ?>">&laquo; Back to User Management Area</a>
+  <a class="back-link" href="<?php echo url_for('/admin/index.php'); ?>">&laquo; Back to User Management Area</a>
 
   <div class="users new">
     <h1>Create User</h1>

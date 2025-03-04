@@ -63,4 +63,15 @@ function convertSeconds($seconds) {
 function formatDate($timestamp) {
   return date("d/m/Y", strtotime($timestamp));
 }
+
+function fractionToDecimal($fraction) {
+  // Check if the input is a valid fraction (e.g. 1/2, 3/4)
+  if (preg_match('/^(\d+)\/(\d+)$/', $fraction, $matches)) {
+      // $matches[1] is the numerator, $matches[2] is the denominator
+      $numerator = (int) $matches[1];
+      $denominator = (int) $matches[2];
+      return $numerator / $denominator;  // Convert to decimal
+  }
+  return $fraction;  // If not a fraction, return the input as is
+}
 ?>

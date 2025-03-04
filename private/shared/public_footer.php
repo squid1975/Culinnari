@@ -18,7 +18,7 @@
             <?php } elseif($session->is_logged_in()) { ?>
             <li><a href="<?php echo url_for('/member/profile.php'); ?>">My Profile</a></li>
             <li><a href="<?php echo url_for('/member/create_recipe.php'); ?> ">Create Recipe</a></li>
-            <li><a href="<?php echo url_for('/member/edit_recipe.php'); ?>">My Cookbook</a></li>
+            <li><a href="<?php echo url_for('/member/cookbook.php'); ?>">My Cookbook</a></li>
             <?php } ?>
             <?php if($session->is_mgmt_logged_in()){ ?>
             <li><a href="<?php echo url_for('/admin/index.php'); ?>">Management Area</a></li>

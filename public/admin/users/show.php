@@ -1,48 +1,49 @@
-<?php require_once('../../private/initialize.php'); ?>
+<?php require_once('../../../private/initialize.php'); ?>
+<?php $pageTitle = "Management - Create User | Culinnari"; ?>
+<?php include(SHARED_PATH . '/public_header.php'); ?>
 <?php require_admin_login(); ?>
 
 <?php
 
-$id = $_GET['id'] ?? '1'; // PHP > 7.0
+$id = $_GET['user_id'] ?? '1'; // PHP > 7.0
 
 $user = User::find_by_id($id);
 
 ?>
 
-<?php $page_title = 'Show Bird: ' . h($bird->common_name); ?>
-<?php include(SHARED_PATH . '/member_header.php'); ?>
+<?php $pageTitle = 'Management - User ' . h($user->username); ?>
 
 <div id="content">
 
-  <a class="back-link" href="<?php echo url_for('/birds/birds.php'); ?>">&laquo; Back to List</a>
+  <a class="back-link" href="<?php echo url_for('/admin/index.php'); ?>">&laquo; Back to List</a>
 
-  <div class="bird show">
-
-    <h1>Bird: <?php echo h($bird->common_name); ?></h1>
+    <h1>User: <?php echo h($user->username); ?></h1>
 
     <div class="attributes">
       <dl>
-        <dt>Common Name</dt>
-        <dd><?php echo h($bird->common_name); ?></dd>
+        <dt>Username</dt>
+        <dd><?php echo h($user->username); ?></dd>
       </dl>
       <dl>
-        <dt>Habitat</dt>
-        <dd><?php echo h($bird->habitat); ?></dd>
+        <dt>First Name</dt>
+        <dd><?php echo h($user->user_first_name); ?></dd>
       </dl>
       <dl>
         <dt>Food</dt>
-        <dd><?php echo h($bird->food); ?></dd>
+        <dd><?php echo h($user->food); ?></dd>
       </dl>
       <dl>
         <dt>Conservation</dt>
-        <dd><?php echo h($bird->conservation()); ?></dd>
+        <dd><?php echo h($user->user_email_address); ?></dd>
       </dl>
       <dl>
         <dt>Backyard Tips</dt>
-        <dd><?php echo h($bird->backyard_tips); ?></dd>
+        <dd><?php echo h($user->backyard_tips); ?></dd>
       </dl>
     </div>
 
   </div>
 
 </div>
+
+<?php include(SHARED_PATH . '/public_footer.php'); ?>

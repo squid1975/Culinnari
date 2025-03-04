@@ -193,59 +193,33 @@ input#mainSearch {
     font-size: 17px;
 }
 
-#createRecipeForm textarea {
-    width: 100%;
+label.recipePartName {
+    font-size: 22px;
 }
 
+textarea#recipeDescription {
+    width: 100%;
+}
 
 input#recipeName {
     width: 100%;
-    padding: 5px;
+    padding: 10px 0;
 }
 
-.radio-group {
-    display: flex;
-    align-items: flex-start;
-}
-
-.radio-group label {
-    margin-right: 20px;
-}
-
-.checkboxContainer label  {
-    display: block;
-    white-space: nowrap;
-}
-
-label.recipePartName {
-    font-size: 20px;
+fieldset {
+    margin: 10px 0;
     
-    margin-top: 20px;
-    font-family: 'Lustria', serif;
-    max-width: 200px;
+}
+legend {
+    font-size: 22px;
 }
 
 #checkboxes {
     display: flex;
-    margin: 20px;
-    flex-wrap:wrap;
 }
 
-.checkboxContainer {
-    flex: 1;
-    padding: 10px;
-    
-}
-
-.checkboxContainer label {
-    display: block;
-}
-
-.checkboxContainer input[type="checkbox"] {
-    /* Styles for all checkboxes inside .checkboxContainer */
-    margin-right: 5px;
-    width: 16px;
-    height: 18px;
+#checkboxes fieldset {
+    width: 100%;
 }
 
 #timeInput {
@@ -253,8 +227,7 @@ label.recipePartName {
 }
 
 #timeInput div {
-    padding: 5px;
-    flex: 1;
+    width: 100%;
 }
 
 .prep-time-container {
@@ -262,52 +235,63 @@ label.recipePartName {
     align-items: baseline;
 }
 
-.prep-time-container input#prep_time,
-.prep-time-container input#cook_time {
-    width: 50px;
-}
 .prep-time-container span {
-    margin-left: 5px;
-    margin-right: 5px;
+    margin: 0 5px;
 }
 
-input#measurementAmount {
+.prep-time-container label {
+    margin-right: 3px;
+}
+
+#prep_time_hours, 
+#cook_time_hours {
+    width: 60px;
+}
+
+#ingredientInputSet {
+    display: flex;
+    justify-content: space-evenly;
+    margin: 10px 0;
+}
+
+#stepInput {
+    width: 75%;
+}
+
+.addedIngredients {
+    border: 1px solid #3C2F2F;
+    padding: 3px;
+    margin-bottom: 5px;
+    background: #F0F0F0;
+}
+
+button#addIngredient {
+    border: none;
+    background: #98e28f;
+}
+
+button.removeIngredient {
+    padding: 5px;
+}
+
+.addedSteps {
+    display: flex;
+    align-items: center;
+    margin: 10px 5px;
+}
+
+#measurementAmount {
     width: 50px;
 }
 
-textarea#stepInput {
-    max-width: 350px;
+.radio-group {
+    display: flex;
+    align-items: baseline;
 }
 
-ul#ingredientsContainer li {
-    padding: 5px;
-    list-style-type: circle;
-}
-
-ol#stepsContainer li {
-    padding: 5px;
-    list-style-type: decimal;
-}
-
-.remove-button {
-    background: none;
-    border: none;
-    text-decoration:underline;
-}
-
-input#youtube_link {
-    width: 100%;
-}
-
-input#createRecipe {
-    background: rgb(0, 255, 98);
-    box-shadow: 0 0 2px #3C2F2F;
-    border: none;
+#createRecipeButton {
     padding: 10px;
-    width: 150px;
-    display: inline;
 }
-
 
 /***************************************************************** MEDIA QUERIES ******************************************************************/
 

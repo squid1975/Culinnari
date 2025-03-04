@@ -1,5 +1,5 @@
-<?php require_once('../../private/initialize.php'); ?>
-<?php $pageTitle = "Management Area | Culinnari"; ?>
+<?php require_once('../../../private/initialize.php'); ?>
+<?php $pageTitle = "Management - Edit User | Culinnari"; ?>
 <?php include(SHARED_PATH . '/public_header.php'); ?>
 
 <main role="main" tabindex="-1">
@@ -14,21 +14,18 @@ if(!isset($_GET['id'])) {
   redirect_to(url_for('/index.php'));
 }
 $id = $_GET['id'];
-$bird = Bird::find_by_id($id);
-if($bird == false) {
-  redirect_to(url_for('/index.php'));
-}
+$user = User::find_by_id($id);
 
 if(is_post_request()) {
 
   // Save record using post parameters
-  $args = $_POST['bird'];
-  $bird->merge_attributes($args);
-  $result = $bird->save();
+  $args = $_POST['user'];
+  $user->merge_attributes($args);
+  $result = $user->save();
 
   if($result === true) {
-    $_SESSION['message'] = 'The bird was updated successfully.';
-    redirect_to(url_for('/birds/show.php?id=' . $id));
+    $_SESSION['message'] = 'User updated successfully.';
+    redirect_to(url_for('/users/show.php?id=' . $id));
   } else {
     // show errors
     
@@ -42,28 +39,25 @@ if(is_post_request()) {
 
 ?>
 
-<?php $page_title = 'Edit Bird'; ?>
-<?php include(SHARED_PATH . '/member_header.php'); ?>
 
 <div id="content">
 
-  <a class="back-link" href="<?php echo url_for('/birds/birds.php'); ?>">&laquo; Back to List</a>
+  <a class="back-link" href="<?php echo url_for('/users/users.php'); ?>">&laquo; Back to List</a>
 
-  <div class="bird edit">
-    <h1>Edit Bird</h1>
+  <div class="user edit">
+    <h1>Edit user</h1>
 
-    <?php echo display_errors($bird->errors); ?>
+    <?php echo display_errors($user->errors); ?>
 
-    <form action="<?php echo url_for('/birds/edit.php?id=' . h(u($id))); ?>" method="post">
+    <form action="<?php echo url_for('/users/edit.php?id=' . h(u($id))); ?>" method="post">
 
       
       <?php 
-       $conservation_options = Bird::CONSERVATION_OPTIONS;
       include('form_fields.php'); 
       ?>
 
       <div id="operations">
-        <input type="submit" value="Edit Bird" />
+        <input type="submit" value="Edit user" />
       </div>
     </form>
 
