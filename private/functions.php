@@ -65,13 +65,69 @@ function formatDate($timestamp) {
 }
 
 function fractionToDecimal($fraction) {
-  // Check if the input is a valid fraction (e.g. 1/2, 3/4)
-  if (preg_match('/^(\d+)\/(\d+)$/', $fraction, $matches)) {
-      // $matches[1] is the numerator, $matches[2] is the denominator
-      $numerator = (int) $matches[1];
-      $denominator = (int) $matches[2];
-      return $numerator / $denominator;  // Convert to decimal
+  $fraction = trim($fraction);
+
+  // Return NULL if input is empty
+  if ($fraction === '') {
+      return null;
   }
-  return $fraction;  // If not a fraction, return the input as is
+
+  // Check if the input is already a valid number
+  if (is_numeric($fraction)) {
+      return round((float) $fraction, 2);  // Round to two decimal places
+  }
+
+  // Check if the input is a fraction (e.g., "1/2", "3/4")
+  if (preg_match('/^(\d+)\s*(\/)\s*(\d+)$/', $fraction, $matches)) {
+      $numerator = (int) $matches[1];
+      $denominator = (int) $matches[3];
+
+      if ($denominator == 0) {
+          return null; // Avoid division by zero
+      }
+      return round($numerator / $denominator, 2);  // Round to two decimal places
+  }
+
+  return null; // Invalid input, return NULL
 }
-?>
+
+function decimal_to_fraction($decimal) {
+  // Ensure the decimal is a numeric value
+  if (!is_numeric($decimal)) {
+      return $decimal;  // Return as-is if not a number
+  }
+
+  $whole = floor($decimal); // Get the whole number part
+  $fraction = $decimal - $whole; // Get the fractional part
+
+  if ($fraction == 0) {
+      return (string) $whole; // Return as a whole number if no fraction
+  }
+
+  // Let's work with a reasonable denominator, such as 100 for two decimal places
+  $denominator = 100;
+  $numerator = round($fraction * $denominator);
+
+  // Simplify the fraction
+  $gcd = gcd($numerator, $denominator);
+  $numerator /= $gcd;
+  $denominator /= $gcd;
+
+  // Combine whole number and fraction
+  if ($whole == 0) {
+      return "$numerator/$denominator"; // Just the fraction if no whole part
+  } else {
+      return "$whole $numerator/$denominator"; // Whole part with fraction
+  }
+}
+
+// Helper function for finding the greatest common divisor
+function gcd($a, $b) {
+  while ($b != 0) {
+      $temp = $b;
+      $b = $a % $b;
+      $a = $temp;
+  }
+  return $a;
+}
+
