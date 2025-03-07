@@ -1,13 +1,14 @@
 "use strict";
 
 /******************** Global Variables **********************/
-const error = document.createElement('p');
-error.id = 'error';
+let error = document.createElement('p');
 
 const createRecipeForm = document.querySelector("#createRecipeForm");
 
 /** Checkboxes */
 const checkboxes = document.querySelector("#checkboxes");
+const timeInputContainer = document.querySelector("#timeInput");
+const totalServingsContainer = document.querySelector("#totalServingsContainer");
 
 /** Ingredient */
 const addIngredientButton = document.querySelector("#addIngredient");
@@ -26,19 +27,24 @@ const stepsList = document.querySelector("#stepsContainer");
 const stepInput = document.querySelector("#stepInput");
 const enteredSteps = document.querySelector("#enteredSteps");
 
+const recipeImageInput = document.getElementById('recipe_image');
 
 /**Submit, Reset, Validation */
 const resetRecipeFormButton = document.querySelector("#clearRecipeFormButton");
 const submitRecipeButton = document.querySelector("#createRecipeButton");
 
 
-const newIngredientSet = document.createElement("div");
+let ingredientIndex = 0;
 
-addIngredientButton.addEventListener('click', function () {
-    
-    let lastQuantity = measurementAmount.value;
-    let lastUnit = measurementUnit.value;
-    let lastName = ingredientName.value;
+function addIngredient() {
+    let lastQuantity = measurementAmount.value.trim();
+    let lastUnit = measurementUnit.value.trim();
+    let lastName = ingredientName.value.trim();
+    if(lastQuantity === "" || lastName === ""){
+        error.textContent = "Please enter a measurement amount and ingredient name.";
+        ingredientDirections.append(error);
+        return;
+    } else {
     // Create a new ingredient set
     const newIngredientSet = document.createElement("div");
     newIngredientSet.classList.add("addedIngredients");
@@ -47,12 +53,12 @@ addIngredientButton.addEventListener('click', function () {
     newIngredientSet.innerHTML = `
         <div id="ingredientInputSet">
             <label for="measurementAmount">Amount:
-                <input type="text" name="ingredient[][ingredient_quantity]" pattern="^\\d+(\\s\\d+/\\d+)?$|^\\d+/\\d+$" placeholder="1/2" maxlength="4" class="measurementAmount" value="${lastQuantity}">
+                <input type="text" name="ingredient[${ingredientIndex}][ingredient_quantity]" pattern="^\\d+(\\s\\d+/\\d+)?$|^\\d+/\\d+$" placeholder="1/2" maxlength="3" class="measurementAmount" value="${lastQuantity}">
             </label>
             <label for="ingredientUnit">Unit:
-                <select name="ingredient[][ingredient_measurement_name]" class="ingredientUnit">
+                <select name="ingredient[${ingredientIndex}][ingredient_measurement_name]" class="ingredientUnit">
                     <option value="n/a" ${lastUnit === "n/a" ? "selected" : ""}></option>
-                    <option value="teaspoons" ${lastUnit === "teaspoons" ? "selected" : ""}>teaspoon(s)</option>
+                    <option value="teaspoon" ${lastUnit === "teaspoon" ? "selected" : ""}>teaspoon(s)</option>
                     <option value="tablespoon" ${lastUnit === "tablespoon" ? "selected" : ""}>tablespoon(s)</option>
                     <option value="fluid ounce" ${lastUnit === "fluid ounce" ? "selected" : ""}>fluid ounce(s)</option>
                     <option value="cup" ${lastUnit === "cup" ? "selected" : ""}>cup(s)</option>                           
@@ -66,7 +72,7 @@ addIngredientButton.addEventListener('click', function () {
                 </select>
             </label>
             <label for="ingredientName">Name:
-                <input type="text" name="ingredient[][ingredient_name]" placeholder="Cookies (crushed)" class="ingredientName" value="${lastName}">
+                <input type="text" name="ingredient[${ingredientIndex}][ingredient_name]" placeholder="Cookies (crushed)" class="ingredientName" value="${lastName}">
             </label>
             <button type="button" class="removeIngredient">- Remove</button>
         </div>
@@ -81,18 +87,28 @@ addIngredientButton.addEventListener('click', function () {
     enteredIngredients.appendChild(newIngredientSet);
     measurementAmount.value = "";
     ingredientName.value = "";
-    measurementAmount.value = "";
-});
+    error.remove();
+    ingredientIndex++;
+    }
+}
+addIngredientButton.addEventListener('click', addIngredient);
 
+let stepIndex = 0;
+addStepButton.addEventListener('click', addStep);
 
-addStepButton.addEventListener('click', function () {
+function addStep(){
     let stepInputValue = stepInput.value;
+    if(stepInputValue = ""){
+        error.textContent = "Please enter a step before adding.";
+        stepDirections.appendChild(error);
+        return;
+    } else { 
     const newStep = document.createElement("div");
     newStep.classList.add("addedSteps");
     // Create and add the fields for the new ingredient
     newStep.innerHTML = `
         <label for="stepInput" class="visuallyHidden">Step:</label>
-                <textarea name="step[]"  id="stepInput" rows="2" cols="25" maxlength="255">${stepInputValue}</textarea>
+                <textarea name="step[${stepIndex}][step_description]"  id="stepInput" rows="2" cols="25" maxlength="255">${stepInputValue}</textarea>
                 <button type="button" class="removeStep">- Remove </button>                     
     `;
 
@@ -104,35 +120,9 @@ addStepButton.addEventListener('click', function () {
     // Append the new ingredient input set to the ingredientDirections container
     enteredSteps.appendChild(newStep);
     stepInput.value = "";
-});
-
-
-
-function limitCheckboxSelection(category) {
-    const checkboxes = document.querySelectorAll(`input[name="${category}[]"]`);
-
-    checkboxes.forEach((checkbox) => {
-        checkbox.addEventListener("change", function () {
-            let checkedBoxes = document.querySelectorAll(`input[name="${category}[]"]:checked`);
-
-            if (checkedBoxes.length > 3) {
-                this.checked = false; // Uncheck the last selected checkbox
-            }
-        });
-    });
+    stepIndex++;
 }
-
-limitCheckboxSelection("meal_types");
-limitCheckboxSelection("styles");
-limitCheckboxSelection("diets");
-
-
-
-
-
-
-const recipeImageInput = document.getElementById('recipe_image');
-const imagePreview = document.getElementById('imagePreview');
+}
 
 // Add event listener for the file input
 recipeImageInput.addEventListener('change', function(event) {
@@ -154,9 +144,6 @@ recipeImageInput.addEventListener('change', function(event) {
 });
 
 
-
-
-
 function limitCheckboxSelection(category) {
     const checkboxes = document.querySelectorAll(`input[name="${category}[]"]`);
 
@@ -175,9 +162,160 @@ limitCheckboxSelection("meal_types");
 limitCheckboxSelection("styles");
 limitCheckboxSelection("diets");
 
-function validateRecipeForm(){
-    if(document.querySelector(".ingredient-input-list")){
-        error.textContent = "Please enter an ingredient to add to your recipe.";
-        return;
-    } 
+function validateRecipeForm() {
+    let isValid = true;
+    let errors = [];
+    // Time validation
+    const prepHours = parseInt(document.getElementById('prep_time_hours').value || 0);
+    const prepMinutes = parseInt(document.getElementById('prep_time_minutes').value || 0);
+    const cookHours = parseInt(document.getElementById('cook_time_hours').value || 0);
+    const cookMinutes = parseInt(document.getElementById('cook_time_minutes').value || 0);
+    
+    if (prepHours === 0 && prepMinutes === 0 && cookHours === 0 && cookMinutes === 0) {
+        errors.push('Please enter a value for the prep time and/or cook time.');
+        isValid = false;
+    }
+    
+    
+    // Ingredients validation
+    const ingredientInputs = document.querySelector('#enteredIngredients');
+    if (!ingredientInputs) {
+        errors.push('At least one ingredient is required');
+        isValid = false;
+    }
+    
+    // Steps validation
+    const stepInputs = document.querySelector('#enteredSteps');
+    if (!stepInputs) {
+        errors.push('At least one step is required');
+        isValid = false;
+    }
+    
+    // YouTube link validation (optional)
+    const youtubeLink = document.getElementById('youtube_link').value.trim();
+    if (youtubeLink !== '') {
+        const youtubeRegex = /^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.be)\/.+$/;
+        if (!youtubeRegex.test(youtubeLink)) {
+            errors.push('Please enter a valid YouTube URL');
+            isValid = false;
+        }
+    }
+    
+    // Image validation (optional)
+    const recipeImage = document.getElementById('recipe_image');
+    if (recipeImage.files.length > 0) {
+        const file = recipeImage.files[0];
+        const fileType = file.type;
+        const validImageTypes = ['image/jpeg', 'image/png', 'image/jpg', 'image/webp'];
+        
+        if (!validImageTypes.includes(fileType)) {
+            errors.push('Please upload a valid image file (JPEG, PNG, JPG, or WEBP)');
+            isValid = false;
+        }
+        
+        
+    }
+    
+    // Display errors if any
+    if (!isValid) {
+        // Create or clear error container
+        let errorContainer = document.getElementById('validationErrors');
+        if (!errorContainer) {
+            errorContainer = document.createElement('div');
+            errorContainer.id = 'validationErrors';
+            document.getElementById('createRecipeForm').prepend(errorContainer);
+        } else {
+            errorContainer.innerHTML = '';
+        }
+        
+        // Add error messages
+        const errorList = document.createElement('ul');
+        errors.forEach(error => {
+            const errorItem = document.createElement('li');
+            errorItem.textContent = error;
+            errorList.appendChild(errorItem);
+        });
+        
+        errorContainer.appendChild(errorList);
+        
+        // Scroll to top to see errors
+        window.scrollTo(0, 0);
+    }
+    
+    return isValid;
 }
+
+    // Image preview
+    const recipeImage = document.getElementById('recipe_image');
+    const imagePreview = document.getElementById('imagePreview');
+    
+    recipeImage.addEventListener('change', function() {
+        if (this.files && this.files[0]) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                imagePreview.src = e.target.result;
+                imagePreview.style.display = 'block';
+            };
+            reader.readAsDataURL(this.files[0]);
+        } else {
+            imagePreview.style.display = 'none';
+        }
+});
+    
+
+    const servingAmt = document.querySelector('#servingAmt');
+    const ingredientQuantityAmt = document.querySelector("#recipeDisplayMeasurementAmount");
+    const halfButton = document.querySelector('#halfButton');
+    const oneTimeButton = document.querySelector('#1time');
+    const twoTimesButton = document.querySelector('#2time');
+    const threeTimesButton = document.querySelector('#3time');
+
+
+    // Function to convert decimal to fraction
+function decimalToFraction(decimal) {
+        const whole = Math.floor(decimal);
+        const fraction = decimal - whole;
+
+        if (fraction === 0) {
+            return whole.toString();
+        }
+
+        const denominator = 100;
+        let numerator = Math.round(fraction * denominator);
+
+        // Simplify fraction (find GCD)
+        const gcdValue = gcd(numerator, denominator);
+        numerator /= gcdValue;
+        denominator /= gcdValue;
+
+        if (whole === 0) {
+            return `${numerator}/${denominator}`;
+        } else {
+            return `${whole} ${numerator}/${denominator}`;
+        }
+    }
+    
+
+    // Helper function to calculate GCD (greatest common divisor)
+    function gcd(a, b) {
+        while (b !== 0) {
+            let temp = b;
+            b = a % b;
+            a = temp;
+        }
+        return a;
+    }
+
+    // Event listeners for the buttons
+    halfButton.addEventListener('click', function() {
+        updateIngredients(0.5);
+    });
+    oneTimeButton.addEventListener('click', function() {
+        updateIngredients(1);
+    });
+    twoTimesButton.addEventListener('click', function() {
+        updateIngredients(2);
+    });
+    threeTimesButton.addEventListener('click', function() {
+        updateIngredients(3);
+    });
