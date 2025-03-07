@@ -1,7 +1,6 @@
-<?php require_once('../private/initialize.php'); ?>
-<?php $pageTitle = "Login | Culinnari"; ?>
-<?php include(SHARED_PATH . '/public_header.php'); 
+<?php
 
+require('../private/initialize.php');
 $errors = [];
 $username = '';
 $password = '';
@@ -33,7 +32,7 @@ if (is_post_request()) {
         if ($session->is_mgmt_logged_in()) {
           redirect_to(url_for('/admin/index.php')); // Admin page
         } else {
-          redirect_to(url_for('/member/profile.php')); // Regular user page
+          redirect_to(url_for('/member/profile.php?id=' . h($user->id)));
         }
       } else {
         // Username not found or password does not match
@@ -44,25 +43,3 @@ if (is_post_request()) {
 }
 
 ?>
-
-<main role="main">
-  <div id="loginSignup">
-    <div id="login">
-      <h2>Welcome back! Please log in to continue.</h2>
-      <p>New user? <a href="<?php echo url_for('signup.php'); ?>">Create your account here!</a></p>
-      <?php echo display_errors($errors); ?>
-
-      <form action="<?php echo url_for('/login.php'); ?>" method="POST">
-        <label for="username">Username:</label>
-        <input type="text" id="username"name="username" value="<?php echo h($username); ?>">
-        
-        <label for="password">Password:</label> 
-        <input type="password" id="password" name="password" >
-        
-        <input type="submit" name="login" value="Log in">
-      </form>
-    </div>
-  </div>
-</main>
-
-<?php include(SHARED_PATH . '/public_footer.php'); ?>
