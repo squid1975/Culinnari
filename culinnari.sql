@@ -58,9 +58,10 @@ CREATE TABLE `rating` (
 
 CREATE TABLE `ingredient` (
   `id`  INT PRIMARY KEY AUTO_INCREMENT,
-  `ingredient_name` VARCHAR(255) NOT NULL,
   `ingredient_quantity` DECIMAL(5,2),
-  `ingredient_measurement_name` ENUM('teaspoon', 'tablespoon','fluid ounce', 'cup', 'pint','quart','gallon','milliliter','liter','ounce','pound'),
+  `ingredient_measurement_name` ENUM('teaspoon', 'tablespoon','fluid ounce', 'cup', 'pint','quart','gallon','milliliter','liter','ounce','pound', 'n/a'),
+  `ingredient_name` VARCHAR(255) NOT NULL,
+  `ingredient_recipe_order` INT, 
   `recipe_id` INT NOT NULL,
   CONSTRAINT ingredient_fk_recipe FOREIGN KEY (recipe_id) REFERENCES recipe(id) ON DELETE CASCADE
 );
@@ -70,8 +71,7 @@ CREATE TABLE `step` (
   `recipe_id` INT,
   `step_number` INT,
   `step_description` TEXT,
-  CONSTRAINT step_fk_recipe FOREIGN KEY (recipe_id) REFERENCES recipe(id) ON DELETE CASCADE,
-  CONSTRAINT unique_step_num_per_recipe UNIQUE(recipe_id, step_number) 
+  CONSTRAINT step_fk_recipe FOREIGN KEY (recipe_id) REFERENCES recipe(id) ON DELETE CASCADE
 );
 
 CREATE TABLE `diet` (
@@ -98,20 +98,6 @@ CREATE TABLE `recipe_meal_type` (
   CONSTRAINT recipe_meal_type_fk_meal_type FOREIGN KEY (meal_type_id) REFERENCES meal_type(id) ON DELETE CASCADE
 );
 
-CREATE TABLE `cookbook` (
-  `id` INT  PRIMARY KEY AUTO_INCREMENT,
-  `cookbook_name` VARCHAR(50),
-  `user_id` INT,
-  CONSTRAINT cookbook_fk_user FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE CASCADE
-);
-
-CREATE TABLE `cookbook_recipe` (
-  `id`  INT PRIMARY KEY AUTO_INCREMENT,
-  `cookbook_id` INT,
-  `recipe_id` INT,
-  CONSTRAINT cookbook_recipe_fk_cookbook FOREIGN KEY (cookbook_id) REFERENCES cookbook(id) ON DELETE CASCADE,
-  CONSTRAINT cookbook_recipe_fk_recipe FOREIGN KEY (recipe_id) REFERENCES recipe(id) ON DELETE CASCADE
-);
 
 CREATE TABLE `recipe_diet` (
   `id`  INT PRIMARY KEY AUTO_INCREMENT,
@@ -127,6 +113,21 @@ CREATE TABLE `recipe_style` (
   `style_id` INT,
   CONSTRAINT recipe_style_fk_recipe FOREIGN KEY (recipe_id) REFERENCES recipe(id) ON DELETE CASCADE,
   CONSTRAINT recipe_style_fk_style FOREIGN KEY (style_id) REFERENCES style(id) ON DELETE CASCADE
+);
+
+CREATE TABLE `cookbook` (
+  `id` INT  PRIMARY KEY AUTO_INCREMENT,
+  `cookbook_name` VARCHAR(50),
+  `user_id` INT,
+  CONSTRAINT cookbook_fk_user FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE CASCADE
+);
+
+CREATE TABLE `cookbook_recipe` (
+  `id`  INT PRIMARY KEY AUTO_INCREMENT,
+  `cookbook_id` INT,
+  `recipe_id` INT,
+  CONSTRAINT cookbook_recipe_fk_cookbook FOREIGN KEY (cookbook_id) REFERENCES cookbook(id) ON DELETE CASCADE,
+  CONSTRAINT cookbook_recipe_fk_recipe FOREIGN KEY (recipe_id) REFERENCES recipe(id) ON DELETE CASCADE
 );
 
 INSERT INTO diet(diet_name, diet_icon_url)
