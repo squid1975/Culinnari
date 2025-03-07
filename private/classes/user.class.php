@@ -2,8 +2,8 @@
 
 class User extends DatabaseObject
 {
-    static protected $table_name = 'user';
-    static protected $db_columns = [ 
+    protected static $table_name = 'user';
+    protected static $db_columns = [ 
         'username', 'user_email_address', 'user_hash_password',
         'user_first_name', 'user_last_name', 'user_create_account_date',
         'user_role', 'user_is_active'
@@ -121,7 +121,7 @@ class User extends DatabaseObject
         return $this->errors;
     }
 
-    static public function find_by_username($username) {
+    public static function find_by_username($username) {
         $sql = "SELECT * FROM " . static::$table_name . " ";
         $sql .= "WHERE username='" . self::$database->escape_string($username) . "'";
         $obj_array = static::find_by_sql($sql);
@@ -131,11 +131,6 @@ class User extends DatabaseObject
             return false;
         }   
     }
-
-    public static function getUserRecipes($user_id){
-        $sql = "SELECT * FROM recipe WHERE user_id ='" . self::$database->escape_string($user_id) . "'";
-        return self::find_by_sql($sql);
-      }
 
     
 

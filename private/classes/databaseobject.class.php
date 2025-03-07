@@ -2,16 +2,16 @@
 
 class DatabaseObject {
 
-  static protected $database;
-  static protected $table_name = "";
-  static protected $columns = [];
+  protected static $database;
+  protected static $table_name = "";
+  protected static $columns = [];
   public $errors = [];
 
-  static public function set_database($database) {
+  public static function set_database($database) {
     self::$database = $database;
   }
 
-  static public function find_by_sql($sql) {
+  public static function find_by_sql($sql) {
     $result = self::$database->query($sql);
     if(!$result) {
       exit("Database query failed.");
@@ -28,12 +28,12 @@ class DatabaseObject {
     return $object_array;
   }
 
-  static public function find_all() {
+  public static function find_all() {
     $sql = "SELECT * FROM " . static::$table_name;
     return static::find_by_sql($sql);
   }
 
-  static public function find_by_id($id) {
+  public static function find_by_id($id) {
     if ($id === null) {
       return null;
     }
@@ -42,7 +42,7 @@ class DatabaseObject {
     return !empty($result_array) ? array_shift($result_array) : false;
   }
 
-  static protected function instantiate($record) {
+  protected static function instantiate($record) {
     $object = new static;
     // Could manually assign values to properties
     // but automatically assignment is easier and re-usable
@@ -125,18 +125,18 @@ class DatabaseObject {
   }
 
   protected function sanitized_attributes() {
-    $sanitized = [];
-    foreach($this->attributes() as $key => $value) {
-      // If the value is an integer, leave it as is
-      if (is_int($value)) {
-        $sanitized[$key] = $value;
-      } else {
-        // If it's not an integer, escape it as a string
-        $sanitized[$key] = is_null($value) ? null : self::$database->escape_string($value);
-      }
+  $sanitized = [];
+  foreach($this->attributes() as $key => $value) {
+    // If the value is an integer, leave it as is
+    if (is_int($value)) {
+      $sanitized[$key] = $value;
+    } else {
+      // If it's not an integer, escape it as a string
+      $sanitized[$key] = is_null($value) ? null : self::$database->escape_string($value);
     }
-    return $sanitized;
   }
+  return $sanitized;
+}
 
   public function delete() {
     $sql = "DELETE FROM " . static::$table_name . " ";
@@ -145,7 +145,7 @@ class DatabaseObject {
     $result = self::$database->query($sql);
     return $result;
   }
-  static public function begin_transaction() {
+  public static function begin_transaction() {
     return self::$database->begin_transaction();
 }
 
@@ -158,6 +158,7 @@ public function rollback() {
   return self::$database->rollback();
 }
 
+
+
 }
 
-?>

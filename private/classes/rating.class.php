@@ -2,8 +2,8 @@
 
 class Rating extends DatabaseObject {
     
-    static protected $table_name = 'rating';
-    static protected $db_columns = ['user_id', 'recipe_id', 'rating_value', 'rating_date'];
+    protected static $table_name = 'rating';
+    protected static $db_columns = ['user_id', 'recipe_id', 'rating_value', 'rating_date'];
 
     public $id;
     public $user_id;
@@ -16,34 +16,26 @@ class Rating extends DatabaseObject {
         $this->rating = $args['rating'] ?? '';
         $this->recipe_id = $args['recipe_id'] ?? '';
         $this->user_id = $args['user_id'] ?? '';
-        $this->rating_date = $args['rating_date'] ?? CURRENT_TIMESTAMP;
+        $this->rating_value = $args['rating_value'] ?? '';
+        $this->rating_date = $args['rating_date'] ?? date('Y-m-d h:m:s');
     }
 
     protected function validate()
     {
         $this->errors = [];
 
-        if (is_blank($this->rating)) {
+        if (empty($this->rating_value)) {
             $this->errors[] = "Rating cannot be blank.";
         }
-
-        if (is_blank($this->recipe_id)) {
-            $this->errors[] = "Recipe ID cannot be blank.";
-        }
-
-        if (is_blank($this->user_id)) {
-            $this->errors[] = "User ID cannot be blank.";
-        }
-
         return $this->errors;
     }
 
     public function getRecipe()
     {
-        if (!$this->recipe) {
-            $this->recipe = Recipe::find_by_id($this->recipe_id);
+        if (!$this->recipe_id) {
+            $this->recipe_id = Recipe::find_by_id($this->recipe_id);
         }
-        return $this->recipe;
+        return $this->recipe_id;
     }
 
     public function getRatingCount()
@@ -59,7 +51,10 @@ class Rating extends DatabaseObject {
     public function getRatingCountString()
     {
         $count = $this->getRatingCount();
-        if ($count == 1) {
+        if(!$count){
+            return "Unrated";
+        }
+        elseif ($count == 1) {
             return "1 rating";
         } else {
             return "{$count} ratings";
