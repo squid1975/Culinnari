@@ -188,13 +188,14 @@ input#mainSearch {
     font-size: 16px;
 }
 
-#createRecipeForm input + label {
-    margin-bottom: 10px;
-    font-size: 17px;
-}
+
 
 label.recipePartName {
     font-size: 22px;
+    margin-top: 20px;
+    margin-bottom: 5px;
+    font-family: 'Lustria', serif;
+    width: fit-content;
 }
 
 textarea#recipeDescription {
@@ -203,15 +204,26 @@ textarea#recipeDescription {
 
 input#recipeName {
     width: 100%;
-    padding: 10px 0;
+    padding: 10px;
 }
 
 fieldset {
     margin: 10px 0;
+    border: 1px solid #c7c7c7;
     
 }
 legend {
     font-size: 22px;
+    font-family: 'Lustria', serif;
+}
+
+.radio-group {
+    display: flex;
+    align-items: baseline;
+}
+
+.radio-group label {
+    margin-right: 10px;
 }
 
 #checkboxes {
@@ -224,28 +236,27 @@ legend {
 
 #timeInput {
     display: flex;
+    flex-wrap: wrap;
+    width: 100%;
 }
 
-#timeInput div {
-    width: 100%;
+#timeInput fieldset {
+    width: 50%;
 }
 
 .prep-time-container {
     display: flex;
-    align-items: baseline;
+    align-items: center;
 }
 
-.prep-time-container span {
-    margin: 0 5px;
+#totalServingsContainer {
+    display: flex;
+    align-items: center;
 }
 
-.prep-time-container label {
-    margin-right: 3px;
-}
-
-#prep_time_hours, 
-#cook_time_hours {
-    width: 60px;
+#totalServingsContainer label {
+    margin-right: 5px;
+    margin-top: 0;
 }
 
 #ingredientInputSet {
@@ -257,6 +268,20 @@ legend {
 #stepInput {
     width: 75%;
 }
+#stepInputAndButton {
+    display: flex;
+}
+
+button#addStep {
+    background: #9ddf94;
+    border: none;
+    padding: 10px;
+    box-shadow: 0 0 5px #3C2F2F;
+}
+
+button#addStep:hover {
+    background: #9ac594;
+}
 
 .addedIngredients {
     border: 1px solid #3C2F2F;
@@ -267,7 +292,8 @@ legend {
 
 button#addIngredient {
     border: none;
-    background: #98e28f;
+    background: #9ddf94;
+    padding: 10px;
 }
 
 button.removeIngredient {
@@ -284,9 +310,8 @@ button.removeIngredient {
     width: 50px;
 }
 
-.radio-group {
-    display: flex;
-    align-items: baseline;
+#youtube_link {
+    width: 100%;
 }
 
 #createRecipeButton {

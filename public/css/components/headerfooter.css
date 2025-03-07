@@ -4,7 +4,7 @@ header {
     display: flex;
     padding: 10px;
     justify-content: space-evenly;
-    height: 100px;
+    
 }
 
 h1 {
@@ -31,6 +31,7 @@ nav ul li a {
     color: #333;
     font: 20px 'Lustria', serif;
     padding: 10px;
+    transition: 0.2s ease-in;
 }
 
 nav ul li a:hover {
@@ -39,32 +40,53 @@ nav ul li a:hover {
 
 
 /** Login / Member **/
+#headerLoginSignup {
+    position: relative;
+}
 
+#headerLoginSignup img {
+    margin-top: 10px;
+}
 
+.toggleCheckbox {
+    display: none;
+}
 
-#headerLoginSignup ul li{
-    padding: 10px 20px;
-    margin: 0 5px;
-    border: 1px solid #bdbdbd;
+/* Style labels as buttons */
+.toggleLabel  {
     display: inline-block;
-    border-radius: 10px;
+    background: #5e6c5b; /* Your theme color */
+    color: white;
+    padding: 8px 15px;
+    margin: 5px;
+    cursor: pointer;
+    border-radius: 5px;
 }
 
-#headerLoginSignup ul li:first-of-type{
-    background: #fffaf0;
+/* Dropdown forms - Hidden by default */
+#loginForm, #signupForm {
+    display: none;
+    position: absolute;
+    top: 50px;
+    right: 60px;
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 15px;
+    width: 250px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 99;
+}
+#loginToggle:checked ~ #loginForm {
+    display: block;
 }
 
-#headerLoginSignup ul li:nth-of-type(2){
-    background: #556B2F;
+/* Show signup form when signup checkbox is checked */
+#signupToggle:checked ~ #signupForm {
+    display: block;
 }
 
-#headerLoginSignup ul a {
-    font-size: 17px;
-}
 
-#headerLoginSignup ul li:nth-of-type(2) a {
-    color: #fff;
-}
 
 #memberNav {
     display: flex;
@@ -126,6 +148,10 @@ footer div {
 footer li  {
     font-size: 18px;
     padding: 5px;
+}
+
+footer a {
+    color: rgb(214, 214, 214);
 }
 
 

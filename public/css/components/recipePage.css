@@ -29,6 +29,24 @@
     padding: 10px;
 }
 
+
+div#recipeDisplayDifficulty p {
+    padding: 10px;
+    text-transform:uppercase;
+}
+
+div#recipeDisplayDifficulty p#recipeDisplayBeginner {
+    background: #82db58;
+}
+
+div#recipeDisplayDifficulty p#recipeDisplayIntermediate {
+    background: #fcbb31;
+}
+
+div#recipeDisplayDifficulty p#recipeDisplayAdvanced {
+    background: #eb3434;
+}
+
 #recipeDisplayprepCook {
     display: flex;
 }
@@ -40,6 +58,7 @@
 #recipeDisplayOptions a {
     padding: 10px;
     margin: 10px;
+    
 }
 
 #recipeDisplayprepCook p {
@@ -51,23 +70,31 @@
     border-right: 1px solid #333;
 }
 
+
+#recipeDisplayTotalServings {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+}
+
+
 #recipeDisplayIngredientsSteps {
     margin: 20px 10px;
     display: flex;
     min-height: 400px;
 }
 
-#recipeDisplayTotalServings {
-    display: flex;
-    width: 100%;
-    align-items: center;
+
+#recipeDisplayIngredientsSteps div {
+    width: 50%;
 }
+
+
 
 #recipeDisplayChangeServingAmt {
     background: rgb(209, 209, 209, 0.2);
     box-shadow: 0 2px 2px #333;
     margin-left: 10px;
-    width: 160px;
     padding: 5px;
     border-radius: 10px;
 }
@@ -75,16 +102,18 @@
 #recipeDisplayChangeServingAmt button {
     text-align: center;
     padding: 5px;
+    border-radius: 10px;
 }
 
 li.recipeIngredientListing {
     list-style-type: circle;
+    margin: 15px 0;
 }
 
 
 #recipeDisplaySteps ol li {
     list-style-type: decimal;
-    margin: 15px 0;
+    margin: 20px 0;
 }
 
 
@@ -116,6 +145,7 @@ li.recipeIngredientListing {
     header,
     #recipeNameImageDesc img,
     #recipeDisplayRatingStars,
+    #recipeDisplayDifficulty,
     #recipeDisplayOptions,
     #recipeDisplayChangeServingAmt,
     #recipeDisplayYouTubeVideo,

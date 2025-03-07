@@ -11,12 +11,11 @@
 
 html {
     font-family: "Lato", serif;
-    min-width: 400px;
 }
 
 body {
     margin: 0;
-    min-width: 400px;
+    min-width: 350px;
     padding: 0;
 }
 
@@ -43,12 +42,20 @@ main {
     background-color: #c3d3c3;
 }
 
+
+
 section {
     margin: 0;
     padding: 0;
 }
 
 table {
+    border: 1px solid black;
+}
+
+
+td {
+    padding: 10px;
     border: 1px solid black;
 }
 
@@ -81,19 +88,25 @@ div.errors {
     border: 1px solid #eb0f0f;
     box-shadow: 0 0 5px #eb0f0f;
 }
+
+span#error {
+    border: 1px solid red;
+    padding: 5px;
+    width: max-content;
+    font-style: italic;
+}
 /******************** HOMEPAGE MAIN ELEMENTS *********************/
-.hero {
-    background-color: rgb(79, 139, 129);
+#homeHero {
+    max-width: 1400px;
+    border: 1px solid red;
+    background: url('../images/culinnari_hero.webp');
+    background-position: 10%;
+    background-size: cover;
     height: 200px;
-    margin: 0;
-    padding: 0;
 }
 
 #heroText {
-    padding-top: 30px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    text-align: center;
 }
 
 #heroText h2 {
@@ -125,29 +138,13 @@ div.errors {
     padding-left: 5px;
 }
 
-#suggestionsContent {
-    display: flex;
-    justify-content: space-evenly;
-    margin: 30px 10px 5px 20px;
+
+.suggestionsContent {
+        display: flex;
+        flex-wrap: wrap;
+    
 }
 
-#homeMealTypeSuggestions {
-    flex: 1;
-}
-
-#homeMealTypeSuggestions a {
-    background-color: #E0DDAA;
-    color: #333;
-    display: block;
-    font-size: 20px;
-    margin: 10px;
-    padding: 20px;
-    text-align: center;
-}
-
-#homeMealTypeSuggestions a:hover {
-    background-color: #F0E6A6;
-}
 
 /**************************************** SEARCH (RECIPES) PAGE ******************************/
 #searchHero {
@@ -194,6 +191,7 @@ div.errors {
     margin: 10px;
 }
 
+
 .createLink:hover {
     text-decoration: underline;
 }
@@ -206,9 +204,33 @@ div.errors {
     text-align: center;
 }
 
+.mgmtTableHeading {
+    display: flex;
+    align-items: center;
+}
+
 
 #categoriesContainer {
     display: flex;
+    flex-wrap: wrap;
 }
 
+#categoriesContainer div {
+    margin: 5px 10px;
+}
+
+#categoriesContainer div h4 {
+    font-size: 18px;
+    margin: 10px 5px;
+}
+
+
+.profileCards {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.profileRecipeCard {
+    margin-right: 15px;
+}
 /********************************************   media queries ****************************/
