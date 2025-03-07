@@ -32,18 +32,22 @@
             </div>
             <div class="profileCards">
                 <?php 
-                $userRecipes = User::getUserRecipes($session->user_id);
-
+                $userRecipes = Recipe::getUserRecipes($session->user_id);
+                
                 if (empty($userRecipes)) { ?>
                     <p>It's pretty empty here..Let's write some recipes!</p>
-                <?php } else { ?>
-                    <?php foreach ($userRecipes as $userRecipe): ?>
+                    <?php } else { ?>
+                        <?php foreach ($userRecipes as $recipe): ?>
+                            <div class="profileRecipeCard">
                         <?php include(SHARED_PATH . '/recipe_card.php'); ?>
-                        <a href="<?php echo url_for('/member/edit_recipe.php?id=' . h(u($userRecipe->id))); ?>">Edit</a>
-                        <a href="<?php echo url_for('/member/delete_recipe.php?id=' . h(u($userRecipe->id))); ?>">Delete</a>
+                        <div id="userProfileRecipeActions">
+                            <a href="<?php echo url_for('/member/edit_recipe.php?id=' . $recipe->recipe_id); ?>">Edit</a>
+                            <a href="<?php echo url_for('/member/delete_recipe.php?id=' . $recipe->recipe_id); ?>">Delete</a>
+                        </div>
+                        </div>
                     <?php endforeach; ?>
                 <?php } ?>
-
+                
             </div>
         
 
@@ -51,7 +55,7 @@
             <div class="profileSectionHead">
                 <h3>My Cookbook</h3>
                 <a href="edit_cookbook.php" class="createLink" >Edit cookbook</a>
-                <div class="profileCards"></div>
+                
             </div>
         
     </div>
