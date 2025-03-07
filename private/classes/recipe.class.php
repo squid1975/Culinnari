@@ -3,8 +3,8 @@
 class Recipe extends DatabaseObject
 {
 
-  static protected $table_name = 'recipe';
-  static protected $db_columns = [ 
+  protected static $table_name = 'recipe';
+  protected static $db_columns =  ['id',
                                   'recipe_name', 
                                   'recipe_description', 
                                   'recipe_total_servings', 
@@ -36,105 +36,10 @@ class Recipe extends DatabaseObject
         $this->user_id = $args['user_id'] ?? '';
     }
   
-  public static function saveRecipe($recipeData, $ingredients, $steps, $image, $video, $diets, $styles, $meal_types) {
-    
-    try {
-      $recipeData->save();
-      $recipe_id = $recipeData->id;
-        self::$database->begin_transaction();
-
-        // Save ingredients
-        foreach ($ingredients as $ingredient) {
-            $sql = "INSERT INTO ingredient (ingredient_name, ingredient_quantity, ingredient_measurement_name, recipe_id) VALUES (";
-            $sql .= "'" . self::$database->escape_string($ingredient['ingredient_name']) . "', ";
-            $sql .= "'" . self::$database->escape_string(fractionToDecimal($ingredient['ingredient_quantity'])) . "', ";
-            $sql .= "'" . self::$database->escape_string($ingredient['ingredient_measurement_name']) . "')";
-            $sql .= "'" . self::$database->escape_string($recipe_id) . "', ";
-            if (!self::$database->query($sql)) {
-                throw new Exception("Failed to save ingredient: " . $ingredient['name']);
-            }
-        }
-
-        // Save steps
-        foreach ($steps as $step_number => $step) {
-          // Step number is already an integer; we just add 1 to make sure it's 1-based
-          $sql = "INSERT INTO step (recipe_id, step_number, step_description) VALUES (";
-          $sql .= "'" . self::$database->escape_string($recipe_id) . "', ";  // Recipe ID for the step
-          $sql .= "'" . self::$database->escape_string($step_number + 1) . "', ";  // 1-based step number
-          $sql .= "'" . self::$database->escape_string($step) . "')";  // Step description
-      
-          if (!self::$database->query($sql)) {
-              throw new Exception("Failed to save step: " . $step);
-          }
-      }
-
-        // Save image
-        if ($image) {
-          $sql = "INSERT INTO recipe_image (recipe_image, recipe_id) VALUES ('" . self::$database->escape_string($image) . "', '" . self::$database->escape_string($recipe_id) . "')";
-          if (!self::$database->query($sql)) {
-              throw new Exception("Failed to save recipe image.");
-          }
-      }
-
-        // Save video
-
-        if (!empty($video)) {
-          $sql = "INSERT INTO recipe_video (recipe_video_url, recipe_id) VALUES ('" . self::$database->escape_string($video) . "', '" . self::$database->escape_string($recipe_id) . "')";
-          if (!self::$database->query($sql)) {
-              throw new Exception("Failed to save video URL.");
-          }
-      }
-
-        // Save diets (many-to-many relationship)
-        foreach ($diets as $diet_id) {
-            $sql = "INSERT INTO recipe_diet_type (recipe_id, diet_id) VALUES (";
-            $sql .= "'" . self::$database->escape_string($recipe_id) . "', ";
-            $sql .= "'" . self::$database->escape_string($diet_id) . "')";
-            if (!self::$database->query($sql)) {
-                throw new Exception("Failed to link diet ID: " . $diet_id);
-            }
-        }
-
-        // Save styles (many-to-many relationship)
-        foreach ($styles as $style_id) {
-            $sql = "INSERT INTO recipe_style (recipe_id, style_id) VALUES (";
-            $sql .= "'" . self::$database->escape_string($recipe_id) . "', ";
-            $sql .= "'" . self::$database->escape_string($style_id) . "')";
-            if (!self::$database->query($sql)) {
-                throw new Exception("Failed to link style ID: " . $style_id);
-            }
-        }
-
-        // Save meal types (many-to-many relationship)
-        foreach ($meal_types as $meal_type_id) {
-            $sql = "INSERT INTO recipe_meal_type (recipe_id, meal_type_id) VALUES (";
-            $sql .= "'" . self::$database->escape_string($recipe_id) . "', ";
-            $sql .= "'" . self::$database->escape_string($meal_type_id) . "')";
-            if (!self::$database->query($sql)) {
-                throw new Exception("Failed to link meal type ID: " . $meal_type_id);
-            }
-        }
-
-        // Commit transaction if everything is successful
-        self::$database->commit();
-        return $recipe_id;
-    } catch (Exception $e) {
-        // Rollback on error
-        self::$database->rollback();
-        error_log($e->getMessage());
-        return false;
-    }
-}
-
-
-
-public static function getRecipesByUserId($user_id) {
-  $sql = "SELECT * FROM recipe WHERE user_id = ?";
-  $result = self::find_by_sql($sql, [$user_id]);
-  return $result;
-}
-
-
+    public static function getUserRecipes($user_id) {
+      $sql = "SELECT * FROM recipe WHERE user_id = '" . self::$database->escape_string($user_id) . "'";
+      return Recipe::find_by_sql($sql); // 
+  }
 
   protected function validate()
   {
@@ -155,99 +60,108 @@ public static function getRecipesByUserId($user_id) {
     return $this->errors;
   }
 
-  /**
-   * Gets the diet types associated with the recipe
-   * 
-   * @return array An array of diet types
-   */
-  public function getDiets() {
-    $sql = "SELECT d.diet_name, d.diet_icon_url
-            FROM recipe_diet_type rd
-            JOIN diet d ON  rd.diet_id = d.diet_id
-            WHERE rd.recipe_id ='" . self::$database->escape_string($this->id) . "'";
-    
-    return self::find_by_sql($sql);
+  public static function getIngredients($recipe_id){
+    return Ingredient::find_by_id($recipe_id);
   }
 
-  /**
-   * Gets the meal types associated with the recipe
-   * 
-   * @return array An array of meal types 
-   */
-  public function getMealTypes() {
-    $sql = "SELECT mt.meal_type_name, mt.meal_type_icon_url
-            FROM recipe_meal_type rmt
-            JOIN meal_type mt ON  rmt.meal_type_id = mt.meal_type_id
-            WHERE rmt.recipe_id ='" . self::$database->escape_string($this->id) . "'";
-    
-    return self::find_by_sql($sql);
+  public static function getSteps($recipe_id){
+    return Step::find_by_id($recipe_id);
   }
 
-  /**
-   * Gets the style associated with the recipe
-   * 
-   * @return array An array of styles 
-   */
-  public function getRecipeStyles() {
-    $sql = "SELECT s.style_name, s.style_icon_url
-            FROM recipe_style rs
-            JOIN style s ON  rs.style_id = s.style_id
-            WHERE rs.recipe_id ='" . self::$database->escape_string($this->id) . "'";
-    
-    return self::find_by_sql($sql);
+  public static function getDiets($recipe_id){
+    return RecipeDiet::find_by_id($recipe_id);
   }
 
-  /**
-   * Gets the ingredients associated with the recipe
-   * 
-   * @return array An array of ingredients 
-   */
-  public function getRecipeIngredients() {
-    $sql = "SELECT i.ingredient_name, i.ingredient_measurement_amount, i.ingredient_measurement_unit
-            FROM recipe_ingredient ri
-            JOIN ingredient i ON  ri.ingredient_id = i.ingredient_id
-            WHERE ri.recipe_id ='" . self::$database->escape_string($this->id) . "'";
-    
-    return self::find_by_sql($sql);
+  public static function getImage($recipe_id){
+    return RecipeImage::find_by_id($recipe_id);
   }
 
-  /**
-   * Gets the steps associated with the recipe
-   * 
-   * @return array An array of steps 
-   */
-  public function getRecipeSteps() {
-    $sql = "SELECT step_description
-            FROM recipe_step
-            WHERE recipe_id ='" . self::$database->escape_string($this->id) . "'";
-    
-    return self::find_by_sql($sql);
-  }   
-
-  /**
-   * Gets the recipe image associated with the recipe
-   * 
-   * @return array An array of recipe images
-   */
-  public function getRecipeImage() {
-    $sql = "SELECT recipe_image_url
-            FROM recipe_image
-            WHERE recipe_id ='" . self::$database->escape_string($this->id) . "'";
-    
-    return self::find_by_sql($sql);
+  public static function getMealTypes($recipe_id){
+    return RecipeMealType::find_by_id($recipe_id);
   }
 
-  /**
-   * Gets the recipe video URL associated with the recipe
-   * 
-   * @return array An array of recipe video URLs
-   */
-  public function getRecipeVideo() {
-    $sql = "SELECT recipe_video_url
-            FROM recipe_video
-            WHERE recipe_id ='" . self::$database->escape_string($this->id) . "'";
-    
-    return self::find_by_sql($sql);
+  public static function getStyles($recipe_id){
+    return RecipeStyle::find_by_id($recipe_id);
   }
 
+  public static function getVideo($recipe_id){
+    return RecipeVideo::find_by_id($recipe_id);
+  }
+
+
+
+public static function deleteRecipe($id) {
+  global $database;
+  
+  try {
+      $database->begin_transaction();
+
+      // Delete from junction tables
+      $sql = "DELETE FROM recipe_meal_types WHERE recipe_id = " . $database->escape_string($id);
+      $database->query($sql);
+
+      $sql = "DELETE FROM recipe_styles WHERE recipe_id = " . $database->escape_string($id);
+      $database->query($sql);
+
+      $sql = "DELETE FROM recipe_diets WHERE recipe_id = " . $database->escape_string($id);
+      $database->query($sql);
+
+      // Delete ingredients
+      $sql = "DELETE FROM ingredients WHERE recipe_id = " . $database->escape_string($id);
+      $database->query($sql);
+
+      // Delete steps
+      $sql = "DELETE FROM steps WHERE recipe_id = " . $database->escape_string($id);
+      $database->query($sql);
+
+      // Delete recipe image record
+      $sql = "SELECT recipe_image FROM recipe_images WHERE recipe_id = " . $database->escape_string($id);
+      $result = $database->query($sql);
+      if ($row = $result->fetch_assoc()) {
+          $imagePath = __DIR__ . '/../' . $row['recipe_image']; // Adjust path if necessary
+          if (file_exists($imagePath)) {
+              unlink($imagePath); // Delete image file
+          }
+      }
+      $sql = "DELETE FROM recipe_images WHERE recipe_id = " . $database->escape_string($id);
+      $database->query($sql);
+
+      // Delete video links
+      $sql = "DELETE FROM recipe_videos WHERE recipe_id = " . $database->escape_string($id);
+      $database->query($sql);
+
+      // Finally, delete the recipe itself
+      $sql = "DELETE FROM recipes WHERE id = " . $database->escape_string($id);
+      $result = $database->query($sql);
+
+      if (!$result) {
+          throw new Exception("Unable to delete recipe.");
+      }
+
+      $database->commit();
+      return true;
+  } catch (Exception $e) {
+      $database->rollback();
+      return false;
+  }
 }
+
+
+
+public static function find_newest_recipes() {
+  // Perform the query to fetch the newest recipes, ordered by post date descending
+  return Recipe::find_by_sql("SELECT * FROM recipe ORDER BY recipe_post_date DESC");
+}
+
+public static function find_beginner_recipes() {
+  // Perform the query to fetch recipes with 'beginner' difficulty without ordering
+  return Recipe::find_by_sql("SELECT * FROM recipe WHERE recipe_difficulty = 'beginner'");
+}
+
+public static function find_quick_recipes() {
+  // Perform the query to fetch recipes where the sum of prep time and cook time is less than 1800 seconds (30 minutes)
+  return Recipe::find_by_sql("SELECT * FROM recipe WHERE (recipe_prep_time_seconds + recipe_cook_time_seconds) < 1800");
+}
+
+
+} 

@@ -1,16 +1,16 @@
 <?php 
 
-class Diet extends DatabaseObject {
-    static protected $table_name = 'diet';
-    static protected $db_columns = ['diet_name', 'diet_icon_url'];
+class Cookbook extends DatabaseObject {
+    protected static $table_name = 'cookbook';
+    protected static $db_columns = ['id','cookbook_name', 'user_id'];
     
     public $id;
-    public $diet_name;
-    public $diet_icon_url;
+    public $cookbook_name;
+    public $user_id;
     
     public function __construct($args=[]) {
-        $this->diet_name = $args['diet_name'] ?? '';
-        $this->diet_icon_url = $args['diet_icon_url'] ?? '';
+        $this->cookbook_name = $args['cookbook_name'] ?? '';
+        $this->user_id = $args['user_id'] ?? '';
     }
     
    
