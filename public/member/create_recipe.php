@@ -1,47 +1,38 @@
 <?php require_once('../../private/initialize.php'); 
 $pageTitle = "Create Recipe | Culinnari"; 
 include(SHARED_PATH . '/public_header.php'); ?>
+
 <script src="<?php echo url_for('js/script.js'); ?>" defer></script>
+
 <?php
 require_login();
 $mealTypes = MealType::find_all();
 $styles = Style::find_all();
 $diets = Diet::find_all(); 
 $errors = [];
+$current_user_id = $session->user_id;
 
 if (is_post_request()) {
-    $rawIngredients = $_POST['ingredient'];
-    $ingredients = [];
-
-    for ($i = 0; $i < count(value: $rawIngredients); $i += 3) {
-        $ingredients[] = [
-            'ingredient_quantity' => $rawIngredients[$i]['ingredient_quantity'],
-            'ingredient_measurement_name' => $rawIngredients[$i + 1]['ingredient_measurement_name'],
-            'ingredient_name' => $rawIngredients[$i + 2]['ingredient_name']
-    ];
-}
-    $steps = $_POST['step']; 
-    var_dump($ingredients);
-    var_dump($steps);
-
+    $steps = $_POST['step'] ?? [];
+    $ingredients = $_POST['ingredient'] ?? [];
+    $selectedMealTypes = $_POST['meal_types'] ?? [];
+    $selectedStyles = $_POST['styles'] ?? [];
+    $selectedDiets = $_POST['diets']?? [];
     // Handle time conversion
     $prep_hours = (int)($_POST['prep_hours']) ?? 0;
     $prep_minutes = (int)($_POST['prep_minutes'])?? 0;
-    var_dump($prep_hours);
-    var_dump($prep_minutes);
-    $prep_time_seconds = (int)($prep_hours * 3600) + ($prep_minutes * 60);
-    var_dump($prep_time_seconds);
+    $recipe_prep_time_seconds = (int) $prep_hours * 3600 + $prep_minutes * 60;
 
-    if ($prep_time_seconds === 0) {
-        $errors[] = "Error: Prep time cannot be zero.";
-    }
 
     $cook_hours = isset($_POST['cook_hours']) ? (int)$_POST['cook_hours'] : 0;
     $cook_minutes = isset($_POST['cook_minutes']) ? (int)$_POST['cook_minutes'] : 0;
-    $cook_time_seconds = timetoSeconds($cook_hours, $cook_minutes);
+    $recipe_cook_time_seconds = timetoSeconds($cook_hours, $cook_minutes);
 
-    if ($cook_time_seconds === 0) {
-        $errors[] = "Error: Cook time cannot be zero.";
+    if ($recipe_cook_time_seconds === 0 && $recipe_prep_time_seconds === 0) {
+        $errors[] = "Please enter a value for the prep and/or cook time.";
+    } else {
+        $_POST['recipe_prep_time_seconds'] = $recipe_prep_time_seconds;
+        $_POST['recipe_cook_time_seconds'] = $recipe_cook_time_seconds;
     }
 
     if (isset($_FILES['recipe_image']) && $_FILES['recipe_image']['error'] === UPLOAD_ERR_OK) {
@@ -49,12 +40,9 @@ if (is_post_request()) {
         $fileTmpPath = $_FILES['recipe_image']['tmp_name'];
         $fileName = $_FILES['recipe_image']['name'];
         $fileType = $_FILES['recipe_image']['type'];
-        $allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+        $allowedTypes = ['image/jpg','image/jpeg', 'image/png', 'image/webp'];
     
         if (in_array($fileType, $allowedTypes)) {
-            // Generate a unique filename
-            $newFileName = uniqid('recipe_', true) . '.' . pathinfo($fileName, PATHINFO_EXTENSION);
-    
             // Define the upload directory
             $uploadDir = __DIR__ . '/../images/uploads/recipe_image/';
     
@@ -63,43 +51,156 @@ if (is_post_request()) {
                 mkdir($uploadDir, 0777, true);
             }
     
+            // Generate a unique file name to avoid conflicts
+            $newFileName = uniqid() . '_' . basename($fileName);
+    
             // Full destination path
             $destPath = $uploadDir . $newFileName;
     
-            // Move the uploaded file
+            // Move the uploaded file to the destination
             if (move_uploaded_file($fileTmpPath, $destPath)) {
+                // If successful, set the image URL
                 $imageURL = '/images/uploads/recipe_image/' . $newFileName;
             } else {
+                // If there is an error moving the file
                 $errors[] = "Error moving the uploaded file.";
             }
         } else {
+            // If the file type is not allowed
             $errors[] = "Invalid file type. Only JPEG, PNG, GIF, and WEBP are allowed.";
         }
     } else {
-        // Use default image if no file was uploaded
+        // Use default image if no file was uploaded or there was an error
         $imageURL = '/images/default_recipe_image.webp';
     }
     
 
     if (empty($errors)) {
-        $selectedMealTypes = $_POST['meal_types'] ?? [];
-        $selectedStyles = $_POST['styles'] ?? [];
-        $selectedDiets = $_POST['diets'] ?? [];
+        
         
         $video = $_POST['recipe_video_url'] ?? '';
-        $image = $imageURL;
-        $args = $_POST['recipe'];
-        $recipe = new Recipe($args);
-        $result = $recipe->save();
-    
-        if ($result) {
-            redirect_to(url_for('member/profile.php?id=' . $_SESSION['user_id']));
-            exit();
-        } else {
-            $errors[] = "Unable to save recipe.";
-        }
+        $_POST['recipe_image'] = $imageURL;
+            try {
+                $args = $_POST['recipe'];
+                $args += ["recipe_prep_time_seconds" => $recipe_prep_time_seconds];
+                $args += ["recipe_cook_time_seconds" => $recipe_cook_time_seconds];
+                $args += ["user_id" => $current_user_id];
+
+                $recipe = new Recipe($args);
+                $result = $recipe->save();
+
+                if (!$result) { // If recipe insertion fails
+                    throw new Exception("Unable to insert recipe.");
+                }
+
+                $recipe_id = $recipe->id;
+
+                foreach ($ingredients as $index => &$ingredientValues) {
+                    $ingredientValues['recipe_id'] = $recipe_id;
+                    $ingredientValues['ingredient_recipe_order'] = $index + 1;
+                    if ($ingredientValues['ingredient_measurement_name'] == "") {
+                        $ingredientValues['ingredient_measurement_name'] = 'n/a';
+                    }
+                    $ingredientValues['ingredient_quantity'] = fractionToDecimal($ingredientValues['ingredient_quantity']);
+                    $ingredient = new Ingredient($ingredientValues);
+                    $result = $ingredient->save();
+
+                    if (!$result) { // If any ingredient insertion fails
+                        throw new Exception("Unable to insert ingredient at index $index.");
+                    }
+                }
+
+                foreach($steps as $index => &$stepValue) {
+                    $stepValue['recipe_id'] = $recipe_id;
+                    $stepValue['step_number'] = $index + 1;
+                    
+                    // Use the step description already in $stepValue
+                    $step = new Step($stepValue);
+                    $result = $step->save();
+                
+                    if(!$result) {
+                        throw new Exception("Unable to save step at index {$index}.");
+                    }
+                }
+
+                if(!empty($selectedMealTypes)){
+                    foreach($selectedMealTypes as $mealTypeId){
+                        $recipeMealType = [
+                            'meal_type_id' => $mealTypeId,
+                            'recipe_id' =>$recipe_id
+                        ];
+                        $recMealType = new RecipeMealType($recipeMealType);
+                        $result = $recMealType->save();
+                    } if(!$result){
+                        throw new Exception(message: "Unable to insert recipe meal type.");
+                    }
+                }
+
+                if(!empty($selectedDiets)){
+                    foreach($selectedDiets as $dietId){
+                        $recipeDietType = [
+                            'diet_id' => $dietId,
+                            'recipe_id' => $recipe_id
+                        ];
+                        
+                        $recDiet = new RecipeDiet($recipeDietType);
+                        $result = $recDiet->save();
+                
+                        if(!$result) {
+                            throw new Exception("Unable to insert recipe diet types.");
+                        }
+                    }
+                }
+                
+                // Style processing
+                if(!empty($selectedStyles)){
+                    foreach($selectedStyles as $styleId){
+                        $recipeStyle = [
+                            'style_id' => $styleId,
+                            'recipe_id' => $recipe_id
+                        ];
+                        
+                        $recStyle = new RecipeStyle($recipeStyle);
+                        $result = $recStyle->save();
+                
+                        if(!$result) {
+                            throw new Exception("Unable to insert recipe styles.");
+                        }
+                    }
+                }
+
+                $recImg = [
+                    'recipe_image' => $_POST['recipe_image'],
+                    'recipe_id' =>$recipe->id
+                ];
+
+                $recipeImage = new RecipeImage($recImg);
+                $result = $recipeImage->save();
+                if(!$result){
+                    throw new Exception(message: "Unable to insert recipe image.");
+                }
+
+                if(!empty($video)){
+                    $recVid = [
+                        'recipe_video_url' => $_POST['recipe_video_url'],
+                        'recipe_id' => $recipe->id
+                    ];
+                    $recipeVideo = new RecipeVideo(args:$recVid);
+                    $result = $recipeVideo->save();
+                    if(!$result){
+                        throw new Exception(message: "Unable to insert recipe video link.");
+                    }
+                }
+                // If all insertions succeed, commit the transaction
+                $database->commit();
+                redirect_to(url_for('/member/profile.php'));
+            } catch (Exception $e) {
+                $database->rollback(); // Undo changes if anything fails
+                $errors[] = $e->getMessage();
+            }
     }
-} else {
+}
+else {
     $recipe = new Recipe;
 }
 
@@ -114,13 +215,13 @@ if (is_post_request()) {
             <p>Fill out the form below to create a new recipe.</p>
             <?php echo display_errors($errors); ?>
         </div>
-        <form action="create_recipe.php" method="POST" enctype="multipart/form-data" id="createRecipeForm">
+        <form action="create_recipe.php" method="POST" enctype="multipart/form-data" id="createRecipeForm" onsubmit="return validateRecipeForm()">
             <label for="recipeName" class="recipePartName">Recipe Name:</label>
             <input type="text" id="recipeName" name="recipe[recipe_name]" maxlength="100" required>
 
             <label for="recipeDescription" class="recipePartName">Description:</label>
             <span>Description must be no more than 255 characters.</span>
-            <textarea id="recipeDescription" name="recipe[recipe_description]" maxlength="255" rows="4" cols="50"></textarea>
+            <textarea id="recipeDescription" name="recipe[recipe_description]" maxlength="255" rows="4" cols="50" required></textarea>
 
             <fieldset>
                 <legend>Difficulty</legend>
@@ -136,82 +237,42 @@ if (is_post_request()) {
                 </div>
             </fieldset>
             
-            <h3 class="recipePartName">Categories</h3>
-            <span>Select up to 3 options for each category.</span>
-            <div id="checkboxes">
-                <fieldset>  
-                    <div class="checkboxContainer">
-                        <legend class="recipePartName">Meal Type</legend>
-                        <?php foreach ($mealTypes as $mealType): ?>
-                            <label>
-                                <input type="checkbox" name="meal_type[meal_type_id][]" id="mealType" value="<?php echo $mealType->meal_type_name; ?>">
-                                <?php echo ucfirst($mealType->meal_type_name); ?>
-                            </label>
-                        <?php endforeach; ?>
-                    </div>
-                </fieldset>
-
-                <fieldset>
-                    <div class="checkboxContainer">
-                        <legend class="recipePartName">Style</legend>
-                        <?php foreach ($styles as $style): ?>
-                            <label>
-                                <input type="checkbox" name="style[style_id][]" id="style" value="<?php echo $style->style_name; ?>">
-                                <?php echo ucfirst($style->style_name); ?>
-                            </label>
-                        <?php endforeach; ?>
-                    </div>
-                </fieldset>
-
-                <fieldset>
-                    <div class="checkboxContainer">
-                        <legend class="recipePartName">Diet</legend>
-                        <?php foreach ($diets as $diet): ?>
-                            <label>
-                                <input type="checkbox" name="diet[diet_id][]" id="diet" value="<?php echo $diet->diet_name; ?>">
-                                <?php echo ucfirst($diet->diet_name); ?>
-                            </label>
-                        <?php endforeach; ?>
-                    </div>
-                </div>
-                </fieldset>
+            
 
 
 
             <div id="timeInput">
-                <div id="prepTimeInput">
                     <fieldset>
                         <legend>Prep Time</legend>
                         <div class="prep-time-container">
-                            <label for="prep_time_hours">Hours <input type="number" id="prep_time_minutes" name="prep_hours" min="0" max="59" step="1" placeholder="Min"></label>
+                            <label for="prep_time_hours">Hours <input type="number" id="prep_time_hours" name="prep_hours" min="0" max="99" step="1" placeholder="Hrs" maxlength="2"></label>
                             
-                            <label for="prep_time_minutes">Minutes <input type="number" id="prep_time_minutes" name="prep_minutes" min="0" max="59" step="1" placeholder="Min"></label>
+                            <label for="prep_time_minutes">Minutes <input type="number" id="prep_time_minutes" name="prep_minutes" min="0" max="59" step="1" placeholder="Min" maxlength="2"></label>
                         </div>
                     </fieldset>
-                </div>
 
-                <div id="cookTimeInput">
+                
                     <fieldset>
                         <legend>Cook Time</legend>
                         <div class="prep-time-container">
                             <label for="cook_time_hours">Hours</label>
-                                <input type="number" id="cook_time_hours" name="cook_hours" min="0" step="1" placeholder="Hrs">
+                                <input type="number" id="cook_time_hours" name="cook_hours" min="0" max="99" step="1" placeholder="Hrs" maxlength="2">
                             
-                            <label for="cook_time_minutes">Minutes<input type="number" id="cook_time_minutes" name="cook_minutes" min="0" max="59" step="1" placeholder="Min"></label>
+                            <label for="cook_time_minutes">Minutes<input type="number" id="cook_time_minutes" name="cook_minutes" min="0" max="59" step="1" placeholder="Min" maxlength="2"></label>
                         </div>
-                    </fieldset>
-                </div>
+                    </fieldset>    
             </div>
-
-            <label for="totalServings" class="recipePartName">Total Servings:
-                <input type="number" id="totalServings" name="recipe[recipe_total_servings]" min="1" max="50" step="1"></label>
+            <div id="totalServingsContainer">
+                <label for="totalServings" class="recipePartName">Total Servings:</label>
+                <input type="number" id="totalServings" name="recipe[recipe_total_servings]" min="1" max="99" step="1" required>
+            </div>
 
             <fieldset>
                 <legend>Ingredients</legend>
                 <span id="ingredientDirections">Type the measurement amount. Select a unit (if applicable). Then type the ingredient name, and any special instructions (packed, crushed, etc.) into the text box. Click the 'plus' to add your ingredient.</span>
                 <div id="ingredientInputSet">
                     <label for="measurementAmount">Amount:
-                        <input type="text"  pattern="^\d+(\s\d+/\d+)?$|^\d+\/\d+$" placeholder="1/2" id="measurementAmount" maxlength="4"></label>
+                        <input type="text"  pattern="^\d+(\s\d+/\d+)?$|^\d+\/\d+$" placeholder="1/2" id="measurementAmount" maxlength="3"></label>
                         <label for="ingredientUnit">Unit:
                             <select id="ingredientUnit">
                                 <option value="n/a" selected></option>
@@ -242,12 +303,54 @@ if (is_post_request()) {
                 <legend>Steps</legend>
                 <span id="stepDirections">Enter a step to make your recipe. Click the 'plus' to add a step.</span>
                 <label for="stepInput" class="visuallyHidden">Step:</label>
-                <textarea  placeholder="Describe the step in one or two short sentences." id="stepInput" rows="2" cols="25" maxlength="255"></textarea>
-                <button type="button" id="addStep">+ Add Step</button>
+                <div id="stepInputAndButton">
+                    <textarea  placeholder="Describe the step in one or two short sentences." id="stepInput" rows="2" cols="25" maxlength="255"></textarea>
+                    <button type="button" id="addStep" >+ Add Step</button>
+                </div>
                 <div id="enteredSteps">
                     
                 </div>  
             </fieldset>
+
+            <h3 class="recipePartName">Categories</h3>
+            <span>Select up to 3 options for each category.</span>
+            <div id="checkboxes">
+                <fieldset>  
+                    <div class="checkboxContainer">
+                        <legend class="recipePartName">Meal Type</legend>
+                        <?php foreach ($mealTypes as $mealType): ?>
+                            <label>
+                                <input type="checkbox" name="meal_types[]" id="mealType" value="<?php echo $mealType->id; ?>">
+                                <?php echo ucfirst($mealType->meal_type_name); ?>
+                            </label>
+                        <?php endforeach; ?>
+                    </div>
+                </fieldset>
+
+                <fieldset>
+                    <div class="checkboxContainer">
+                        <legend class="recipePartName">Style</legend>
+                        <?php foreach ($styles as $style): ?>
+                            <label>
+                                <input type="checkbox" name="styles[]" id="style" value="<?php echo $style->id; ?>">
+                                <?php echo ucfirst($style->style_name); ?>
+                            </label>
+                        <?php endforeach; ?>
+                    </div>
+                </fieldset>
+
+                <fieldset>
+                    <div class="checkboxContainer">
+                        <legend class="recipePartName">Diet</legend>
+                        <?php foreach ($diets as $diet): ?>
+                            <label>
+                                <input type="checkbox" name="diets[]" id="diet" value="<?php echo $diet->id; ?>">
+                                <?php echo ucfirst($diet->diet_name); ?>
+                            </label>
+                        <?php endforeach; ?>
+                    </div>
+                </div>
+                </fieldset>
 
             <label for="recipe_image" class="recipePartName">Image Upload</label>
             <input type="file" id="recipe_image" name="recipe_image">
