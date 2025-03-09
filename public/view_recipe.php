@@ -6,6 +6,7 @@ $pageTitle = "Recipe: " . h($recipe->recipe_name) . " | Culinnari";
 $ingredients = Ingredient::find_by_recipe_id(($id));
 $steps = Step::find_by_recipe_id(($id));
 
+
 $video = RecipeVideo::find_by_recipe_id($id);
 include(SHARED_PATH . '/public_header.php'); 
 
@@ -32,11 +33,12 @@ include(SHARED_PATH . '/public_header.php');
             
             <div id="iconsStars">
                 <div id="recipeDisplayDietIcons">
-                    <?php if(!empty($diets)): ?>
-                        <?php foreach ($diets as $diet): ?>
-                            <img src="<?php echo u($diet->diet_icon_url); ?>" width="20" height="20" alt="<?php echo h($diet->diet_name); ?>">
-                        <?php endforeach; ?>
-                    <?php endif; ?>
+                    <img src="<?php echo url_for('/images/icon/dietIcons/vegetarian.svg'); ?>" width="20" height="20" alt="diet icon">
+                    <img src="<?php echo url_for('/images/icon/dietIcons/vegetarian.svg'); ?>" width="20" height="20" alt="diet icon">  
+                    <img src="<?php echo url_for('/images/icon/dietIcons/vegetarian.svg'); ?>" width="20" height="20" alt="diet icon">  
+                    <img src="<?php echo url_for('/images/icon/dietIcons/vegetarian.svg'); ?>" width="20" height="20" alt="diet icon">  
+                    <img src="<?php echo url_for('/images/icon/dietIcons/vegetarian.svg'); ?>" width="20" height="20" alt="diet icon">  
+                    <img src="<?php echo url_for('/images/icon/dietIcons/vegetarian.svg'); ?>" width="20" height="20" alt="diet icon">   
                 </div>
                 
                 <div id="recipeDisplayRatingStars">
@@ -58,6 +60,24 @@ include(SHARED_PATH . '/public_header.php');
                         
                 </div>
             </div>
+            <div id="recipeDisplayOptions">
+                <div>
+                    <a href="about:blank" onclick="window.print(); return false;">
+                        <img src="<?php echo url_for('/images/icon/print.svg'); ?>" width="24" height="24" alt="Printer icon" title="Print recipe">
+                        Print Recipe
+                    </a>
+                </div>
+                <?php if($session->is_logged_in()): ?>
+                <div>
+                        <img src="<?php echo url_for('/images/icon/addToCookbook.svg'); ?>" width="24" height="24" alt="Cookbook icon" title="Add to cookbook">
+                        Add to Cookbook
+                </div>
+                <div>
+                    <img src="<?php echo url_for('/images/icon/star.svg'); ?>" width="24" height="24" alt="Star icon" title="Add rating">
+                    Add Rating
+                </div>
+                <?php endif; ?>
+            </div>
             
             <div id="recipeDisplayprepCook">
                 <?php
@@ -71,11 +91,25 @@ include(SHARED_PATH . '/public_header.php');
                 ?>
 
                 <?php if ($prep_hours > 0 || $prep_minutes > 0): ?>
-                    <p>Prep Time: <?php echo h($prep_hours) . " hours " . h($prep_minutes) . " minutes"; ?></p>
+                    <p>Prep Time: 
+                        <?php if ($prep_hours > 0): ?>
+                            <?php echo h($prep_hours) . " hours "; ?>
+                        <?php endif; ?>
+                        <?php if ($prep_minutes > 0): ?>
+                            <?php echo h($prep_minutes) . " minutes"; ?>
+                        <?php endif; ?>
+                    </p>
                 <?php endif; ?>
 
                 <?php if ($cook_hours > 0 || $cook_minutes > 0): ?>
-                    <p>Cook Time: <?php echo h($cook_hours) . " hours " . h($cook_minutes) . " minutes"; ?></p>
+                    <p>Cook Time: 
+                        <?php if ($cook_hours > 0): ?>
+                            <?php echo h($cook_hours) . " hours "; ?>
+                        <?php endif; ?>
+                        <?php if ($cook_minutes > 0): ?>
+                            <?php echo h($cook_minutes) . " minutes"; ?>
+                        <?php endif; ?>
+                    </p>
                 <?php endif; ?>
             </div>
         </div>
@@ -132,36 +166,7 @@ include(SHARED_PATH . '/public_header.php');
         </div>
         <?php endif; ?>
 
-        <div id="recipeDisplayOptions">
-            <div>
-                <a href="about:blank" onclick="window.print(); return false;">
-                    <img src="<?php echo url_for('/images/icon/print.svg'); ?>" width="24" height="24" alt="Printer icon" title="Print recipe">
-                    Print Recipe
-                </a>
-            </div>
-            <div>
-                <label for="cookbook_checkbox" class="button">
-                    <img src="<?php echo url_for('/images/icon/addToCookbook.svg'); ?>" width="24" height="24" alt="Cookbook icon" title="Add to cookbook">
-                    Add to Cookbook
-                </label>
-                    <input type="checkbox" id="cookbook_checkbox" class="cookbook_checkbox">
-                    <div id="cookbook_form">
-                        <!-- Form for selecting cookbook -->
-                        <form class="cookbook_form" action="addrecipetocookbook.php" method="POST">
-                        <h4>Add this recipe to your cookbook?</h4>
-                        <!-- Hidden input fields inside the form to submit recipe data -->
-                        <input type="hidden" name=recipe[id] value="$recipe->id;">
-
-                        <button type="submit" class="submit_button">Add Recipe</button>
-                        <button type="button" class="cancel_button">Cancel</button>
-                    </form>
-                    </div>
-            </div>
-            <a href="#">
-                <img src="<?php echo url_for('/images/icon/star.svg'); ?>" width="24" height="24" alt="Star icon" title="Add rating">
-                Add Rating
-            </a>
-        </div>
+        
     </div>
 </main>
 
