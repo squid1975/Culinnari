@@ -353,6 +353,7 @@ else {
                 </fieldset>
 
             <label for="recipe_image" class="recipePartName">Image Upload</label>
+            <span>Accepted file types: JPG, PNG, WEBP</span>
             <input type="file" id="recipe_image" name="recipe_image">
             <img id="imagePreview" src="#" alt="Image Preview" style="display:none; width: 300px; height: auto; margin-top: 10px;">
 
