@@ -13,6 +13,7 @@ $displayQuickRecipes = array_slice($quickRecipes, 0, 4);
 
 <body>
     <main role="main" tabindex="-1">
+        <div id="homePageWrapper">
             <div id="homeHero">
                 <div id ="mainHeroText">
                     <h2>Cook. Share. Enjoy.</h2>
@@ -73,15 +74,9 @@ $displayQuickRecipes = array_slice($quickRecipes, 0, 4);
                 </div>
             </section>
 
-            <section class="suggestions">
-                <h2>Eat in 30 Minutes or Less</h2>
-                
-            </section>
-
-            <section>
-                <h2>Culinnari builds Community.</h2>
-            </section>
             
+            
+        </div>
         </div>
     </main>
     <?php include SHARED_PATH . '/public_footer.php'; ?>
