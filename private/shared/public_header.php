@@ -8,12 +8,14 @@
         </a>
     </div>
     <nav role="navigation" id="mainMenu">
-        <img src="<?php echo url_for('/images/icon/menu.svg'); ?>" width="30" height="30" alt="Menu Icon" title="Menu">
+        <input type="checkbox" id="menu-toggle">
+        <label class="menuButton" for="menu-toggle">
+            <img src="<?php echo url_for('/images/icon/menu.svg'); ?>" width="30" height="30" alt="Menu Icon" title="Menu">
+        </label>
         <div id="menuContent">
         <ul>
             <li><a href="<?php echo url_for('index.php'); ?>">Home</a></li>
-            <li><a href="<?php echo url_for('recipes.php'); ?>">Recipes</a></li>
-            
+            <li><a href="<?php echo url_for('recipes.php'); ?>">Recipes</a></li>  
         </ul>
         </div>
     </nav>
