@@ -1,3 +1,48 @@
+/**** signup & login pages ***/
+
+#loginSignupWrapper {
+    width: 1200px;
+}
+
+
+
+#loginSignupPage {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    min-height: 500px;
+    gap: 10px;
+
+}
+
+.formField {
+    display: flex;
+    flex-wrap: nowrap;
+    margin: 20px 0;
+}
+
+.formField label {
+    margin-right: 10px;
+}
+
+
+
+.loginSignupButton {
+    color: #fff;
+    padding: 10px 20px;
+    background-color: #8B9B8B;
+    font-family: 'Lustria', sans-serif;
+    border-radius: 10px;
+
+    &:hover {
+        background-color: #cbe2cb;
+        color: #000000;
+    }
+}
+
+
+
 label {
     display: block;
     margin-bottom: 5px;
@@ -37,6 +82,7 @@ input#mainSearch {
     position: relative;
     right: 50px;
     bottom: 2px;
+    cursor: pointer;
 }
 
 #filterHeading {
@@ -107,6 +153,11 @@ input#mainSearch {
     font-size: 16px;
 }
 
+.dropdown-content input[type="checkbox"]:checked + label {
+    background-color: #f0f0f0;  /* Change to desired highlight color */
+    color: #333;  /* Optional, to change text color */
+}
+
 .dropdown-content input[type="checkbox"] {
     margin-right: 10px;
 }
@@ -122,43 +173,6 @@ input#mainSearch {
     background: none;
 }
 
-
-/*********************************** LOGIN & SIGNUP PAGE ********************/
-
-#loginSignup {
-    display: flex;
-    background-color: white;
-    padding: 20px;
-    max-width: 1200px;
-    margin: 0 auto;
-}
-
-#loginSignup h2 {
-    text-align: center;
-}
-
-#loginSignup div {
-    margin: 10px;
-    flex: 1;
-    box-shadow: 0 0 5px #3C2F2F;
-    padding: 5px 10px;
-}
-
-#loginSignup div h3 {
-    text-align: center;
-}
-
-#loginSignup input[type="submit"] {
-    margin-top: 10px;
-    padding: 10px 5px;
-    box-shadow: 0 0 5px #3C2F2F;
-    transition: 0.2s;
-}
-
-#loginSignup input[type="submit"]:hover {
-    background-color: #333;
-    color: white;
-}
 /*********************************** CREATE/EDIT RECIPE PAGE ********************/
 
 
@@ -166,7 +180,7 @@ input#mainSearch {
 .recipeFormWrapper {
     max-width: 1000px;
     margin: 0 auto;
-    background: white;
+    background: #fdfbf4;
     padding: 15px;
     box-shadow: 0 0 5px #3C2F2F;
 }
@@ -179,6 +193,10 @@ input#mainSearch {
 
 #createRecipeForm {
     padding: 20px;
+
+    & button {
+        font-family: 'Lustria', sans-serif;
+    }
 }
 
 #createRecipeForm span {
@@ -187,8 +205,6 @@ input#mainSearch {
     margin-bottom: 5px;
     font-size: 16px;
 }
-
-
 
 label.recipePartName {
     font-size: 22px;
@@ -209,7 +225,7 @@ input#recipeName {
 
 fieldset {
     margin: 10px 0;
-    border: 1px solid #c7c7c7;
+    border: none;
     
 }
 legend {
@@ -219,44 +235,47 @@ legend {
 
 .radio-group {
     display: flex;
-    align-items: baseline;
+
+    + label {
+       margin-right: 10px; 
+    }
+
+    & .formField {
+        align-items: baseline;
+    }
 }
 
-.radio-group label {
-    margin-right: 10px;
-}
-
-#checkboxes {
+.timeContainer {
     display: flex;
+
+    & input {
+        margin: 10px;
+    }
 }
 
-#checkboxes fieldset {
-    width: 100%;
-}
-
-#timeInput {
-    display: flex;
-    flex-wrap: wrap;
-    width: 100%;
-}
-
-#timeInput fieldset {
-    width: 50%;
-}
-
-.prep-time-container {
-    display: flex;
-    align-items: center;
-}
 
 #totalServingsContainer {
     display: flex;
-    align-items: center;
+    align-items: baseline;
+
+    & label {
+        margin-right: 5px;
+    }
 }
 
-#totalServingsContainer label {
-    margin-right: 5px;
-    margin-top: 0;
+#ingredients {
+    border-top: 1px solid #333;
+}
+
+
+#ingredientInputs {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+
+    & select {
+        font-family: 'Lato', serif;
+    }
 }
 
 #ingredientInputSet {
@@ -265,11 +284,26 @@ legend {
     margin: 10px 0;
 }
 
+.addedIngredients .ingredientInputSet {
+    display: flex;
+    justify-content: space-evenly;
+    margin: 10px 0;
+}
+
+.removeIngredient {
+    padding: 5px 10px;
+}
+
 #stepInput {
     width: 75%;
 }
 #stepInputAndButton {
     display: flex;
+}
+
+.removeStep {
+    border: none;
+    box-shadow: 0 0 5px #333;
 }
 
 button#addStep {
@@ -307,7 +341,28 @@ button.removeIngredient {
 }
 
 #measurementAmount {
-    width: 50px;
+    width: 70px;
+}
+
+#checkboxes {
+    display: flex;
+    border-bottom: 1px solid #969696;
+    padding-bottom: 10px;
+
+    & fieldset {
+        border: 1px solid #cecece;
+        width: 100%;
+    }
+}
+
+h3.recipePartName {
+    padding-top: 20px;
+    border-top: 1px solid #969696;
+    text-align: center;
+
+    + span {
+        text-align: center;
+    }
 }
 
 #youtube_link {
@@ -315,12 +370,37 @@ button.removeIngredient {
 }
 
 #createRecipeButton {
+    font-family: 'Lustria', sans-serif;
     padding: 10px;
+    margin-top: 20px;
+    background: #3ceb62;
+    border: none;
+    box-shadow: 0 0 5px #333;
+    transition: 0.2 ease;
+
+    &:hover {
+        background: #3cc45a;
+    }
+   
+}
+
+#clearRecipeFormButton {
+    font-family: 'Lato', serif;
+    background-color: red;
+}
+
+/******* ADMIN AREA *********/
+
+/**Create / Update User Form**/
+
+.userFormInput {
+    display: flex;
 }
 
 /***************************************************************** MEDIA QUERIES ******************************************************************/
 
 @media screen and (max-width: 650px) {
+    /****  SEARCH BAR ***/
     .filters {
         display: none;
         
@@ -336,5 +416,23 @@ button.removeIngredient {
     #filterToggle:checked ~ .filters {
         display: block;
         align-items: center;
+    }
+
+    /*** CREATE RECIPE PAGE ****/
+
+    #timeInput {
+        display: block;
+
+        & fieldset {
+            width: 100%;
+        }
+    }
+
+    #ingredientInputSet {
+        display: block;
+    }
+
+    #checkboxes {
+        display: block;
     }
 }    

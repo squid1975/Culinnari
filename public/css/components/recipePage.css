@@ -1,6 +1,6 @@
 /********************************   view recipe **************************/
 #recipePageDisplayWrapper {
-    background: white;
+    background: #ffffff;
     max-width: 1200px;
     margin: 0 auto;
     padding: 20px;
@@ -52,6 +52,7 @@ div#recipeDisplayDifficulty p#recipeDisplayAdvanced {
 }
 
 #recipeDisplayOptions {
+    display: flex;
     margin: 10px;
 }
 
@@ -71,17 +72,14 @@ div#recipeDisplayDifficulty p#recipeDisplayAdvanced {
 }
 
 
-#recipeDisplayTotalServings {
-    align-items: center;
-    display: flex;
-    justify-content: space-between;
-}
-
-
 #recipeDisplayIngredientsSteps {
     margin: 20px 10px;
     display: flex;
     min-height: 400px;
+
+    & h3 {
+        font-size: 24px;
+    }
 }
 
 
@@ -89,20 +87,20 @@ div#recipeDisplayDifficulty p#recipeDisplayAdvanced {
     width: 50%;
 }
 
-
-
 #recipeDisplayChangeServingAmt {
-    background: rgb(209, 209, 209, 0.2);
-    box-shadow: 0 2px 2px #333;
     margin-left: 10px;
+    margin-top: 10px;
     padding: 5px;
     border-radius: 10px;
+    display: flex;
+    flex-wrap: nowrap;
 }
 
 #recipeDisplayChangeServingAmt button {
     text-align: center;
-    padding: 5px;
+    padding: 5px 10px;
     border-radius: 10px;
+    margin-right: 5px;
 }
 
 li.recipeIngredientListing {
@@ -153,4 +151,33 @@ li.recipeIngredientListing {
         display: none;
     }
 
+}
+
+@media screen and (max-width: 750px){
+    #recipeDisplayIngredientsSteps {
+        display: block;
+
+        & div {
+            width: 100%;
+        }
+    }
+}
+
+@media screen and (max-width: 550px) {
+
+    #iconsStars {
+        display: block;
+
+        & div {
+            padding: 0;
+        }
+    }
+    
+    #recipeDisplayprepCook {
+        display: block;
+
+        & p:first-of-type{
+            border: none;
+        }
+    }
 }
