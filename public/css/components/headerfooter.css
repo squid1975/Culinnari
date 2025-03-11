@@ -12,9 +12,6 @@ h1 {
     font-family: "Lustria", serif;
 }
 
-#hamburgerIcon {
-    display: none;
-}
 
 .menuButton {
     display: none;
@@ -24,34 +21,43 @@ h1 {
     display: none;
 }
   
-
 nav ul {
     padding: 0;
-}
 
-nav ul li {
-    display: inline-block;
-}
+    & li {
+        display: inline-block;
+    }
 
-nav ul li a {
-    color: #333;
-    font: 20px 'Lustria', serif;
-    padding: 10px;
-    transition: 0.2s ease-in;
-}
+    & a {
+        color: #333;
+        font: 20px 'Lustria', serif;
+        padding: 10px;
+        transition: 0.2s ease-in;
 
-nav ul li a:hover {
-    color: #666;
+        &:hover {
+            box-shadow: 0 5px 5px -5px #3C2F2F;
+            color: #6a756a;
+        }
+    }
 }
 
 /************* GEN  PUBLIC *********/
 #headerLoginSignup  {
     display: flex;
     align-items: center;
+    background: #868b7c;
+    box-shadow: 0 0 5px #333;
+    padding: 5px 10px;
+    transition: 0.2s ease-in;
+
+    &:hover {
+        background:#c0c7b3;
+    }
 }
 
 #headerLoginSignup a {
     margin-left: 10px;
+    
 }
 
 
@@ -59,46 +65,58 @@ nav ul li a:hover {
 #memberNav {
     display: flex;
     align-items: center;
+    gap: 5px;
 }
 
 #memberNav div {
     margin: 5px;
 }
 
-#memberNav div a:first-of-type {
-    display: flex;
-    align-items: center;
-    margin-right: 10px;
-    font-size: 18px;
-}
-
-
 #memberNav div:nth-of-type(2) a {
     display: block;
     padding: 5px;
 }
 
+#userMenuToggle {
+    display: none;
+}
 
-#adminNav {
+#userMenu {
     display: flex;
-    align-items: center;
+    flex-direction: column;
 
-    & div:nth-of-type(2){
-        padding-top: 10px;
+    & a {
+        
+        padding: 3px;
 
-        & a {
-            display: block;
-            padding: 5px;
-        }
-
-        & a:first-of-type{
-            display: flex;
-            align-items: center;
-            margin-right: 10px;
-            font-size: 18px;
+        &:hover {
+            box-shadow: 0 0 3px #868b7c;
         }
     }
-    
+}
+
+#adminNav {
+    align-items: center;
+    display: flex;
+    gap: 5px;
+
+    & a {
+        padding: 3px;
+
+        &:hover {
+            box-shadow: 0 0 3px #868b7c;
+        }
+    }
+}
+
+
+#adminMenu {
+    display: flex;
+    flex-direction: column;
+}
+
+#adminMenuToggle {
+    display: none;
 }
 
 
@@ -121,6 +139,15 @@ footer {
 
     & a {
         color: #333;
+    }
+
+    & #businessInfo  li:first-of-type {
+        align-items: center;
+        display: flex;
+
+        & img {
+            margin-right: 5px;
+        }
     }
 }
 
@@ -162,7 +189,7 @@ footer {
         top: -80px;
         width: 125px;
         background: white;
-        box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+        box-shadow: 2px 2px 10px #0000001a;
         gap: 10px;
         transition: left 0.3s ease;
         z-index: 100;
@@ -176,10 +203,107 @@ footer {
         
       }
 
+      #memberNav {
+        position: relative;
+        display: inline-block;
+    }
     
+    /* Hide the checkbox */
+    #userMenuToggle {
+        display: none;
+    }
+    
+    /* Style for the dropdown menu */
+    #userMenu {
+        display: none; /* Initially hidden */
+        position: absolute;
+        top: 100%;
+        right: 0;
+        background: white;
+        box-shadow: 0 4px 8px #00000033;
+        padding: 10px;
+        border-radius: 5px;
+        z-index: 10;
+        min-width: 150px;
+
+        & a{
+            display: block;
+
+            &:nth-of-type(2){
+                margin-top: 15px;
+            }
+        }
+    }
+    
+    /* Show the menu when the checkbox is checked */
+    #userMenuToggle:checked + label + #userMenu {
+        display: block;
+    }
+    
+    /* Style for profile link */
+    #profileLink {
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+    
+    /* Ensure the label is interactive */
+    label[for="userMenuToggle"] {
+        cursor: pointer;
+        display: block;
+        width: fit-content;
+    }
+
+    /******************* ADMIN MENU ***************/
+
+    #adminNav {
+        position: relative;
+        display: inline-block;
+    }
+
+    #adminMenu {
+        display: none; /* Initially hidden */
+        position: absolute;
+        top: 100%;
+        right: 0;
+        background: white;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        padding: 10px;
+        border-radius: 5px;
+        z-index: 10;
+        width: fit-content;
+
+        & a{
+            display: flex;
+            flex-wrap: nowrap;
+        }
+    }
+    
+    /* Show the menu when the checkbox is checked */
+    #adminMenuToggle:checked ~ #adminMenu {
+        display: block;
+    }
+    
+    
+    /* Ensure the label is interactive */
+    label[for="adminMenuToggle"] {
+        cursor: pointer;
+        display: block;
+        width: fit-content;
+    }
+
+    /***************** FOOTER **************/
+
       footer {
         display: block;
       }
     
+}
+
+@media screen and (max-width: 500px) {
+    #headerLoginSignup img {
+        display: none;
+    }
 }
 
