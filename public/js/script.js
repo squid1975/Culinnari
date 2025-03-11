@@ -3,6 +3,11 @@
 /******************** Global Variables **********************/
 let error = document.createElement('p');
 
+
+const signupButton = document.querySelector("#newUserForm");
+const newUserForm = document.querySelector("#newUserForm");
+
+/**** CREATE RECIPE PAGE */
 const createRecipeForm = document.querySelector("#createRecipeForm");
 
 /** Checkboxes */
@@ -27,11 +32,36 @@ const stepsList = document.querySelector("#stepsContainer");
 const stepInput = document.querySelector("#stepInput");
 const enteredSteps = document.querySelector("#enteredSteps");
 
+/**Image Preview */
+const recipeImage = document.getElementById('recipe_image');
+const imagePreview = document.getElementById('imagePreview');
 const recipeImageInput = document.getElementById('recipe_image');
 
 /**Submit, Reset, Validation */
 const resetRecipeFormButton = document.querySelector("#clearRecipeFormButton");
 const submitRecipeButton = document.querySelector("#createRecipeButton");
+
+document.querySelectorAll(".dropdown").forEach((dropdown) => {
+    const button = dropdown.querySelector(".dropdown-button");
+    const checkboxes = dropdown.querySelectorAll("input[type='checkbox']");
+
+    checkboxes.forEach((checkbox) => {
+        checkbox.addEventListener("change", function () {
+            updateDropdownButton(button, checkboxes);
+        });
+    });
+
+    // Initialize button text in case of pre-selected options
+    updateDropdownButton(button, checkboxes);
+});
+
+function updateDropdownButton(button, checkboxes) {
+let selected = Array.from(checkboxes)
+    .filter((checkbox) => checkbox.checked)
+    .map((checkbox) => checkbox.parentElement.textContent.trim()); // Get label text
+
+button.textContent = selected.length > 0 ? selected.join(", ") : "ANY"; // Join multiple selections or show "ANY"
+}
 
 
 let ingredientIndex = 0;
@@ -51,9 +81,14 @@ function addIngredient() {
 
     // Populate the new ingredient set with the last input values
     newIngredientSet.innerHTML = `
-        <div id="ingredientInputSet">
+        <div class="ingredientInputSet">
             <label for="measurementAmount">Amount:
-                <input type="text" name="ingredient[${ingredientIndex}][ingredient_quantity]" pattern="^\\d+(\\s\\d+/\\d+)?$|^\\d+/\\d+$" placeholder="1/2" maxlength="3" class="measurementAmount" value="${lastQuantity}">
+                <input type="text" name="ingredient[${ingredientIndex}][ingredient_quantity]" 
+                pattern="^\d+(\s\d+\/\d+)?$|^\d+\/\d+$" 
+                placeholder="e.g., 1, 1/2, 1 1/2" 
+                maxlength="5" 
+                id="measurementAmount" 
+                value="${lastQuantity}">
             </label>
             <label for="ingredientUnit">Unit:
                 <select name="ingredient[${ingredientIndex}][ingredient_measurement_name]" class="ingredientUnit">
@@ -98,7 +133,7 @@ addStepButton.addEventListener('click', addStep);
 
 function addStep(){
     let stepInputValue = stepInput.value;
-    if(stepInputValue = ""){
+    if(stepInputValue === ""){
         error.textContent = "Please enter a step before adding.";
         stepDirections.appendChild(error);
         return;
@@ -127,17 +162,27 @@ function addStep(){
 // Add event listener for the file input
 recipeImageInput.addEventListener('change', function(event) {
     const file = event.target.files[0]; // Get the selected file
+    
+    // Check if a file is selected and if it's an accepted type
     if (file) {
-        const reader = new FileReader();
-        
-        // Once the file is read, show it in the image preview
-        reader.onload = function(e) {
-            imagePreview.src = e.target.result;  // Set the image source to the file data
-            imagePreview.style.display = 'block';  // Show the image preview
-        };
+        const acceptedTypes = ['image/jpeg', 'image/png', 'image/webp']; // List of accepted file types
+        if (acceptedTypes.includes(file.type)) {
+            const reader = new FileReader();
 
-        // Read the file as a data URL (base64)
-        reader.readAsDataURL(file);
+            // Once the file is read, show it in the image preview
+            reader.onload = function(e) {
+                imagePreview.src = e.target.result;  // Set the image source to the file data
+                imagePreview.style.display = 'block';  // Show the image preview
+            };
+
+            // Read the file as a data URL (base64)
+            reader.readAsDataURL(file);
+        } else {
+            // Show an error message or hide the image preview if file type is not accepted
+            error.textContent = "Invalid file type. Please upload a JPG, JPEG, PNG, or WEBP image.";
+            recipeImage.appendChild(error);
+            imagePreview.style.display = 'none'; // Hide the preview if the file type is invalid
+        }
     } else {
         imagePreview.style.display = 'none'; // Hide preview if no file is selected
     }
@@ -245,11 +290,9 @@ function validateRecipeForm() {
     return isValid;
 }
 
-    // Image preview
-    const recipeImage = document.getElementById('recipe_image');
-    const imagePreview = document.getElementById('imagePreview');
+
     
-    recipeImage.addEventListener('change', function() {
+recipeImage.addEventListener('change', function() {
         if (this.files && this.files[0]) {
             const reader = new FileReader();
             reader.onload = function(e) {
@@ -261,15 +304,6 @@ function validateRecipeForm() {
             imagePreview.style.display = 'none';
         }
 });
-    
-
-    const servingAmt = document.querySelector('#servingAmt');
-    const ingredientQuantityAmt = document.querySelector("#recipeDisplayMeasurementAmount");
-    const halfButton = document.querySelector('#halfButton');
-    const oneTimeButton = document.querySelector('#1time');
-    const twoTimesButton = document.querySelector('#2time');
-    const threeTimesButton = document.querySelector('#3time');
-
 
     // Function to convert decimal to fraction
 function decimalToFraction(decimal) {
@@ -296,8 +330,8 @@ function decimalToFraction(decimal) {
     }
     
 
-    // Helper function to calculate GCD (greatest common divisor)
-    function gcd(a, b) {
+// Helper function to calculate GCD (greatest common divisor)
+function gcd(a, b) {
         while (b !== 0) {
             let temp = b;
             b = a % b;
@@ -305,17 +339,3 @@ function decimalToFraction(decimal) {
         }
         return a;
     }
-
-    // Event listeners for the buttons
-    halfButton.addEventListener('click', function() {
-        updateIngredients(0.5);
-    });
-    oneTimeButton.addEventListener('click', function() {
-        updateIngredients(1);
-    });
-    twoTimesButton.addEventListener('click', function() {
-        updateIngredients(2);
-    });
-    threeTimesButton.addEventListener('click', function() {
-        updateIngredients(3);
-    });

@@ -41,8 +41,7 @@
                             <div class="profileRecipeCard">
                         <?php include(SHARED_PATH . '/recipe_card.php'); ?>
                         <div id="userProfileRecipeActions">
-                            <a href="<?php echo url_for('/member/edit_recipe.php?id=' . $recipe->recipe_id); ?>">Edit</a>
-                            <a href="<?php echo url_for('/member/delete_recipe.php?id=' . $recipe->recipe_id); ?>">Delete</a>
+                           
                         </div>
                         </div>
                     <?php endforeach; ?>
@@ -53,8 +52,9 @@
 
         
             <div class="profileSectionHead">
+                <img src="<?php echo url_for('/images/icon/cookbook.svg'); ?>" width="22" height="22" alt="A cookbook notebook icon" title="Culinnari Cookbook">
                 <h3>My Cookbook</h3>
-                <a href="edit_cookbook.php" class="createLink" >Edit cookbook</a>
+                
                 
             </div>
         

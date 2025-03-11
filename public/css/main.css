@@ -1,124 +1,38 @@
-@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Lustria&display=swap');
-@import url('components/forms.css');
-@import url('components/headerfooter.css');
-@import url('components/cards.css');
-@import url('components/recipePage.css');
 
-/************** GLOBAL SETTINGS*******************/
-* {
-    box-sizing: border-box;
-}
-
-html {
-    font-family: "Lato", serif;
-}
-
-body {
-    margin: 0;
-    min-width: 350px;
-    padding: 0;
-}
-
-h2 {
-    font-size: 28px;
-}
-
-h2, h3, h4 {
-    font-family: 'Lustria', serif;
-    font-weight: 300;
-    margin: 0;
-}
-
-a {
-    color: #333;
-    text-decoration: none;
-}
-
-li {
-    list-style-type: none;
-}
-
-main {
-    background-color: #c3d3c3;
-}
-
-
-
-section {
-    margin: 0;
-    padding: 0;
-}
-
-table {
-    border: 1px solid black;
-}
-
-
-td {
-    padding: 10px;
-    border: 1px solid black;
-}
-
-.primaryButton {
-    background-color: rgb(141, 206, 214);
-    border-radius: 15px;
-    box-shadow: 0 0 5px #333;
-    padding: 5px;
-    text-align: center;
-}
-
-.secondaryButton {
-    border-radius: 15px;
-    box-shadow: 0 0 5px #333;
-    padding: 10px;
-}
-
-.visuallyHidden:not(:focus):not(:active) {
-    clip: rect(0 0 0 0);
-    clip-path: inset(50%);
-    height: 1px;
-    overflow: hidden;
-    position: absolute;
-    white-space: nowrap;
-    width: 1px;
-}
-
-
-div.errors {
-    border: 1px solid #eb0f0f;
-    box-shadow: 0 0 5px #eb0f0f;
-}
-
-span#error {
-    border: 1px solid red;
-    padding: 5px;
-    width: max-content;
-    font-style: italic;
-}
 /******************** HOMEPAGE MAIN ELEMENTS *********************/
+
+#homePageWrapper {
+    width: 100%;
+}
+
 #homeHero {
-    max-width: 1400px;
-    border: 1px solid red;
     background: url('../images/culinnari_hero.webp');
-    background-position: 10%;
+    background-position: 50%;
     background-size: cover;
     height: 200px;
-}
+    margin: 0 auto;
 
-#heroText {
-    text-align: center;
-}
+    & #mainHeroText {
+        padding-top: 30px;
+        color: #fff;
+        text-align: center;
+        background: rgba(51, 51, 51, 0.1);
+        margin: auto 0;
+        height: 100%;
+    }
 
-#heroText h2 {
-    font-size: 36px;
-    margin: 0;
-    padding: 0;
+    & h2 {
+        
+        font-size: 36px;
+        margin: 0;
+        padding: 0;
+    }
 }
 
 #wrapper {
-    background-color: rgb(245, 245, 245);
+    background-color: #f5f5f5;
     margin: auto;
-    max-width: 1200px;
+    max-width: 1300px;
     padding: 20px;
 }
 
@@ -126,30 +40,44 @@ span#error {
     display: flex;
     justify-content: space-evenly;
     max-width: 1000px;
-    margin: 10px 0;
+    margin: 0 auto;
+
+    & .dietIconWithName {
+        align-items:center;
+        display: flex;
+
+        & p {
+            padding-left: 5px;
+        }
+    }
 }
 
-.dietIconWithName {
-    align-items: center;
-    display: flex;
-}
+.suggestions {
+    margin-top: 20px;
+    margin-bottom: 10px;
 
-.dietIconWithName p {
-    padding-left: 5px;
-}
-
-
-.suggestionsContent {
+    & .suggestionsContent {
         display: flex;
         flex-wrap: wrap;
-    
+        margin: 10px 0;
+    }
 }
+
+
 
 
 /**************************************** SEARCH (RECIPES) PAGE ******************************/
 #searchHero {
     margin: 0;
     padding: 0;
+}
+
+#heroText {
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
 }
 
 #searchHero h2 {
@@ -159,25 +87,43 @@ span#error {
     text-align: center;
 }
 
-/**** PROFILE *****/
+#searchPageWrapper {
+    width: 100%;
+    margin: auto 0;
+}
+
+#searchPageResultsWrapper {
+    max-width: 1200px;
+    margin: auto;
+    background: #fff;
+    
+}
+
+div#allRecipes {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+/******************************* PROFILE **********************************************/
 #profileHeading {
-    border-top: 1px solid black;
+    border-top: 1px solid #333;
     padding: 10px;
     text-align: center;
 }
 
 #profileHeading + h3 {
     text-align: center;
-    border-bottom: 1px solid black;
+    border-bottom: 1px solid #333;
     
     padding: 10px 0;
 }
 
 #profileWrapper {
-    background-color: white;
+    background-color: rgb(245, 242, 228);
     margin: 0 auto;
     max-width: 1400px;
     padding: 10px;
+    min-height: 600px;
 }
 
 
@@ -205,23 +151,9 @@ span#error {
 }
 
 .mgmtTableHeading {
-    display: flex;
     align-items: center;
-}
-
-
-#categoriesContainer {
     display: flex;
-    flex-wrap: wrap;
-}
-
-#categoriesContainer div {
-    margin: 5px 10px;
-}
-
-#categoriesContainer div h4 {
-    font-size: 18px;
-    margin: 10px 5px;
+    flex-wrap: nowrap;
 }
 
 
@@ -233,4 +165,21 @@ span#error {
 .profileRecipeCard {
     margin-right: 15px;
 }
+
+/***************** Admin Area ***************************/
+
+#adminWrapper {
+    margin: auto 0;
+    background: #ebebeb;
+}
+
+#categoriesWrapper {
+    display: flex;
+}
 /********************************************   media queries ****************************/
+
+@media screen and (max-width:700px){
+    .dietKey {
+        display: block;
+    }
+}

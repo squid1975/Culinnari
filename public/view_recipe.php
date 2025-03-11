@@ -2,11 +2,8 @@
 $id = $_GET['recipe_id'] ?? '1';
 $recipe = Recipe::find_by_id($id);
 $pageTitle = "Recipe: " . h($recipe->recipe_name) . " | Culinnari"; 
-
 $ingredients = Ingredient::find_by_recipe_id(($id));
 $steps = Step::find_by_recipe_id(($id));
-
-
 $video = RecipeVideo::find_by_recipe_id($id);
 include(SHARED_PATH . '/public_header.php'); 
 
