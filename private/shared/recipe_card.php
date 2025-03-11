@@ -11,18 +11,18 @@
         <p><?php echo h($recipe->recipe_name); ?></p>
 
         <div class="recipeCardDietIcons">
-            <?php 
-            $diets = $recipe->getDiets($recipe->id);
-            if (!empty($diets)): 
-            ?>
-                <?php foreach ($diets as $diet): ?>
-                    <img src="<?php echo u($diet->diet_icon_url); ?>" alt="Diet Icon">
-                <?php endforeach; ?>
-            <?php endif; ?>  
+            <img src="<?php echo url_for('/images/icon/dietIcons/keto.svg'); ?>" width="20" height="20" alt="diet icon">
+            <img src="<?php echo url_for('/images/icon/dietIcons/paleo.svg'); ?>" width="20" height="20" alt="diet icon"> 
+            <img src="<?php echo url_for('/images/icon/dietIcons/sugarFree.svg'); ?>" width="20" height="20" alt="diet icon"> 
+            <img src="<?php echo url_for('/images/icon/dietIcons/vegetarian.svg'); ?>" width="20" height="20" alt="diet icon">   
         </div>
 
         <div class="rating">
-            <img src="<?php echo url_for('/images/icon/star.svg'); ?>" width="20" height="20" alt="star icon" title="star icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" stroke="black" fill="yellow"><polygon points="12,2 15,9 22,9 17,14 18,21 12,17 6,21 7,14 2,9 9,9" /></svg>
+            <svg width="20" height="20" viewBox="0 0 24 24" stroke="black" fill="yellow"><polygon points="12,2 15,9 22,9 17,14 18,21 12,17 6,21 7,14 2,9 9,9" /></svg>
+            <svg width="20" height="20" viewBox="0 0 24 24" stroke="black" fill="yellow"><polygon points="12,2 15,9 22,9 17,14 18,21 12,17 6,21 7,14 2,9 9,9" /></svg>
+            <svg width="20" height="20" viewBox="0 0 24 24" stroke="black" fill="yellow"><polygon points="12,2 15,9 22,9 17,14 18,21 12,17 6,21 7,14 2,9 9,9" /></svg>
+            <svg width="20" height="20" viewBox="0 0 24 24" stroke="black" fill="yellow"><polygon points="12,2 15,9 22,9 17,14 18,21 12,17 6,21 7,14 2,9 9,9" /></svg>
         </div>
     </a>
     </div>
