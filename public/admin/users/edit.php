@@ -8,7 +8,7 @@
     </div>
 
     <?php
-require_admin_login();
+require_mgmt_login();
 
 if(!isset($_GET['id'])) {
   redirect_to(url_for('/index.php'));
@@ -42,7 +42,7 @@ if(is_post_request()) {
 
 <div id="content">
 
-  <a class="back-link" href="<?php echo url_for('/users/users.php'); ?>">&laquo; Back to List</a>
+  <a class="back-link" href="<?php echo url_for('/admin/index.php'); ?>">&laquo; Back to List</a>
 
   <div class="user edit">
     <h1>Edit user</h1>
