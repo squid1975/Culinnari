@@ -68,15 +68,15 @@ $diets = Diet::find_all();
                             </div>
                         </div>
 
-                        <!-- Rating Filter -->
+                        <!-- Difficulty Filter -->
                         <div class="searchFilter">
-                            <label for="rating">Difficulty</label>
+                            <label for="difficulty">Difficulty</label>
                             <div class="dropdown">
                                 <button type="button" class="dropdown-button">ANY</button> <!-- Button says ANY -->
                                 <div class="dropdown-content">
-                                    <label><input type="checkbox" name="difficulty[]" value="beginner">Beginner</label>
-                                    <label><input type="checkbox" name="difficulty[]" value="intermediate">Intermediate</label>
-                                    <label><input type="checkbox" name="difficulty[]" value="advanced"> Advanced</label>
+                                    <label for="difficultyBeginner"><input type="checkbox" id="difficultyBeginner" name="difficulty[]" value="beginner">Beginner</label>
+                                    <label for="difficultyIntermediate"><input type="checkbox" id="difficultyIntermediate" name="difficulty[]" value="intermediate">Intermediate</label>
+                                    <label for="difficultyAdvanced"><input type="checkbox" id="difficultyAdvanced" name="difficulty[]" value="advanced"> Advanced</label>
                                 </div>
                             </div>
                         </div>
