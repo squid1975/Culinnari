@@ -206,34 +206,40 @@ else {
 
 ?>
 
-
 <main role="main" tabindex="-1">
 
     <div class="recipeFormWrapper">
         <div class="recipeFormHeading">
             <h2>Recipe Information</h2>
             <p>Fill out the form below to create a new recipe.</p>
+            <p>Fields marked with * required.</p>
             <?php echo display_errors($errors); ?>
         </div>
         <form action="create_recipe.php" method="POST" enctype="multipart/form-data" id="createRecipeForm" onsubmit="return validateRecipeForm()">
-            <label for="recipeName" class="recipePartName">Recipe Name:</label>
+            <label for="recipeName" class="recipePartName">Recipe Name:*</label>
             <input type="text" id="recipeName" name="recipe[recipe_name]" maxlength="100" required>
 
-            <label for="recipeDescription" class="recipePartName">Description:</label>
+            <label for="recipeDescription" class="recipePartName">Description:*</label>
             <span>Description must be no more than 255 characters.</span>
             <textarea id="recipeDescription" name="recipe[recipe_description]" maxlength="255" rows="4" cols="50" required></textarea>
 
             <fieldset>
                 <legend>Difficulty</legend>
                 <div class="radio-group">
-                    <input type="radio" id="beginner" name="recipe[recipe_difficulty]" value="beginner" checked>
-                    <label for="beginner">Beginner</label>
+                    <div class="formField">
+                        <input type="radio" id="beginner" name="recipe[recipe_difficulty]" value="beginner" checked>
+                        <label for="beginner">Beginner</label>
+                    </div>
 
-                    <input type="radio" id="intermediate" name="recipe[recipe_difficulty]" value="intermediate">
-                    <label for="intermediate">Intermediate</label>
+                    <div class="formField">
+                        <input type="radio" id="intermediate" name="recipe[recipe_difficulty]" value="intermediate">
+                        <label for="intermediate">Intermediate</label>
+                    </div>
 
-                    <input type="radio" id="advanced" name="recipe[recipe_difficulty]" value="advanced">
-                    <label for="advanced">Advanced</label>
+                    <div class="formField">
+                        <input type="radio" id="advanced" name="recipe[recipe_difficulty]" value="advanced">
+                        <label for="advanced">Advanced</label>
+                    </div>
                 </div>
             </fieldset>
             
@@ -244,35 +250,36 @@ else {
             <div id="timeInput">
                     <fieldset>
                         <legend>Prep Time</legend>
-                        <div class="prep-time-container">
-                            <label for="prep_time_hours">Hours <input type="number" id="prep_time_hours" name="prep_hours" min="0" max="99" step="1" placeholder="Hrs" maxlength="2"></label>
+                        <div class="timeContainer">
+                            <label for="prep_time_hours">Hours:<input type="number" id="prep_time_hours" name="prep_hours" min="0" max="99" step="1" placeholder="Hrs" maxlength="2"></label>
                             
-                            <label for="prep_time_minutes">Minutes <input type="number" id="prep_time_minutes" name="prep_minutes" min="0" max="59" step="1" placeholder="Min" maxlength="2"></label>
+                            <label for="prepTimeMinutes">Minutes:<input type="number" id="prepTimeMinutes" name="prep_minutes" min="0" max="59" step="1" placeholder="Min" maxlength="2"></label>
                         </div>
                     </fieldset>
 
                 
                     <fieldset>
                         <legend>Cook Time</legend>
-                        <div class="prep-time-container">
-                            <label for="cook_time_hours">Hours</label>
-                                <input type="number" id="cook_time_hours" name="cook_hours" min="0" max="99" step="1" placeholder="Hrs" maxlength="2">
+                        <div class="timeContainer">
+                            <label for="cook_time_hours">Hours:
+                                <input type="number" id="cook_time_hours" name="cook_hours" min="0" max="99" step="1" placeholder="Hrs" maxlength="2"></label>
                             
-                            <label for="cook_time_minutes">Minutes<input type="number" id="cook_time_minutes" name="cook_minutes" min="0" max="59" step="1" placeholder="Min" maxlength="2"></label>
+                            <label for="cookTimeMinutes">Minutes:<input type="number" id="cookTimeMinutes" name="cook_minutes" min="0" max="59" step="1" placeholder="Min" maxlength="2"></label>
                         </div>
                     </fieldset>    
             </div>
+
             <div id="totalServingsContainer">
-                <label for="totalServings" class="recipePartName">Total Servings:</label>
+                <label for="totalServings" class="recipePartName">Total Servings:*</label>
                 <input type="number" id="totalServings" name="recipe[recipe_total_servings]" min="1" max="99" step="1" required>
             </div>
 
-            <fieldset>
-                <legend>Ingredients</legend>
+            <fieldset id="ingredients">
+                <legend>Ingredients:*</legend>
                 <span id="ingredientDirections">Type the measurement amount. Select a unit (if applicable). Then type the ingredient name, and any special instructions (packed, crushed, etc.) into the text box. Click the 'plus' to add your ingredient.</span>
-                <div id="ingredientInputSet">
+                <div id="ingredientInputs">
                     <label for="measurementAmount">Amount:
-                        <input type="text"  pattern="^\d+(\s\d+/\d+)?$|^\d+\/\d+$" placeholder="1/2" id="measurementAmount" maxlength="3"></label>
+                        <input type="text" id="measurementAmount" placeholder="e.g., 1, 1/2, 1 1/2" pattern="^\d+(\s\d+\/\d+)?$|^\d+\/\d+$" maxlength="5"></label>
                         <label for="ingredientUnit">Unit:
                             <select id="ingredientUnit">
                                 <option value="n/a" selected></option>
@@ -299,8 +306,8 @@ else {
 
             
 
-            <fieldset>
-                <legend>Steps</legend>
+            <fieldset id="steps">
+                <legend>Steps:*</legend>
                 <span id="stepDirections">Enter a step to make your recipe. Click the 'plus' to add a step.</span>
                 <label for="stepInput" class="visuallyHidden">Step:</label>
                 <div id="stepInputAndButton">
@@ -320,7 +327,7 @@ else {
                         <legend class="recipePartName">Meal Type</legend>
                         <?php foreach ($mealTypes as $mealType): ?>
                             <label>
-                                <input type="checkbox" name="meal_types[]" id="mealType" value="<?php echo $mealType->id; ?>">
+                                <input type="checkbox" name="meal_types[]" id="mealType - <?php echo $mealType->meal_type_name; ?>" value="<?php echo $mealType->id; ?>">
                                 <?php echo ucfirst($mealType->meal_type_name); ?>
                             </label>
                         <?php endforeach; ?>
@@ -332,7 +339,7 @@ else {
                         <legend class="recipePartName">Style</legend>
                         <?php foreach ($styles as $style): ?>
                             <label>
-                                <input type="checkbox" name="styles[]" id="style" value="<?php echo $style->id; ?>">
+                                <input type="checkbox" name="styles[]" id="style - <?php echo $style->style_name; ?>" value="<?php echo $style->id; ?>">
                                 <?php echo ucfirst($style->style_name); ?>
                             </label>
                         <?php endforeach; ?>
@@ -344,7 +351,7 @@ else {
                         <legend class="recipePartName">Diet</legend>
                         <?php foreach ($diets as $diet): ?>
                             <label>
-                                <input type="checkbox" name="diets[]" id="diet" value="<?php echo $diet->id; ?>">
+                                <input type="checkbox" name="diets[]" id="diet - <?php echo $diet->diet_name; ?>" value="<?php echo $diet->id; ?>">
                                 <?php echo ucfirst($diet->diet_name); ?>
                             </label>
                         <?php endforeach; ?>
