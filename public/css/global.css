@@ -1,0 +1,77 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Lustria&display=swap');
+@import url('components/forms.css');
+@import url('components/headerfooter.css');
+@import url('components/cards.css');
+@import url('components/recipePage.css');
+@import url('main.css');
+
+
+/*** SITEWIDE STYLES *******/
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    font-family: "Lato", serif;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    overflow-x: hidden;
+}
+
+h2 {
+    font-size: 28px;
+}
+
+h2, h3, h4 {
+    font-family: 'Lustria', serif;
+    font-weight: 300;
+    margin: 0;
+}
+
+a {
+    color: #333;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+li {
+    list-style-type: none;
+}
+
+main {
+    background-color: #8B9B8B;
+}
+
+
+section {
+    margin: 0;
+    padding: 0;
+}
+
+.visuallyHidden:not(:focus):not(:active) {
+    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+    height: 1px;
+    overflow: hidden;
+    position: absolute;
+    white-space: nowrap;
+    width: 1px;
+}
+
+div.errors {
+    border: 1px solid #eb0f0f;
+    box-shadow: 0 0 5px #eb0f0f;
+}
+
+.error {
+    border: 1px solid #eb0f0f;
+    padding: 5px;
+    width: max-content;
+    font-style: italic;
+    content: '!';
+}
