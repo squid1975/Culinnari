@@ -6,49 +6,55 @@ if(!isset($user)) {
 }
 ?>
 
-<dl>
-  <dt>Username</dt>
-  <dd><input type="text" name="user[username]" value="<?php echo h($user->username); ?>" ></dd>
-</dl>
 
-<dl>
-  <dt>User Email Address</dt>
-  <dd><input type="text" name="user[user_email_address]" value="<?php echo h($user->user_email_address); ?>" ></dd>
-</dl>
+  <div class="userFormInput">
+    <label for="newUsername">Username:</label>
+    <input type="text" id="newUsername" name="user[username]" value="<?php echo h($user->username); ?>">
+  </div>
 
-<dl>
-  <dt>User First Name</dt>
-  <dd><input type="text" name="user[user_first_name]" value="<?php echo h($user->username); ?>" ></dd>
-</dl>
+  <div class="userFormInput">
+    <label for="userEmail">User Email Address:</label>
+    <input type="email" id="userEmail" name="user[user_email_address]" value="<?php echo h($user->user_email_address); ?>">
+  </div>
 
-<dl>
-  <dt>User Last Name</dt>
-  <dd><input type="text" name="user[user_last_name]" value="<?php echo h($user->username); ?>" ></dd>
-</dl>
+  <div class="userFormInput">
+    <label for="userFirstName">User First Name:</label>
+    <input type="text" id="userFirstName" name="user[user_first_name]" value="<?php echo h($user->user_first_name); ?>">
+  </div>
 
-<dl>
-  <dt>Account Creation Date</dt>
-  <dd><input type="text" name="user[username]" value="<?php echo h($user->username); ?>" ></dd>
-</dl>
+  <div class="userFormInput">
+    <label for="userLastName">User Last Name:</label>
+    <input type="text" id="userLastName" name="user[user_last_name]" value="<?php echo h($user->user_last_name); ?>">
+  </div>
 
-<dl>
-  <dt>Role</dt>
-  <dd><input type="text" name="user[username]" value="<?php echo h($user->username); ?>" ></dd>
-</dl>
+  <div class="userFormInput">
+    <label for="userPassword">Password:</label>
+    <input type="password" id="userPassword" name="user[password]" value="">
+  </div>
 
-<dl>
-  <dt>Password</dt>
-  <dd><input type="password" name="user[password]" value="" ></dd>
-</dl>
+  <div class="userFormInput">
+    <label for="confirmPassword">Confirm Password:</label>
+    <input type="password" id="confirmPassword" name="user[confirm_password]" value="">
+  </div>
 
-<dl>
-  <dt>Confirm password</dt>
-  <dd><input type="password" name="user[confirm_password]" value="" ></dd>
-</dl>
-
-<?php if($session->is_super_admin_logged_in()) { ?>
-<dl>
-  <dt>User level (Enter 'a' for Admin or 'm' for user)</dt>
-  <dd><input type="text" name="user[user_level]" value="<?php echo h($user->user_level); ?>" ></dd>
-</dl>
+  <?php if($session->is_super_admin_logged_in()) { ?>
+  <div class="userFormInput">
+    <label>User role:</label>
+    <div>
+      <label for="adminRole">
+        <input type="radio" id="adminRole" name="user[user_role]" value="a" <?php echo ($user->user_role == 'a');?>>
+        Admin
+      </label>
+      <label for="userRole">
+        <input type="radio" id="userRole" name="user[user_role]" value="m" <?php echo ($user->user_role == 'm'); ?>>
+        User
+      </label>
+      <label for="superAdminRole">
+        <input type="radio" id="superAdminRole" name="user[user_role]" value="s" <?php echo ($user->user_role == 's');?>>
+        Super Admin
+      </label>
+    </div>
+  </div>
 <?php } ?>
+
+
