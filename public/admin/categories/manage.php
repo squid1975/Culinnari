@@ -1,6 +1,6 @@
+<title>Management: Manage Category | Culinnari</title>
 <?php
 require_once('../../../private/initialize.php');
- $pageTitle = "Management Area | Culinnari"; 
  include(SHARED_PATH . '/public_header.php'); 
 
 // Ensure `type` and `id` are provided
