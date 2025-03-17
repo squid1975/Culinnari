@@ -1,5 +1,6 @@
+<title>Management: Edit User | Culinnari</title>
 <?php require_once('../../../private/initialize.php'); ?>
-<?php $pageTitle = "Management - Edit User | Culinnari"; ?>
+
 <?php include(SHARED_PATH . '/public_header.php'); ?>
 
 <main role="main" tabindex="-1">

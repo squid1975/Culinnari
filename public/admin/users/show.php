@@ -1,5 +1,5 @@
+<title>Management: Show User | Culinnari</title>
 <?php require_once('../../../private/initialize.php'); 
-$pageTitle = "Management - Create User | Culinnari"; 
 include(SHARED_PATH . '/public_header.php'); 
 require_mgmt_login(); 
 $id = $_GET['user_id'] ?? '1'; // PHP > 7.0

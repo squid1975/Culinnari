@@ -1,5 +1,6 @@
+<title>Management: Create User | Culinnari</title>
 <?php require_once('../../../private/initialize.php'); ?>
-<?php $pageTitle = "Management - Create User | Culinnari"; ?>
+
 <?php include(SHARED_PATH . '/public_header.php'); ?>
 <?php
 if(is_post_request()) {
