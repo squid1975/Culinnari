@@ -9,10 +9,11 @@ class Cookbook extends DatabaseObject {
     public $user_id;
     
     public function __construct($args=[]) {
-        $this->cookbook_name = $args['cookbook_name'] ?? '';
-        $this->user_id = $args['user_id'] ?? '';
+        $this->cookbook_name = $args['cookbook_name'] ?? ($_SESSION['username'] . (str_ends_with($_SESSION['username'], 's') ? "' cookbook" : "'s cookbook"));
+        $this->user_id = $args['user_id'] ?? $_SESSION['user_id'];
     }
     
+
    
 }
 
