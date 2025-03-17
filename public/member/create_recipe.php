@@ -1,7 +1,6 @@
+<title>Create Recipe | Culinnari</title>
 <?php require_once('../../private/initialize.php'); 
-$pageTitle = "Create Recipe | Culinnari"; 
 include(SHARED_PATH . '/public_header.php'); ?>
-
 <script src="<?php echo url_for('js/script.js'); ?>" defer></script>
 
 <?php
@@ -18,6 +17,7 @@ if (is_post_request()) {
     $selectedMealTypes = $_POST['meal_types'] ?? [];
     $selectedStyles = $_POST['styles'] ?? [];
     $selectedDiets = $_POST['diets']?? [];
+
     // Handle time conversion
     $prep_hours = (int)($_POST['prep_hours']) ?? 0;
     $prep_minutes = (int)($_POST['prep_minutes'])?? 0;
@@ -210,7 +210,7 @@ else {
 
     <div class="recipeFormWrapper">
         <div class="recipeFormHeading">
-            <h2>Recipe Information</h2>
+            <h2>Create Recipe</h2>
             <p>Fill out the form below to create a new recipe.</p>
             <p>Fields marked with * required.</p>
             <?php echo display_errors($errors); ?>
