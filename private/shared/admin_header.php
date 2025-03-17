@@ -3,7 +3,7 @@
     <input type="checkbox" id="adminMenuToggle">
     <label for="adminMenuToggle">
             <img src="<?php echo url_for('/images/icon/adminIcon.svg'); ?>" width="30" height="30" alt="User Icon" title="User Profile">
-            <?php echo h($session->username); ?>
+            
     </label>
 
     <div id="adminMenu">         
@@ -17,7 +17,7 @@
         </a>
         <a href="<?php echo url_for('/logout.php'); ?>">
             <img src="<?php echo url_for('/images/icon/logout.svg'); ?>" width="20" height="20" alt="Logout Icon" title="Logout">
-            Logout
+            Logout <?php echo h($session->username); ?>
         </a>
     </div>
 </div>
