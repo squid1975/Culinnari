@@ -7,7 +7,7 @@
 <div id="memberNav">
     <input type="checkbox" id="userMenuToggle">
     <label for="userMenuToggle">
-        <img src="<?php echo url_for(script_path: '/images/icon/memberIcon.svg');?>" width="30" height="30" alt="User Icon" title="User Profile"> <?php echo $user->username; ?></a>
+        <img src="<?php echo url_for(script_path: '/images/icon/memberIcon.svg');?>" width="30" height="30" alt="User Icon" title="User Profile"> </a>
     </label>
     <div id="userMenu"> 
         <a href="<?php echo url_for('/member/profile.php'); ?>">
@@ -17,6 +17,6 @@
             Post a recipe</a>
         <a href="<?php echo url_for('/logout.php'); ?> ">
             <img src="<?php echo url_for('/images/icon/logout.svg'); ?>" width="20" height="20" alt="Logout Icon" title="Logout">
-            Logout</a>
+            Logout <?php echo $user->username; ?> </a>
     </div>        
 </div>
