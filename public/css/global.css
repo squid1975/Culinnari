@@ -39,6 +39,10 @@ a {
     cursor: pointer;
 }
 
+input[type="submit"] {
+    cursor: pointer;
+}
+
 li {
     list-style-type: none;
 }
@@ -74,4 +78,18 @@ div.errors {
     width: max-content;
     font-style: italic;
     content: '!';
+}
+
+.primaryButton {
+    border: 1px solid #333;
+    box-shadow: 0 0 5px #333;
+    border-radius: 5px;
+    font-size: 18px;
+    padding: 10px;
+    background: #D8A7A0;
+    transition: 0.2s ease-in-out;
+
+    &:hover {
+        background:#c0c7b3;
+    }
 }
