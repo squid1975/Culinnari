@@ -3,6 +3,12 @@
     height: 380px;
     box-shadow: 0 0 5px #3C2F2F;
     margin: 10px;
+    background: #ffffff;
+    transition: 0.2s ease-in-out;
+
+    &:hover {
+        box-shadow: 0 0 10px #3C2F2F;
+    }
 }
 
 .recipeCard p {
@@ -14,7 +20,7 @@
 
 .recipeCardImage {
     box-shadow: 0 0 5px #3C2F2F;
-    margin: 10px 5px 0;
+    margin: 10px 10px 0;
 }
 
 .recipeCardDietIcons {
@@ -26,10 +32,3 @@
     justify-content: space-between;
     margin-top: 10px;
 }
-
-.recipeCardUsername {
-    margin-left: 5px;
-}
-
-
-
