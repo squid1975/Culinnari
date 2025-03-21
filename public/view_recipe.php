@@ -1,11 +1,40 @@
+<title>View Recipe | Culinnari</title>
 <?php require_once('../private/initialize.php'); 
 $id = $_GET['recipe_id'] ?? '1';
 $recipe = Recipe::find_by_id($id);
-$pageTitle = "Recipe: " . h($recipe->recipe_name) . " | Culinnari"; 
+$diet_icons = Recipe::get_diet_icons($recipe->id);
 $ingredients = Ingredient::find_by_recipe_id(($id));
 $steps = Step::find_by_recipe_id(($id));
 $video = RecipeVideo::find_by_recipe_id($id);
 include(SHARED_PATH . '/public_header.php'); 
+
+if(is_post_request()){
+    if(isset($_POST['rating'])){
+        $ratingUserId = $_POST['rating_user_id'] ?? $session->user_id;
+        $ratingRecipeId = $_POST['rating_recipe_id'] ?? $id;
+        $ratingValue = $_POST['rating_value'] ?? 1;
+
+        
+        if(empty($errors)) {
+                $args = $_POST['rating'];
+                $args += ["user_id" => $ratingUserId];
+                $args += ['recipe_id' => $ratingRecipeId];
+                $args += ['rating_value' => $ratingValue];
+                $rating = new Rating($args);
+                $result = $rating->save();
+
+                if(!result) {
+                    throw new Exception(message: "Unable to save rating.");
+                }
+                $database->commit();
+
+            }
+        }
+    }
+
+    if(isset($_POST['cookbook_recipe'])){
+        
+    }
 
 
 ?>
@@ -13,37 +42,29 @@ include(SHARED_PATH . '/public_header.php');
 
 <main role="main" tabindex="-1">
     <div id="recipePageDisplayWrapper">
-        <div id="recipeNameImageDesc">
-            
-            <?php if (!empty($images)): ?>
-                <?php foreach ($images as $image): ?>
-                    <img src="<?php echo $image->recipe_image_url; ?>" width="300" height="300" 
-                        alt="<?php echo 'Photo for ' . h($recipe->recipe_name); ?>">
-                <?php endforeach; ?>
-            <?php else: ?>
-                <img src="<?php echo url_for('/images/default_recipe_image.webp'); ?>" width="300" height="300" 
-                    alt="Default recipe image">
-            <?php endif; ?>
+        <div id="recipeNameImageDesc">   
+        <?php 
+            $recipeImage = RecipeImage::find_image_by_recipe_id($recipe->id); 
+            if ($recipeImage):  // Ensure an image exists before displaying
+        ?>
+            <img class="recipeImage" src="<?php echo url_for($recipeImage->recipe_image); ?>" width="300" height="300" alt="recipe" title="recipe">
+        <?php endif; ?>
             
             <h2><?php echo h($recipe->recipe_name); ?></h2>
             <p id="recipeDisplayrecipeDescription"><?php echo h($recipe->recipe_description); ?></p>
             
             <div id="iconsStars">
                 <div id="recipeDisplayDietIcons">
-                    <img src="<?php echo url_for('/images/icon/dietIcons/vegetarian.svg'); ?>" width="20" height="20" alt="diet icon">
-                    <img src="<?php echo url_for('/images/icon/dietIcons/vegetarian.svg'); ?>" width="20" height="20" alt="diet icon">  
-                    <img src="<?php echo url_for('/images/icon/dietIcons/vegetarian.svg'); ?>" width="20" height="20" alt="diet icon">  
-                    <img src="<?php echo url_for('/images/icon/dietIcons/vegetarian.svg'); ?>" width="20" height="20" alt="diet icon">  
-                    <img src="<?php echo url_for('/images/icon/dietIcons/vegetarian.svg'); ?>" width="20" height="20" alt="diet icon">  
-                    <img src="<?php echo url_for('/images/icon/dietIcons/vegetarian.svg'); ?>" width="20" height="20" alt="diet icon">   
-                </div>
+                    <?php if($diet_icons):?>
+                        <?php foreach ($diet_icons as $diet_icon): ?>
+                            <img src="<?php echo $diet_icon; ?>" alt="Diet Icon">
+                        <?php endforeach; ?>
+                    <?php endif; ?>
+            </div>
                 
                 <div id="recipeDisplayRatingStars">
-                <svg width="20" height="20" viewBox="0 0 24 24" stroke="black" fill="yellow"><polygon points="12,2 15,9 22,9 17,14 18,21 12,17 6,21 7,14 2,9 9,9" /></svg>
-                <svg width="20" height="20" viewBox="0 0 24 24" stroke="black" fill="yellow"><polygon points="12,2 15,9 22,9 17,14 18,21 12,17 6,21 7,14 2,9 9,9" /></svg>
-                <svg width="20" height="20" viewBox="0 0 24 24" stroke="black" fill="yellow"><polygon points="12,2 15,9 22,9 17,14 18,21 12,17 6,21 7,14 2,9 9,9" /></svg>
-                <svg width="20" height="20" viewBox="0 0 24 24" stroke="black" fill="yellow"><polygon points="12,2 15,9 22,9 17,14 18,21 12,17 6,21 7,14 2,9 9,9" /></svg>
-                <svg width="20" height="20" viewBox="0 0 24 24" stroke="black" fill="yellow"><polygon points="12,2 15,9 22,9 17,14 18,21 12,17 6,21 7,14 2,9 9,9" /></svg>
+                    <span>Unrated</span>
+
                 </div>
                 
                 <div id="recipeDisplayDifficulty">
@@ -65,14 +86,40 @@ include(SHARED_PATH . '/public_header.php');
                     </a>
                 </div>
                 <?php if($session->is_logged_in()): ?>
-                <div>
-                        <img src="<?php echo url_for('/images/icon/addToCookbook.svg'); ?>" width="24" height="24" alt="Cookbook icon" title="Add to cookbook">
-                        Add to Cookbook
-                </div>
-                <div>
-                    <img src="<?php echo url_for('/images/icon/star.svg'); ?>" width="24" height="24" alt="Star icon" title="Add rating">
-                    Add Rating
-                </div>
+                    <div id="cookbook-icon">
+                        <form action="" method="post">
+                            <input type="hidden" name="cookbookrecipe[recipe_id]" value="<?php echo h($recipe->id); ?>">
+                            <button type="submit">
+                                <img src="<?php echo url_for('/images/icon/addToCookbook.svg'); ?>" width="24" height="24" alt="Cookbook icon" title="Add to cookbook">
+                                Add to Cookbook
+                            </button>
+                        </form>
+                    </div>
+
+                    <div class="rating-container">
+                        
+                            <img src="<?php echo url_for('/images/icon/star.svg'); ?>" width="24" height="24" alt="Star icon" title="Add rating">
+                            Rate this recipe
+                        </label>
+                        <div class="container">
+                            <form action="" method="post">
+                            <div class="star-widget">
+                                <input type="radio" name="rating[rating_value]" id="rate-5" value="5">
+                                <label for="rate-5"></label>
+                                <input type="radio" name="rating[rating_value]" id="rate-4" value="4">
+                                <label for="rate-4"></label>
+                                <input type="radio" name="rating[rating_value]" id="rate-3" value="3">
+                                <label for="rate-3"></label>
+                                <input type="radio" name="rating[rating_value]" id="rate-2" value="2">
+                                <label for="rate-2"></label>
+                                <input type="radio" name="rating[rating_value]" id="rate-1" value="1">
+                                <label for="rate-1"></label>
+                            </div>
+                        </div>
+                        <input type="submit" value="Add rating">
+                        </form>
+                        </div>
+                    </div>
                 <?php endif; ?>
             </div>
             
@@ -162,8 +209,6 @@ include(SHARED_PATH . '/public_header.php');
             </iframe>
         </div>
         <?php endif; ?>
-
-        
     </div>
 </main>
 
