@@ -41,6 +41,7 @@ const recipeImageInput = document.getElementById('recipe_image');
 const resetRecipeFormButton = document.querySelector("#clearRecipeFormButton");
 const submitRecipeButton = document.querySelector("#createRecipeButton");
 
+
 document.querySelectorAll(".dropdown").forEach((dropdown) => {
     const button = dropdown.querySelector(".dropdown-button");
     const checkboxes = dropdown.querySelectorAll("input[type='checkbox']");
@@ -55,6 +56,8 @@ document.querySelectorAll(".dropdown").forEach((dropdown) => {
     updateDropdownButton(button, checkboxes);
 });
 
+
+
 function updateDropdownButton(button, checkboxes) {
 let selected = Array.from(checkboxes)
     .filter((checkbox) => checkbox.checked)
@@ -65,7 +68,11 @@ button.textContent = selected.length > 0 ? selected.join(", ") : "ANY"; // Join 
 
 
 let ingredientIndex = 0;
-
+/**
+ * Adds a new ingredient list input box to form
+ * 
+ * @returns clears input boxes to type next ingredient
+ */
 function addIngredient() {
     let lastQuantity = measurementAmount.value.trim();
     let lastUnit = measurementUnit.value.trim();
@@ -338,4 +345,17 @@ function gcd(a, b) {
             a = temp;
         }
         return a;
+    }
+
+
+function showDeleteForm() {
+        const form = document.getElementById('deleteRecipeForm');
+        form.style.display = 'block';
+        form.style.position = 'absolute';
+        form.style.zIndex = 99;
+    }
+
+function hideDeleteForm() {
+        const form = document.getElementById('deleteRecipeForm');
+        form.style.display = 'none';
     }
