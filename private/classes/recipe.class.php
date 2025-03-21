@@ -88,64 +88,27 @@ class Recipe extends DatabaseObject
     return RecipeVideo::find_by_id($recipe_id);
   }
 
-
-
-public static function deleteRecipe($id) {
-  global $database;
-  
-  try {
-      $database->begin_transaction();
-
-      // Delete from junction tables
-      $sql = "DELETE FROM recipe_meal_types WHERE recipe_id = " . $database->escape_string($id);
-      $database->query($sql);
-
-      $sql = "DELETE FROM recipe_styles WHERE recipe_id = " . $database->escape_string($id);
-      $database->query($sql);
-
-      $sql = "DELETE FROM recipe_diets WHERE recipe_id = " . $database->escape_string($id);
-      $database->query($sql);
-
-      // Delete ingredients
-      $sql = "DELETE FROM ingredients WHERE recipe_id = " . $database->escape_string($id);
-      $database->query($sql);
-
-      // Delete steps
-      $sql = "DELETE FROM steps WHERE recipe_id = " . $database->escape_string($id);
-      $database->query($sql);
-
-      // Delete recipe image record
-      $sql = "SELECT recipe_image FROM recipe_images WHERE recipe_id = " . $database->escape_string($id);
-      $result = $database->query($sql);
-      if ($row = $result->fetch_assoc()) {
-          $imagePath = __DIR__ . '/../' . $row['recipe_image']; // Adjust path if necessary
-          if (file_exists($imagePath)) {
-              unlink($imagePath); // Delete image file
-          }
-      }
-      $sql = "DELETE FROM recipe_images WHERE recipe_id = " . $database->escape_string($id);
-      $database->query($sql);
-
-      // Delete video links
-      $sql = "DELETE FROM recipe_videos WHERE recipe_id = " . $database->escape_string($id);
-      $database->query($sql);
-
-      // Finally, delete the recipe itself
-      $sql = "DELETE FROM recipes WHERE id = " . $database->escape_string($id);
-      $result = $database->query($sql);
-
-      if (!$result) {
-          throw new Exception("Unable to delete recipe.");
-      }
-
-      $database->commit();
-      return true;
-  } catch (Exception $e) {
-      $database->rollback();
-      return false;
-  }
+  /**
+   * Takes the recipe id and finds the diet icons associated with the recipe's diet types
+   * @param mixed $recipe_id
+   * @return array $diet_icons array of diet_icon urls
+   */
+  public static function get_diet_icons($recipe_id) {
+    $recipe_diets = RecipeDiet::find_by_recipe_id($recipe_id); // Use find_by_recipe_id method to get related rows
+    $diet_icons = [];
+    
+    // Check if the result is an array and iterate over it
+    if ($recipe_diets) {
+        foreach ($recipe_diets as $recipe_diet) {
+            $diet = Diet::find_by_id($recipe_diet->diet_id);
+            if ($diet) {
+                $diet_icons[] = $diet->diet_icon_url; // Store the diet icon URL
+            }
+        }
+    }
+    
+    return $diet_icons;
 }
-
 
 
 public static function find_newest_recipes() {
@@ -163,5 +126,109 @@ public static function find_quick_recipes() {
   return Recipe::find_by_sql("SELECT * FROM recipe WHERE (recipe_prep_time_seconds + recipe_cook_time_seconds) < 1800");
 }
 
+public static function search_recipes($searchQuery = '', $prepCookTimeTotal = [], $recipeDifficulty = [], $mealTypes = [], $styles = [], $diets = []) {
+  // Start building the query
+  $sql = "SELECT * FROM recipe WHERE 1=1"; // Base query (this ensures we have a valid WHERE clause)
 
-} 
+  // Handle search query in recipe_name and recipe_description for partial matches
+  if (!empty($searchQuery)) {
+      // Explode the search query into individual words
+      $searchTerms = explode(" ", $searchQuery);
+      
+      // Loop through search terms and create multiple LIKE conditions
+      $searchConditions = [];
+      foreach ($searchTerms as $term) {
+          $term = "%" . $term . "%"; // Prepare each term for LIKE operator with wildcards
+          $searchConditions[] = "(recipe_name LIKE '{$term}' OR recipe_description LIKE '{$term}')";
+      }
+
+      // Combine the search conditions with AND (match all terms)
+      $sql .= " AND (" . implode(" AND ", $searchConditions) . ")";
+  }
+
+  // Add filter conditions for prepCookTimeTotal
+  if (!empty($prepCookTimeTotal)) {
+      $timeConditions = [];
+      
+      // Loop through selected time filters
+      foreach ($prepCookTimeTotal as $timeFilter) {
+          switch ($timeFilter) {
+              case '900': // 15 mins or less
+                  $timeConditions[] = "(recipe_prep_time_seconds + recipe_cook_time_seconds) <= 900";
+                  break;
+              case '1800': // 30 mins or less
+                  $timeConditions[] = "(recipe_prep_time_seconds + recipe_cook_time_seconds) <= 1800";
+                  break;
+              case '2700': // 45 mins or less
+                  $timeConditions[] = "(recipe_prep_time_seconds + recipe_cook_time_seconds) <= 2700";
+                  break;
+              case '3600-7200': // 1-2 hours (3600 - 7200)
+                  $timeConditions[] = "(recipe_prep_time_seconds + recipe_cook_time_seconds) BETWEEN 3600 AND 7200";
+                  break;
+              case '7200+': // 2+ hours (greater than 7200)
+                  $timeConditions[] = "(recipe_prep_time_seconds + recipe_cook_time_seconds) > 7200";
+                  break;
+          }
+      }
+
+      // If there are any time conditions, join them with OR
+      if (!empty($timeConditions)) {
+          $sql .= " AND (" . implode(" OR ", $timeConditions) . ")";
+      }
+  }
+
+  // Add filter conditions for recipe_difficulty
+  if (!empty($recipeDifficulty)) {
+      $difficultyConditions = [];
+      
+      // Loop through selected difficulty filters
+      foreach ($recipeDifficulty as $difficulty) {
+          $difficultyConditions[] = "recipe_difficulty = '{$difficulty}'";
+      }
+
+      // If there are any difficulty conditions, join them with OR
+      if (!empty($difficultyConditions)) {
+          $sql .= " AND (" . implode(" OR ", $difficultyConditions) . ")";
+      }
+  }
+
+  // Add JOINs for meal types, styles, and diets if necessary
+  if(!empty($mealTypes)){
+      $mealTypeConditions = [];
+      foreach($mealTypes as $mealType) {
+          $mealTypeConditions[] = "rm.meal_type_id = {$mealType}";
+      }
+      if (!empty($mealTypeConditions)) {
+          $sql .= " JOIN recipe_meal_type AS rm ON r.id = rm.recipe_id AND (" . implode(" OR ", $mealTypeConditions) . ")";
+      }
+  }
+
+  if(!empty($styles)){
+      $styleConditions = [];
+      foreach($styles as $style) {
+          $styleConditions[] = "rs.style_id = {$style}";
+      }
+      if (!empty($styleConditions)) {
+          $sql .= " JOIN recipe_style AS rs ON r.id = rs.recipe_id AND (" . implode(" OR ", $styleConditions) . ")";
+      }
+  }
+
+  if(!empty($diets)){
+      $dietConditions = [];
+      foreach($diets as $diet) {
+          $dietConditions[] = "rd.diet_id = {$diet}";
+      }
+      if (!empty($dietConditions)) {
+          $sql .= " JOIN recipe_diet AS rd ON r.id = rd.recipe_id AND (" . implode(" OR ", $dietConditions) . ")";
+      }
+  }
+  return self::find_by_sql($sql);
+}
+
+  // Execute the query and return the results
+}
+
+
+
+
+ 
