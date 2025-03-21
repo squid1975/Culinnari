@@ -45,10 +45,11 @@ nav ul {
 #headerLoginSignup  {
     display: flex;
     align-items: center;
-    background: #868b7c;
+    background: #D8A7A0;
     box-shadow: 0 0 5px #333;
     padding: 5px 10px;
     transition: 0.2s ease-in;
+    border-radius: 5px;
 
     &:hover {
         background:#c0c7b3;
