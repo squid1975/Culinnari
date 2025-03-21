@@ -24,18 +24,32 @@ function require_super_admin_login() {
   }
 }
 
-function display_errors($errors=array()) {
+function display_errors($errors = array(), $field = '') {
   $output = '';
-  if(!empty($errors)) {
-    $output .= "<div class=\"errors\">";
-    $output .= "Error:";
-    $output .= "<ul>";
-    foreach($errors as $error) {
-      $output .= "<li>" . h($error) . "</li>";
+  
+  // Check if there are errors for a specific field
+  if (!empty($errors)) {
+    // If no specific field is passed, display the general errors
+    if ($field === '') {
+      $output .= "<div class=\"errors\">";
+      $output .= "Error:";
+      $output .= "<ul>";
+      foreach ($errors as $error) {
+        $output .= "<li>" . h($error) . "</li>";
+      }
+      $output .= "</ul>";
+      $output .= "</div>";
+    } 
+    // If a specific field is passed, only display errors for that field
+    elseif (isset($errors[$field]) && !empty($errors[$field])) {
+      $output .= "<div class=\"error-messages\">";
+      foreach ($errors[$field] as $error) {
+        $output .= "<p class=\"error\">" . h($error) . "</p>";
+      }
+      $output .= "</div>";
     }
-    $output .= "</ul>";
-    $output .= "</div>";
   }
+  
   return $output;
 }
 
