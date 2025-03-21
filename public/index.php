@@ -1,5 +1,6 @@
+<title>Home | Culinnari</title>
+
 <?php require_once('../private/initialize.php'); 
-$pageTitle = "Home | Culinnari"; 
 include SHARED_PATH . '/public_header.php'; 
 $newRecipes = Recipe::find_newest_recipes();
 $recipes_to_display = array_slice($newRecipes, 0, 4);
@@ -23,6 +24,33 @@ $displayQuickRecipes = array_slice($quickRecipes, 0, 4);
             
             <div id="wrapper">
                     <?php include SHARED_PATH .'/recipe_search.php'; ?>
+                    
+                    <?php if(!$session->is_logged_in()): ?>
+                    <section id="becomeMemberCTA">
+                        <h2>Become a Culinnari Community Member!</h2>
+                        <div>
+                            <div>
+                                <img src="<?php echo url_for('/images/icon/pencil.svg');?>" width="33" height="33" alt="A pencil icon for writing recipes">
+                                <h3>Create recipes</h3>
+                                <p>Post and share your recipes.</p>
+                            </div>
+
+                            <div>
+                                <img src="<?php echo url_for('/images/icon/star.svg');?>" width="33" height="32" alt="A star icon meant for rating recipes">
+                                <h3>Rate recipes</h3>
+                                <p>Rate the recipes you make!</p>
+                            </div>
+
+                            <div>
+                                <img src="<?php echo url_for('/images/icon/notebook.svg');?>" width="33" height="33" alt="A cookbook icon">
+                                <h3>Build your cookbook</h3>
+                                <p>Save recipes you love to your cookbook.</p>
+                            </div>
+                        </div>
+                        <a class="primaryButton"href="<?php echo url_for('/login_signup.php');?>">Sign Up Today!</a>
+                    </section>
+                    <?php endif; ?>
+
                     <div class="dietKey">
                         <div class="dietIconWithName">
                             <img src="images/icon/dietIcons/glutenFree.svg" width="20" height="20" alt="gluten free icon" title="Gluten free recipe icon">
