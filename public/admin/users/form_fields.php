@@ -41,13 +41,13 @@ if(!isset($user)) {
   <div class="userFormInput">
     <label>User role:</label>
     <div>
+      <label for="userRole">
+        <input type="radio" id="userRole" name="user[user_role]" value="m" <?php echo ($user->user_role == 'm'); ?>>
+        Member
+      </label>
       <label for="adminRole">
         <input type="radio" id="adminRole" name="user[user_role]" value="a" <?php echo ($user->user_role == 'a');?>>
         Admin
-      </label>
-      <label for="userRole">
-        <input type="radio" id="userRole" name="user[user_role]" value="m" <?php echo ($user->user_role == 'm'); ?>>
-        User
       </label>
       <label for="superAdminRole">
         <input type="radio" id="superAdminRole" name="user[user_role]" value="s" <?php echo ($user->user_role == 's');?>>

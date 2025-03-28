@@ -39,31 +39,24 @@ if(is_post_request()) {
 }
 
 ?>
-
-
-<div id="content">
+<main role="main" tabindex="-1">
+  <div id="wrapper">
 
   <a class="back-link" href="<?php echo url_for('/admin/index.php'); ?>">&laquo; Back to List</a>
-
-  <div class="user edit">
-    <h1>Edit user</h1>
+    <h2>Edit user</h2>
 
     <?php echo display_errors($user->errors); ?>
 
     <form action="<?php echo url_for('/users/edit.php?id=' . h(u($id))); ?>" method="post">
 
       
-      <?php 
-      include('form_fields.php'); 
+      <?php include('form_fields.php'); 
       ?>
 
-      <div id="operations">
-        <input type="submit" value="Edit user" />
-      </div>
+      <input type="submit" value="Update User">
     </form>
 
   </div>
-
-</div>
+</main>
 
 <?php include(SHARED_PATH . '/public_footer.php'); ?>
