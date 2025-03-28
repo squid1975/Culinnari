@@ -61,7 +61,7 @@ function convertSeconds($seconds) {
 }
 
 function formatDate($timestamp) {
-  return date("d/m/Y", strtotime($timestamp));
+  return date("m/d/Y", strtotime($timestamp));
 }
 
 function fractionToDecimal($fraction) {
@@ -77,10 +77,25 @@ function fractionToDecimal($fraction) {
       return round((float) $fraction, 2);  // Round to two decimal places
   }
 
-  // Check if the input is a fraction (e.g., "1/2", "3/4")
-  if (preg_match('/^(\d+)\s*(\/)\s*(\d+)$/', $fraction, $matches)) {
-      $numerator = (int) $matches[1];
+  // Handle mixed numbers (e.g., "16 1/2")
+  if (preg_match('/^(\d+)\s+(\d+)\/(\d+)$/', $fraction, $matches)) {
+      $wholeNumber = (int) $matches[1];
+      $numerator = (int) $matches[2];
       $denominator = (int) $matches[3];
+
+      if ($denominator == 0) {
+          return null; // Avoid division by zero
+      }
+
+      // Convert the mixed number to a decimal
+      $decimal = $wholeNumber + ($numerator / $denominator);
+      return round($decimal, 2);  // Round to two decimal places
+  }
+
+  // Check if the input is a simple fraction (e.g., "1/2", "3/4")
+  if (preg_match('/^(\d+)\/(\d+)$/', $fraction, $matches)) {
+      $numerator = (int) $matches[1];
+      $denominator = (int) $matches[2];
 
       if ($denominator == 0) {
           return null; // Avoid division by zero
@@ -121,7 +136,7 @@ function decimal_to_fraction($decimal) {
   }
 }
 
-// Helper function for finding the greatest common divisor
+// Helper function to calculate the greatest common divisor (GCD)
 function gcd($a, $b) {
   while ($b != 0) {
       $temp = $b;
@@ -129,5 +144,12 @@ function gcd($a, $b) {
       $a = $temp;
   }
   return $a;
+}
+
+function extractYouTubeID($url) {
+  // Regular expression to match YouTube URLs
+  preg_match('/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/', $url, $matches);
+  
+  return $matches[1] ?? null; // Return video ID or null if not found
 }
 
