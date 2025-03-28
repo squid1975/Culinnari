@@ -13,10 +13,9 @@ class Rating extends DatabaseObject {
 
     public function __construct($args = [])
     {
-        $this->rating = $args['rating'] ?? '';
-        $this->recipe_id = $args['recipe_id'] ?? '';
-        $this->user_id = $args['user_id'] ?? '';
-        $this->rating_value = $args['rating_value'] ?? '';
+        $this->user_id = $args['user_id'] ?? 1;
+        $this->recipe_id = $args['recipe_id'] ?? 1;
+        $this->rating_value = $args['rating_value'] ?? 1;
         $this->rating_date = $args['rating_date'] ?? date('Y-m-d h:m:s');
     }
 
@@ -30,13 +29,7 @@ class Rating extends DatabaseObject {
         return $this->errors;
     }
 
-    public function getRecipe()
-    {
-        if (!$this->recipe_id) {
-            $this->recipe_id = Recipe::find_by_id($this->recipe_id);
-        }
-        return $this->recipe_id;
-    }
+  
 
     public function getRatingCount()
     {
@@ -61,14 +54,30 @@ class Rating extends DatabaseObject {
         }
     }
 
-    public function getAverageRating()
-    {
-        $sql = "SELECT AVG(rating) FROM rating ";
-        $sql .= "WHERE recipe_id='" . self::$database->escape_string($this->recipe_id) . "'";
-
+    public static function get_average_rating($recipe_id) {
+        $sql = "SELECT AVG(rating_value) AS avg_rating FROM rating ";
+        $sql .= "WHERE recipe_id='" . self::$database->escape_string($recipe_id) . "'";
+    
         $result = self::$database->query($sql);
-        $row = $result->fetch_row();
-        return;
+    
+        if (!$result) {
+            die("Database query failed: " . self::$database->error);
+        }
+    
+        $row = $result->fetch_assoc();
+        return $row['avg_rating'] ?? 0; // Return the average rating or 0 if null
+    }
+
+    public static function find_by_user_and_recipe( $user_id, $recipe_id ) {
+        $sql = "SELECT * FROM " . static::$table_name . " ";
+        $sql .= "WHERE user_id='" . self::$database->escape_string($user_id) . "' ";
+        $sql .= "AND recipe_id='" . self::$database->escape_string($recipe_id) . "'";
+        $obj_array = static::find_by_sql($sql);
+        if(!empty($obj_array)) {
+            return array_shift($obj_array);
+        } else {
+            return false;
+        }
     }
 }
 
