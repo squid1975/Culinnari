@@ -18,6 +18,8 @@ class CookbookRecipe extends DatabaseObject {
         $sql = "SELECT * FROM cookbook_recipe WHERE id = '" . self::$database->escape_string($cookbook_id) . "'";
         return self::find_by_sql($sql);
     }
+
+    
    
 }
 
