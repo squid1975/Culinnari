@@ -9,5 +9,5 @@ $id = $_SESSION['user_id'] ?? false; ?>
     <title><?php isset($pageTitle) ? $pageTitle : 'Culinnari'; ?></title>
     <link href="<?php echo url_for('css/global.css'); ?>" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-
+    <script src="<?php echo url_for('/js/search.js'); ?>" defer></script>
 </head>
