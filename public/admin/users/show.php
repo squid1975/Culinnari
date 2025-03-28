@@ -6,43 +6,36 @@ $id = $_GET['user_id'] ?? '1'; // PHP > 7.0
 $user = User::find_by_id($id);
 ?>
 
-<?php $pageTitle = 'Management - User ' . h($user->username); ?>
-
-<div id="content">
-
-  <a class="back-link" href="<?php echo url_for('/admin/index.php'); ?>">&laquo; Back to Management Area</a>
-
-    <h1>User: <?php echo h($user->username); ?></h1>
-
-    <div class="attributes">
-      <dl>
-        <dt>Username</dt>
-        <dd><?php echo h($user->username); ?></dd>
-      </dl>
-      <dl>
-        <dt>First Name</dt>
-        <dd><?php echo h($user->user_first_name); ?></dd>
-      </dl>
-      <dl>
-        <dt>Last Name</dt>
-        <dd><?php echo h($user->user_last_name); ?></dd>
-      </dl>
-      <dl>
-        <dt>Email Address</dt>
-        <dd><?php echo h($user->user_email_address); ?></dd>
-      </dl>
-      <dl>
-        <dt>Create Account Date</dt>
-        <dd><?php echo h($user->user_create_account_date); ?></dd>
-      </dl>
-      <dl>
-        <dt>User Role</dt>
-        <dd><?php echo h($user->user_role); ?></dd>
-      </dl>
-    </div>
-
+<main role="main" tabindex="-1">
+  <div id="adminHero">
+    <h2>Management Area : View User</h2>
   </div>
+    <div id="wrapper">
+      <div class="manageUserCard">
 
-</div>
+      <ul>
+        <li>Username: <?php echo h($user->username);?></li>
+        <li>Full Name: <?php echo h($user->user_first_name) . ' ' . h($user->user_last_name); ?></li>
+        <li>Email Address: <?php echo h($user->user_email_address);?></li>
+        <li>Create Account Date: <?php echo h($user->user_create_account_date); ?></li>
+        <li>User Role:
+          <?php if ($user->user_role === 'm'){ ?>
+            Member
+          <?php } elseif ($user->user_role === 'a'){ ?>
+            Admin 
+          <?php } elseif ($user->user_role === 's'){ ?>
+            Super Admin
+            <?php } ?>
+        </li>
+      </ul>
+      
+        <a href="<?php echo url_for('/edit.php?id=' . h(u($user->id))); ?>" >Edit</a>
+        <a href="<?php echo url_for('/admin/users/delete.php?id=' . h(u($user->id))); ?>">Delete</a>
+      
+      </div>
+    </div>
+</main>
+
+
 
 <?php include(SHARED_PATH . '/public_footer.php'); ?>

@@ -28,31 +28,22 @@ $user = new User;
 
 <main role="main" tabindex="-1">
     <div id="adminHero">
-        <h2>Management Area</h2>
+        <h2>Management Area: New User</h2>
     </div>
+    <div id="wrapper">
+      <div class="manageUserCard">
+        <a class="back-link" href="<?php echo url_for('/admin/index.php'); ?>">&laquo; Back to Management Home</a>
+        <h2>Create User</h2>
 
-<div id="content">
+        <?php echo display_errors($user->errors); ?>
 
-  <a class="back-link" href="<?php echo url_for('/admin/index.php'); ?>">&laquo; Back to User Management Area</a>
+        <form action="<?php echo url_for('/users/new.php'); ?>" method="post">
 
-  <div class="users new">
-    <h1>Create User</h1>
+            <?php include('form_fields.php'); ?>
 
-    <?php echo display_errors($user->errors); ?>
-
-    <form action="<?php echo url_for('/users/new.php'); ?>" method="post">
-
-      <?php 
-        include('form_fields.php'); 
-      ?>
-
-      <div id="operations">
-        <input type="submit" value="Create User">
-      </div>
-    </form>
-
-  </div>
-
+            <input type="submit" value="Create User">
+        </form>
+        </div>
 </div>
-
+</main>
 <?php include(SHARED_PATH . '/public_footer.php'); ?>
