@@ -9,7 +9,7 @@ class RecipeVideo extends DatabaseObject {
     public $recipe_id;
 
     public function __construct($args=[]){
-        $this->recipe_image = $args['recipe_video_url'] ?? NULL;
+        $this->recipe_video_url = $args['recipe_video_url'] ?? '';
         $this->recipe_id = $args['recipe_id'] ?? 1;
     }
 
