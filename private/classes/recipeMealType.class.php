@@ -13,6 +13,11 @@ static protected $table_name = 'recipe_meal_type';
         $this->meal_type_id = $args['meal_type_id'] ?? 1;
     }
 
+    public static function find_by_recipe_id($recipe_id) {
+        $sql = "SELECT * FROM " . static::$table_name . " WHERE recipe_id = '" . self::$database->escape_string($recipe_id) . "'";
+        $result_array = static::find_by_sql($sql);
+        return $result_array; // Ensure this returns an array of objects
+    }
     
 }
 ?>
