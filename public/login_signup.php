@@ -23,7 +23,7 @@ if(is_post_request()) {
     $new_id = $user->id;
     $session->login($user);
     $_SESSION['message'] = 'You have been signed up successfully.';
-    redirect_to(url_for('/member/profile.php'));
+    redirect_to(url_for('/member/profile.php?' . $new_id));
   } else {
       $signup_errors = $user->errors;
   }
@@ -71,114 +71,120 @@ if(is_post_request()) {
 }
 }
 ?>
-
+<script src="<?php echo url_for('/js/script.js'); ?>" defer></script>
 <main role="main" tabindex="-1">
   <div class="loginSignupWrapper">
     <div id="wrapper">
       
       <div id="loginSignupPage">
       <div> 
-  <h2>New User? Sign up here!</h2>
- 
+          <h2>Create Account</h2>
+  
 
-        <form action="" method="post" id="newUserForm">
-            
-          <!-- Username Field -->
-          <div class="signupFormField">
-            <div class="signupInput">
-              <label for="newUsername">Username:</label>
-              <input type="text" id="newUsername" name="user[username]" value="<?php echo htmlspecialchars($user->username ?? ''); ?>" required>
-            </div>
-            <?php if (!empty($signup_errors['user_username'])): ?>
-              <div class="error-messages">
-                <?php foreach ($signup_errors['user_username'] as $error): ?>
-                  <p class="error"><?php echo htmlspecialchars($error); ?></p>
-                <?php endforeach; ?>
+          <form action="" method="post" id="newUserForm">
+              
+            <!-- Username Field -->
+            <div class="signupFormField">
+              <div class="signupInput">
+                <label for="newUsername">Username:</label>
+                <input type="text" id="newUsername" name="user[username]" value="<?php echo htmlspecialchars($user->username ?? ''); ?>" required>
               </div>
-            <?php endif; ?>
-          </div>
-
-          <!-- First Name Field -->
-          <div class="signupFormField">
-            <div class="signupInput">
-              <label for="userFirstName">First Name:</label>
-              <input type="text" id="userFirstName" name="user[user_first_name]" value="<?php echo htmlspecialchars($user->user_first_name ?? ''); ?>" required>
+              <div id="username-requirements" class="requirements"></div>
+              <?php if (!empty($signup_errors['user_username'])): ?>
+                <div class="error-messages">
+                  <?php foreach ($signup_errors['user_username'] as $error): ?>
+                    <p class="error"><?php echo htmlspecialchars($error); ?></p>
+                  <?php endforeach; ?>
+                </div>
+              <?php endif; ?>
             </div>
-            <?php if (!empty($signup_errors['user_first_name'])): ?>
-              <div class="error-messages">
-                <?php foreach ($signup_errors['user_first_name'] as $error): ?>
-                  <p class="error"><?php echo htmlspecialchars($error); ?></p>
-                <?php endforeach; ?>
-              </div>
-            <?php endif; ?>
-          </div>
 
-          <!-- Last Name Field -->
-          <div class="signupFormField">
-            <div class="signupInput">
-              <label for="userLastName">Last Name:</label>
-              <input type="text" id="userLastName" name="user[user_last_name]" value="<?php echo htmlspecialchars($user->user_last_name ?? ''); ?>" required>
+            <!-- First Name Field -->
+            <div class="signupFormField">
+              <div class="signupInput">
+                <label for="userFirstName">First Name:</label>
+                <input type="text" id="userFirstName" name="user[user_first_name]" value="<?php echo htmlspecialchars($user->user_first_name ?? ''); ?>" required>
+              </div>
+              <div id="firstname-requirements" class="requirements"></div>
+              <?php if (!empty($signup_errors['user_first_name'])): ?>
+                <div class="error-messages">
+                  <?php foreach ($signup_errors['user_first_name'] as $error): ?>
+                    <p class="error"><?php echo htmlspecialchars($error); ?></p>
+                  <?php endforeach; ?>
+                </div>
+              <?php endif; ?>
             </div>
-            <?php if (!empty($signup_errors['user_last_name'])): ?>
-              <div class="error-messages">
-                <?php foreach ($signup_errors['user_last_name'] as $error): ?>
-                  <p class="error"><?php echo htmlspecialchars($error); ?></p>
-                <?php endforeach; ?>
-              </div>
-            <?php endif; ?>
-          </div>
 
-          <!-- Email Address Field -->
-          <div class="signupFormField">
-            <div class="signupInput">
-              <label for="userEmailAddress">Email Address:</label>
-              <input type="email" id="userEmailAddress" name="user[user_email_address]" value="<?php echo htmlspecialchars($user->user_email_address ?? ''); ?>" required>
+            <!-- Last Name Field -->
+            <div class="signupFormField">
+              <div class="signupInput">
+                <label for="userLastName">Last Name:</label>
+                <input type="text" id="userLastName" name="user[user_last_name]" value="<?php echo htmlspecialchars($user->user_last_name ?? ''); ?>" required>
+              </div>
+              <div id="lastname-requirements" class="requirements"></div>
+              <?php if (!empty($signup_errors['user_last_name'])): ?>
+                <div class="error-messages">
+                  <?php foreach ($signup_errors['user_last_name'] as $error): ?>
+                    <p class="error"><?php echo htmlspecialchars($error); ?></p>
+                  <?php endforeach; ?>
+                </div>
+              <?php endif; ?>
             </div>
-            <?php if (!empty($signup_errors['user_email_address'])): ?>
-              <div class="error-messages">
-                <?php foreach ($signup_errors['user_email_address'] as $error): ?>
-                  <p class="error"><?php echo htmlspecialchars($error); ?></p>
-                <?php endforeach; ?>
-              </div>
-            <?php endif; ?>
-          </div>
 
-          <!-- Password Field -->
-          <div class="signupFormField">
-            <div class="signupInput">
-              <label for="newPassword">Password:</label>
-              <input type="password" id="newPassword" name="user[password]" value="" required>
+            <!-- Email Address Field -->
+            <div class="signupFormField">
+              <div class="signupInput">
+                <label for="userEmailAddress">Email Address:</label>
+                <input type="email" id="userEmailAddress" name="user[user_email_address]" value="<?php echo htmlspecialchars($user->user_email_address ?? ''); ?>" required>
+              </div>
+              <div id="email-requirements" class="requirements"></div>
+              <?php if (!empty($signup_errors['user_email_address'])): ?>
+                <div class="error-messages">
+                  <?php foreach ($signup_errors['user_email_address'] as $error): ?>
+                    <p class="error"><?php echo htmlspecialchars($error); ?></p>
+                  <?php endforeach; ?>
+                </div>
+              <?php endif; ?>
             </div>
-            <?php if (!empty($signup_errors['password'])): ?>
-              <div class="error-messages">
-                <?php foreach ($signup_errors['password'] as $error): ?>
-                  <p class="error"><?php echo htmlspecialchars($error); ?></p>
-                <?php endforeach; ?>
-              </div>
-            <?php endif; ?>
-          </div>
 
-          <!-- Confirm Password Field -->
-          <div class="signupFormField">
-            <div class="signupInput">
-              <label for="confirmPassword">Confirm Password:</label>
-              <input type="password" id="confirmPassword" name="user[confirm_password]" value="" required>
+            <!-- Password Field -->
+            <div class="signupFormField">
+              <div class="signupInput">
+                <label for="newPassword">Password:</label>
+                <input type="password" id="newPassword" name="user[password]" value="" required>
+              </div>
+              <div id="password-requirements" class="requirements"></div>
+              <?php if (!empty($signup_errors['password'])): ?>
+                <div class="error-messages">
+                  <?php foreach ($signup_errors['password'] as $error): ?>
+                    <p class="error"><?php echo htmlspecialchars($error); ?></p>
+                  <?php endforeach; ?>
+                </div>
+              <?php endif; ?>
             </div>
-            <?php if (!empty($signup_errors['confirm_password'])): ?>
-              <div class="error-messages">
-                <?php foreach ($signup_errors['confirm_password'] as $error): ?>
-                  <p class="error"><?php echo htmlspecialchars($error); ?></p>
-                <?php endforeach; ?>
-              </div>
-            <?php endif; ?>
-          </div>
 
-          <input type="submit" value="Create Account" class="loginSignupButton">
-        </form>
+            <!-- Confirm Password Field -->
+            <div class="signupFormField">
+              <div class="signupInput">
+                <label for="confirmPassword">Confirm Password:</label>
+                <input type="password" id="confirmPassword" name="user[confirm_password]" value="" required>
+              </div>
+              <div id="confirmPassword-requirements" class="requirements"></div>
+              <?php if (!empty($signup_errors['confirm_password'])): ?>
+                <div class="error-messages">
+                  <?php foreach ($signup_errors['confirm_password'] as $error): ?>
+                    <p class="error"><?php echo htmlspecialchars($error); ?></p>
+                  <?php endforeach; ?>
+                </div>
+              <?php endif; ?>
+            </div>
+
+            <input type="submit" value="Create Account" class="loginSignupButton">
+          </form>
       </div>
 
-          <div>
-          <h2>Returning user? Log in here!</h2>
+      <div>
+          <h2>Log In</h2>
           <?php echo display_errors($login_errors); ?>
           <form action="" method="POST">
           
