@@ -275,10 +275,18 @@ footer {
         z-index: 10;
         width: fit-content;
 
+       
+
         & a{
             display: flex;
             flex-wrap: nowrap;
+            padding: 10px;
+
+            & img {
+                margin-right: 5px;
+            }
         }
+        
     }
     
     /* Show the menu when the checkbox is checked */

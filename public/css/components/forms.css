@@ -36,11 +36,16 @@
 
 }
 
+.signUpFormField {
+    min-height: 70px;
+    background: white;
+}
+
 .signupInput {
     display: flex;
     flex-wrap: nowrap;
     padding: 10px;
-    margin: 10px 0;
+    margin-top: 10px;
     
     & label {
         margin-right: 5px;
@@ -49,6 +54,17 @@
     & input {
         border-radius: 3px;
     }
+}
+
+.requirements {
+    display: none;
+    color: #ff0000; 
+    font-size: 14px;
+    margin: 5px;
+  }
+
+#password-requirements ul li {
+    list-style-type: circle;
 }
 
 .loginSignupButton {
@@ -144,7 +160,8 @@ input#mainSearch {
     position: relative;
 }
 
-.dropdown-button {
+.dropdown-button,
+#sortByButton {
     color: rgb(0, 0, 0);
     padding: 10px;
     border: 1px solid #333;
@@ -184,7 +201,6 @@ input#mainSearch {
     margin-right: 10px;
 }
 
-
 .searchReset {
     border: none;
     font-size: 18px;
@@ -197,14 +213,22 @@ input#mainSearch {
 
 /*********************************** CREATE/EDIT RECIPE PAGE ********************/
 
-
-
 .recipeFormWrapper {
     max-width: 1000px;
     margin: 0 auto;
     background: #fdfbf4;
     padding: 15px;
     box-shadow: 0 0 5px #3C2F2F;
+
+    & input {
+        border-radius: 5px;
+        padding: 5px 10px;
+    }
+
+    & select {
+        border-radius: 5px;
+        padding: 5px 10px;
+    }
 }
 
 .recipeFormHeading {
@@ -215,10 +239,7 @@ input#mainSearch {
 
 #createRecipeForm {
     padding: 20px;
-
-    & button {
-        font-family: 'Lustria', sans-serif;
-    }
+    
 }
 
 #createRecipeForm span {
@@ -226,6 +247,18 @@ input#mainSearch {
     margin-top: 5px;
     margin-bottom: 5px;
     font-size: 16px;
+    font-style:italic;
+    min-width: 300px;
+}
+
+h3.recipePartName {
+    padding-top: 20px;
+    border-top: 1px solid #969696;
+    text-align: center;
+
+    + span {
+        text-align: center;
+    }
 }
 
 label.recipePartName {
@@ -238,6 +271,9 @@ label.recipePartName {
 
 textarea#recipeDescription {
     width: 100%;
+    border-radius: 5px;
+    font: 16px 'Lato', serif;
+    padding: 3px;
 }
 
 input#recipeName {
@@ -279,6 +315,8 @@ legend {
 #totalServingsContainer {
     display: flex;
     align-items: baseline;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
 
     & label {
         margin-right: 5px;
@@ -294,6 +332,7 @@ legend {
     display: flex;
     justify-content: space-around;
     align-items: center;
+    margin-bottom: 10px;
 
     & select {
         font-family: 'Lato', serif;
@@ -316,31 +355,52 @@ legend {
     padding: 5px 10px;
 }
 
+fieldset#steps {
+    border-top: 1px solid black;
+    margin-top: 30px;
+}
+
 #stepInput {
-    width: 75%;
+    width: 90%;
 }
 #stepInputAndButton {
     display: flex;
+    justify-content: space-evenly;
 }
 
 .removeStep {
-    border: none;
-    box-shadow: 0 0 5px #333;
+    margin-left: 5px;
+    border-radius: 5px;
+    padding: 5px;
+    cursor: pointer;
+    background: #f75252;
+
+    & ::hover {
+        background: rgb(238, 134, 134);
+
+    }
+
 }
 
 button#addStep {
     background: #9ddf94;
     border: none;
     padding: 10px;
-    box-shadow: 0 0 5px #3C2F2F;
+    box-shadow: 0 0 3px #3C2F2F;
+    cursor: pointer;
 }
 
 button#addStep:hover {
     background: #9ac594;
 }
 
+#enteredIngredients {
+    margin-top: 30px;
+}
+
 .addedIngredients {
     border: 1px solid #3C2F2F;
+    border-radius: 5px;
     padding: 3px;
     margin-bottom: 5px;
     background: #F0F0F0;
@@ -350,20 +410,37 @@ button#addIngredient {
     border: none;
     background: #9ddf94;
     padding: 10px;
+    cursor: pointer;
+
+    &:hover {
+        background: #9ac594;
+    }
 }
 
 button.removeIngredient {
-    padding: 5px;
+    padding: 5px 10px;
+    border-radius: 5px;
+    background: #ff0000;
+
+    &:hover {
+        background: #ee8686;
+    }
+
 }
 
 .addedSteps {
     display: flex;
     align-items: center;
     margin: 10px 5px;
+    background: #dfdcd7;
+    padding: 5px;
+    width: 100%;
+    border: 1px solid #3C2F2F;
+    border-radius: 5px;
 }
 
 #measurementAmount {
-    width: 70px;
+    width: 100px;
 }
 
 #checkboxes {
@@ -374,21 +451,26 @@ button.removeIngredient {
     & fieldset {
         border: 1px solid #cecece;
         width: 100%;
+        background: #fff;
+    }
+
+    & label {
+        cursor: pointer;
+    }
+
+    & input[type="checkbox"] {
+        cursor: pointer;
     }
 }
 
-h3.recipePartName {
-    padding-top: 20px;
-    border-top: 1px solid #969696;
-    text-align: center;
 
-    + span {
-        text-align: center;
-    }
-}
 
 #youtube_link {
     width: 100%;
+}
+
+.recipeSubmitReset {
+    text-align: center;
 }
 
 #createRecipeButton {
@@ -399,16 +481,35 @@ h3.recipePartName {
     border: none;
     box-shadow: 0 0 5px #333;
     transition: 0.2 ease;
+    cursor:pointer;
 
     &:hover {
-        background: #3cc45a;
+        background: #b3dbbc;
+
+        
     }
    
 }
 
 #clearRecipeFormButton {
     font-family: 'Lato', serif;
-    background-color: red;
+    background-color: #ff0000;
+    cursor: pointer;
+    
+    &:hover {
+        background-color: #f18484;
+    }
+}
+
+.profileDeleteRecipe {
+    position: relative;
+}
+
+.deleteRecipeForm {
+    position: absolute;
+    background: white;
+    border: 1px solid #ff0000;
+    width: 300px;
 }
 
 /******* ADMIN AREA *********/
@@ -417,10 +518,23 @@ h3.recipePartName {
 
 .userFormInput {
     display: flex;
+    margin: 10px 0;
+
+    & label {
+        margin-right: 5px;
+    }
+
+    & div {
+        display: flex;
+        justify-content: space-between;
+        width: 300px;
+
+    }
 }
 
 /***************************************************************** MEDIA QUERIES ******************************************************************/
 
+/*************** SEARCH BAR*********************/
 @media screen and (max-width: 650px) {
     /****  SEARCH BAR ***/
     .filters {
@@ -457,4 +571,18 @@ h3.recipePartName {
     #checkboxes {
         display: block;
     }
-}    
+}
+
+/************************ CREATE RECIPE ******************/
+@media screen and (max-width: 800px) {
+     #ingredientInputs {
+        display: block;
+        width: fit-content;
+     }
+}
+
+@media screen and (max-width: 500px) {
+    .radio-group {
+        display: block;
+    }
+}

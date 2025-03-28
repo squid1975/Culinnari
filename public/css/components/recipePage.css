@@ -4,6 +4,80 @@
     max-width: 1200px;
     margin: 0 auto;
     padding: 20px;
+
+    & #recipeDisplayUsernameOptions {
+        display: flex;
+        justify-content: space-between;
+        border-top: 1px solid black;
+    }
+}
+
+.star-widget,
+.cookbook-widget {
+    display: none;
+}
+
+.star-widget {
+    position: absolute;
+    top: 10px;
+    background: rgb(255, 255, 255);
+    padding: 5px;
+    border: 1px solid black;
+}
+  .stars i {
+    color: #e6e6e6;
+    font-size: 35px;
+    cursor: pointer;
+    transition: color 0.2s ease;
+  }
+  .stars i.active {
+    color: #ff9c1a;
+  }
+
+#recipeDisplayOptions {
+    display: flex;
+    align-items: center;
+
+    > div#recipeDisplayPrint a {
+        display: flex;
+        align-items: center;
+        padding: 5px;
+        
+        border-radius: 5px;
+
+        > img {
+            margin-right: 5px;
+        }
+    }
+
+     & div.recipeDisplayRatingHeading {
+        display: flex;
+        justify-content: center;
+        
+    }
+
+    & button#addRatingButton, 
+    button#recipeDisplayAddToCookbook {
+        border: none;
+        background: none;
+        font-size: 15px;
+        border-radius: 5px;
+        padding: 5px;
+        margin: 5px;
+        display: flex;
+        align-items: center;
+
+        > img {
+            margin-right: 5px;
+        }
+
+        &:hover {
+            border: 1px solid black;
+        }
+    }
+
+    
+   
 }
 
 #recipeNameImageDesc {
@@ -14,12 +88,33 @@
     border-bottom: 1px dotted black;
     border-top: 1px solid black;
     padding: 10px;
+
+    > .recipeImage {
+        border: 3px solid black;
+        margin: 10px 0;
+    }
 }
 
 #recipeDisplayrecipeDescription {
     max-width: 500px;
     text-align: center;
 }
+
+#recipeDisplayCategories {
+    padding: 10px;
+
+    > span {
+        background: #FFFAF0;
+        border: 1px solid #dadada;
+        border-radius: 5px;
+        padding: 10px;
+        margin: 5px;
+    }
+
+    
+}
+
+
 
 #iconsStars {
     display: flex;
@@ -30,10 +125,7 @@
     padding: 10px;
 }
 
-#recipeDisplayOptions {
-    display: flex;
-   
-}
+
 
 
 div#recipeDisplayDifficulty p {
@@ -57,34 +149,6 @@ div#recipeDisplayDifficulty p#recipeDisplayAdvanced {
     display: flex;
 }
 
-.rating-box {
-    position: relative;
-    background: #fff;
-    padding: 25px 50px 35px;
-    border-radius: 25px;
-    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.05);
-  }
-  .rating-box header {
-    font-size: 22px;
-    color: #dadada;
-    font-weight: 500;
-    margin-bottom: 20px;
-    text-align: center;
-  }
-  .rating-box .stars {
-    display: flex;
-    align-items: center;
-    gap: 25px;
-  }
-  .stars i {
-    color: #e6e6e6;
-    font-size: 35px;
-    cursor: pointer;
-    transition: color 0.2s ease;
-  }
-  .stars i.active {
-    color: #ff9c1a;
-  }
 
 
 #recipeDisplayprepCook p {
@@ -104,9 +168,12 @@ div#recipeDisplayDifficulty p#recipeDisplayAdvanced {
 
     & h3 {
         font-size: 24px;
+        margin: 20px 0;
+        padding: 5px 0;
+        border-bottom: 1px solid gray;
+        width: fit-content;
     }
 }
-
 
 #recipeDisplayIngredientsSteps div {
     width: 50%;
@@ -126,6 +193,11 @@ div#recipeDisplayDifficulty p#recipeDisplayAdvanced {
     padding: 5px 10px;
     border-radius: 10px;
     margin-right: 5px;
+}
+
+#selected {
+    box-shadow: 0 0 3px red;
+    background: #D8A7A0;
 }
 
 li.recipeIngredientListing {
@@ -167,12 +239,13 @@ li.recipeIngredientListing {
 
     /* Hide elements that are not needed in print */
     header,
+    #recipeDisplayUsername p,
     #recipeNameImageDesc img,
     #recipeDisplayRatingStars,
     #recipeDisplayDifficulty,
     #recipeDisplayOptions,
     #recipeDisplayChangeServingAmt,
-    #recipeDisplayYouTubeVideo,
+    #recipeDisplayVideo,
     footer {
         display: none;
     }
