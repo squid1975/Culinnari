@@ -2,3 +2,4 @@
 
 
 Culinnari is a recipe sharing platform created as part of my Capstone Project. This platform was created using a combination of HTML, CSS, JavaScript, PHP, and MySQL. 
+Using OOP and dynamic content is the main focus of this project. 
