@@ -1,31 +1,5 @@
-![logo](https://github.com/user-attachments/assets/3f60b2ae-e25a-465b-8e55-756d9acf3219)<?xml version="1.0" encoding="UTF-8"?>
-<svg id="Layer_2" data-name="Layer 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 215.15 60">
-  <defs>
-    <style>
-      .cls-1 {
-        stroke-width: .97px;
-      }
 
-      .cls-1, .cls-2, .cls-3, .cls-4 {
-        fill: none;
-        stroke: #000;
-        stroke-linecap: round;
-        stroke-linejoin: round;
-      }
 
-      .cls-2 {
-        stroke-width: .97px;
-      }
-
-      .cls-3 {
-        stroke-width: .97px;
-      }
-
-      .cls-4 {
-        stroke-width: .97px;
-      }
-    </style>
-  </defs>
   <g id="Layer_1-2" data-name="Layer 1">
     <g>
       <path d="M8.24,28.46c0,15.46,5.16,24.9,15.47,24.9,7.59,0,11.75-3.88,13.89-13.88h2.51l-.5,16.89h-2.36c-.5-1.03-.79-1.82-1.86-1.82-1.36,0-6.02,2.7-12.25,2.7C9.17,57.25,0,48.76,0,28.54,0,9.75,10.24,0,23.42,0c5.59,0,9.88,2.38,11.46,2.38,1.07,0,1.36-.63,1.86-1.66h2.22l.5,16.57h-2.51c-2.08-10.15-6.23-13.4-13.54-13.4-9.67,0-15.18,7.61-15.18,24.58Z"/>
