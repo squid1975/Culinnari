@@ -1,3 +1,4 @@
-![logo](https://github.com/user-attachments/assets/160208b8-a1ac-4203-a6a1-c81899a58428)
+![image](https://github.com/user-attachments/assets/5cd7f070-de7c-4508-9fb2-919ec3c06fa3)
+
 
 Culinnari is a recipe sharing platform created as part of my Capstone Project. 
