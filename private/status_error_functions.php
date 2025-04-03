@@ -2,14 +2,14 @@
 function require_login (){
   global $session;
   if(!$session->is_logged_in()) {
-    redirect_to(url_for('/login.php'));
+    redirect_to(url_for('/login_signup.php'));
   }
 }
 
 function require_mgmt_login() {
   global $session;
   if(!$session->is_mgmt_logged_in()) {
-    redirect_to(url_for('/login.php'));
+    redirect_to(url_for('/login_signup.php'));
   } else {
     // Do nothing, let the rest of the page proceed
   }
@@ -18,7 +18,7 @@ function require_mgmt_login() {
 function require_super_admin_login() {
   global $session;
   if(!$session->is_super_admin_logged_in()){
-    redirect_to(url_for('/login.php'));
+    redirect_to(url_for('/login_signup.php'));
   } else {
     //
   }
@@ -53,17 +53,3 @@ function display_errors($errors = array(), $field = '') {
   return $output;
 }
 
-function get_and_clear_session_message() {
-  if(isset($_SESSION['message']) && $_SESSION['message'] != '') {
-    $msg = $_SESSION['message'];
-    unset($_SESSION['message']);
-    return $msg;
-  }
-}
-
-function display_session_message() {
-  $msg = get_and_clear_session_message();
-  if(isset($msg) && $msg != '') {
-    return '<div id="message">' . h($msg) . '</div>';
-  }
-}
