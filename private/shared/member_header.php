@@ -14,7 +14,7 @@
             <img src="<?php echo url_for('/images/icon/profileIcon.svg'); ?>" width="20" height="20" alt="Profile icon" title="My Culinnari Profile Icon">My Profile</a>        
         <a href="<?php echo url_for('/member/create_recipe.php'); ?>">
             <img src="<?php echo url_for('/images/icon/addRecipe.svg'); ?>" width="20" height="20" alt="Add recipe icon" title="Add recipe">
-            Post a recipe</a>
+            Create recipe</a>
         <a href="<?php echo url_for('/logout.php'); ?> ">
             <img src="<?php echo url_for('/images/icon/logout.svg'); ?>" width="20" height="20" alt="Logout Icon" title="Logout">
             Logout <?php echo $user->username; ?> </a>
