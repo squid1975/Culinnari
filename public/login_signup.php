@@ -1,6 +1,5 @@
 <title>Login / Signup | Culinnari</title>
 <?php require('../private/initialize.php'); 
-
 include SHARED_PATH . '/public_header.php'; 
 $signup_errors = [];
 $login_errors = [];
@@ -23,7 +22,7 @@ if(is_post_request()) {
     $new_id = $user->id;
     $session->login($user);
     $_SESSION['message'] = 'You have been signed up successfully.';
-    redirect_to(url_for('/member/profile.php?' . $new_id));
+    redirect_to(url_for('/member/profile.php?id=' . $new_id));
   } else {
       $signup_errors = $user->errors;
   }
@@ -74,7 +73,7 @@ if(is_post_request()) {
 <script src="<?php echo url_for('/js/script.js'); ?>" defer></script>
 <main role="main" tabindex="-1">
   <div class="loginSignupWrapper">
-    <div id="wrapper">
+    <div class="wrapper">
       
       <div id="loginSignupPage">
       <div> 
