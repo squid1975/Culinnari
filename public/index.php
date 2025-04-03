@@ -13,17 +13,19 @@ $displayQuickRecipes = array_slice($quickRecipes, 0, 4);
 
 
 <body>
+    
     <main role="main" tabindex="-1">
         <div id="homePageWrapper">
             <div id="homeHero">
-                <div id ="mainHeroText">
+                
+                <div id="mainHeroText">
                     <h2>Cook. Share. Enjoy.</h2>
                     <p>With simple, easy-to-read recipes, our goal is to make cooking focused on food again. No fluff, just feasts.</p>
+                    <?php include SHARED_PATH .'/recipe_search.php'; ?>
                 </div>
             </div> 
             
-            <div id="wrapper">
-                    <?php include SHARED_PATH .'/recipe_search.php'; ?>
+            <div class="wrapper">
                     
                     <?php if(!$session->is_logged_in()): ?>
                     <section id="becomeMemberCTA">
