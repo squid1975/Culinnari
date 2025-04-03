@@ -147,9 +147,20 @@ function gcd($a, $b) {
 }
 
 function extractYouTubeID($url) {
-  // Regular expression to match YouTube URLs
-  preg_match('/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/', $url, $matches);
-  
-  return $matches[1] ?? null; // Return video ID or null if not found
+  preg_match('/(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([A-Za-z0-9_-]{11})/', $url, $matches);
+  return isset($matches[1]) ? $matches[1] : false;  // Return the video ID or false if not found
 }
 
+function convertToEmbedURL($videoID) {
+  return "https://www.youtube.com/embed/$videoID";
+}
+
+function embedToShareLink($embedUrl) {
+  // Check if the URL is a YouTube embed link
+  if (preg_match('/^https:\/\/www\.youtube\.com\/embed\/([a-zA-Z0-9_-]+)/', $embedUrl, $matches)) {
+      $videoId = $matches[1]; // Extract the video ID (e.g., NwuJCqYSyzY)
+      return "https://www.youtube.com/watch?v=" . $videoId; // Construct the share link
+  }
+  // Return the original URL if it doesn't match the embed format
+  return $embedUrl;
+}
