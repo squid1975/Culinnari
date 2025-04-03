@@ -2,7 +2,7 @@
 
 class MealType extends DatabaseObject {
     protected static $table_name = 'meal_type';
-    protected static $db_columns = ['meal_type_name'];
+    protected static $db_columns = ['id','meal_type_name'];
 
     public $id;
     public $meal_type_name;
