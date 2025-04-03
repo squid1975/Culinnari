@@ -1,6 +1,7 @@
 <title>View Recipe | Culinnari</title>
 
 <?php require_once('../private/initialize.php'); 
+include(SHARED_PATH . '/public_header.php'); 
 $id = $_GET['recipe_id'] ?? '1';
 $recipe = Recipe::find_by_id($id);
 $diet_icons = Recipe::get_diet_icons($recipe->id);
@@ -11,9 +12,6 @@ $recipeImage = RecipeImage::find_image_by_recipe_id($recipe->id);
 $ingredients = Ingredient::find_by_recipe_id(($id));
 $steps = Step::find_by_recipe_id(($id));
 $recipe_video = RecipeVideo::find_by_recipe_id($id);
-$cookbooks = Cookbook::find_by_user_id($session->user_id);
-include(SHARED_PATH . '/public_header.php'); 
-
 
 
 if(is_post_request()){
@@ -83,73 +81,11 @@ if(is_post_request()){
         <div id="recipeDisplayPrint">
             <a href="javascript:void(0)" onclick="printRecipe();">
                 <img src="<?php echo url_for('/images/icon/print.svg'); ?>" width="20" height="20" alt="Printer icon" title="Print recipe">
-                Print Recipe
+                Print
             </a>
         </div>
         
-        <?php if($session->is_logged_in()): ?>
-            <?php if($session->user_id != $recipe->user_id): ?>
-            <div id="recipeDisplayAddRating">
-                <button onclick="showRatingWidget()" id="addRatingButton">
-                    <img src="<?php echo url_for('/images/icon/star.svg'); ?>" alt="Star icon for rating" width="20" height="20"> Add Rating
-                </button>
-                <div class="container">
-                    <div class="star-widget">
-                        <form action="" method="post">
-                            <input type="hidden" name="rating[recipe_id]" value="<?php echo h($recipe->id); ?>">
-                            <input type="hidden" name="rating[user_id]" value="<?php echo h($session->user_id); ?>">
-                            <div id="stars">
-                                <input type="radio" name="rating[rating_value]" id="rate-5" value="5">
-                                <label for="rate-5" class="fas fa-star"></label>
-
-                                <input type="radio" name="rating[rating_value]" id="rate-4" value="4">
-                                <label for="rate-4" class="fas fa-star"></label>
-
-                                <input type="radio" name="rating[rating_value]" id="rate-3" value="3">
-                                <label for="rate-3" class="fas fa-star"></label>
-
-                                <input type="radio" name="rating[rating_value]" id="rate-2" value="2">
-                                <label for="rate-2" class="fas fa-star"></label>
-
-                                <input type="radio" name="rating[rating_value]" id="rate-1" value="1" required>
-                                <label for="rate-1" class="fas fa-star"></label>
-                            </div>
-                            <div class="submitRatingbutton">
-                                <button type="submit">Add Rating</button>
-                            </div>
-                            <button type="button" id="closeRatingWidget">X</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-            <?php endif; ?>
-
-            <div id="recipeDisplayAddToCookbook">
-                <button id="recipeDisplayAddToCookbook">
-                    <img src="<?php echo url_for('/images/icon/addToCookbook.svg'); ?>" width="20" height="20" alt="Add to cookbook icon" title="Add recipe to cookbook">Add to Cookbook
-                </button>
-                <div class="container">
-                    <div class="cookbook-widget">
-                        <?php if ($cookbooks) { ?>
-                            <form action="" method="post">
-                                <input type="hidden" name="cookbook_recipe[recipe_id]" value="<?php echo h($recipe->id); ?>">
-                                <?php foreach ($cookbooks as $cookbook): ?>
-                                    <label>
-                                        <input type="checkbox" name="cookbooks[]" value="<?php echo ($cookbook->id); ?>">
-                                        <?php echo h($cookbook->cookbook_name); ?>
-                                    </label><br>
-                                <?php endforeach; ?>
-                                <input type="submit" value="Add to cookbook">
-                            </form>
-                        <?php } else { ?>
-                            <a href="<?php echo url_for('/member/profile.php?id=' . h($user->id)); ?>">Create a cookbook.</a>
-                        <?php } ?>
-                    </div>
-                </div>
-            </div>
-
         
-        <?php endif; ?>
     </div>
 </div>
         
@@ -307,21 +243,80 @@ if(is_post_request()){
                 </ol>        
             </div>
         </div>
-
+        
+        <?php if($recipe_video): ?>
         <div id="recipeDisplayVideo">
             <h3>YouTube Video</h3>
             <div id="videoContainer">
                 <iframe width="560" height="315" 
-                    src="<?php echo htmlspecialchars($recipe_video->recipe_video_url); ?>"  
+                    src="<?php echo h($recipe_video->recipe_video_url); ?>"  
                     allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
                     allowfullscreen>
                 </iframe>
             </div>
-
         </div>
+        <?php endif; ?>
+        
+        <?php if($session->is_logged_in()): ?>
+        <div id="recipeDisplayMembersOptions">
+        <section id="recipeDisplayAddToCookbook">
+            <h3>Add to Cookbook</h3>
+            <div class="cookbook-widget">
+                <?php $cookbooks = Cookbook::find_by_user_id($session->user_id);?>
+                <?php if ($cookbooks) { ?>
+                    <form action="" method="post">
+                        <input type="hidden" name="cookbook_recipe[recipe_id]" value="<?php echo h($recipe->id); ?>">
+                        <?php foreach ($cookbooks as $cookbook): ?>
+                            <label>
+                                <input type="checkbox" name="cookbooks[]" value="<?php echo ($cookbook->id); ?>">
+                                <?php echo h($cookbook->cookbook_name); ?>
+                            </label><br>
+                            <?php endforeach; ?>
+                            <input type="submit" value="Add to cookbook">
+                    </form>
+                    <?php } else { ?>
+                        <a href="<?php echo url_for('/member/profile.php?id=' . h($user->id)); ?>">Create a cookbook.</a>
+                <?php } ?>
+            </div>
+        </section>
+        <?php if($recipe->user_id != $session->user_id): ?>
+            <section id="recipeDisplayAddRating">
+            <h3>Rate this Recipe</h3>
+            <p>Tried this recipe? Add your rating!</p>
+            <div class="star-widget">
+            <form action="" method="post">
+                <input type="hidden" name="rating[recipe_id]" value="<?php echo h($recipe->id); ?>">
+                <input type="hidden" name="rating[user_id]" value="<?php echo h($session->user_id); ?>">
+                <div id="stars">
+                    <input type="radio" name="rating[rating_value]" id="rate-5" value="5">
+                    <label for="rate-5" class="fas fa-star"></label>
+                
+                    <input type="radio" name="rating[rating_value]" id="rate-4" value="4">
+                    <label for="rate-4" class="fas fa-star"></label>
+
+                    <input type="radio" name="rating[rating_value]" id="rate-3" value="3">
+                    <label for="rate-3" class="fas fa-star"></label>
+
+                    <input type="radio" name="rating[rating_value]" id="rate-2" value="2">
+                    <label for="rate-2" class="fas fa-star"></label>
+
+                    <input type="radio" name="rating[rating_value]" id="rate-1" value="1" required>
+                    <label for="rate-1" class="fas fa-star"></label>
+                </div>
+                <div class="submitRatingbutton">
+                    <button type="submit">Add Rating</button>
+                </div>
+            </form>                        
+        </div>
+        </section>
+        <?php endif; ?>
+        <?php endif; ?>
+        
+                                            
+    </div>
+            
 
         
-    </div>
        
 </main>
 
