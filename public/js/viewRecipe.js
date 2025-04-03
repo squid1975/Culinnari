@@ -9,9 +9,6 @@ const oneTimeButton = document.getElementById("1timeButton");
 oneTimeButton.id = 'selected';
 const twoTimeButton = document.getElementById("2timeButton");
 const threeTimeButton = document.getElementById("3timeButton");
-
-
-/*********************************************************** View Recipe Page Variables *****************************/
 const closeRatingButton = document.querySelector("#closeRatingWidget");
 const servingAmt = document.querySelector("#servingAmt").textContent;
 const ingredientAmounts = document.querySelectorAll(".recipeDisplayMeasurementAmount");
@@ -32,16 +29,12 @@ function resetAmounts() {
 function updateAmounts(multiplier) {
     ingredientAmounts.forEach(item => {
         let fraction = item.getAttribute("data-original"); // Get original value
-
         // Convert to decimal
         const decimalValue = convertToDecimal(fraction);
-
         // Multiply by the amount (multiplier)
         const multipliedValue = decimalValue * multiplier;
-
         // Convert the result back to a fraction
         const fractionResult = decimalToMixedFraction(multipliedValue);
-
         // Set the inner HTML to the fraction result
         item.innerHTML = fractionResult;
     });
@@ -137,14 +130,4 @@ function decimalToMixedFraction(decimal) {
 function printRecipe() {
     window.print();
 }
-
-
-function showRatingWidget() {
-        document.querySelector('.star-widget').style.display = 'block';
-}
-
-function showCookbookWidget() {
-    document.querySelector('.cookbook-widget').style.display = 'block';
-}
-
 
