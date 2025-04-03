@@ -14,9 +14,10 @@ class RecipeVideo extends DatabaseObject {
     }
 
     public static function find_by_recipe_id($recipe_id) {
-        $sql = "SELECT * FROM " . static::$table_name . " WHERE recipe_id = '" . self::$database->escape_string($recipe_id) . "'";
+        $sql = "SELECT * FROM " . static::$table_name . " WHERE recipe_id = '" . self::$database->escape_string($recipe_id) . "' LIMIT 1";
         $result_array = static::find_by_sql($sql);
-        return $result_array; // Ensure this returns an array of objects
+    
+        // Check if a result is found and return the first object
+        return !empty($result_array) ? $result_array[0] : null; // Return the object or null if no result is found
     }
-
 }
