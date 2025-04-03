@@ -1,4 +1,6 @@
-<?php include('head.php');?>
+<?php include('head.php');
+$current_page = basename($_SERVER['SCRIPT_NAME']);
+?>
 
 <header role="banner">
     <div id="headerIcon">
@@ -13,10 +15,14 @@
             <img src="<?php echo url_for('/images/icon/menu.svg'); ?>" width="30" height="30" alt="Menu Icon" title="Menu">
         </label>
         <div id="menuContent">
-        <ul>
-            <li><a href="<?php echo url_for('index.php'); ?>">Home</a></li>
-            <li><a href="<?php echo url_for('recipes.php'); ?>">Recipes</a></li>  
-        </ul>
+            <ul>
+                <li class="<?php echo ($current_page == 'index.php') ? 'active' : ''; ?>">
+                    <a href="<?php echo url_for('index.php'); ?>">Home</a>
+                </li>
+                <li class="<?php echo ($current_page == 'recipes.php') ? 'active' : ''; ?>">
+                    <a href="<?php echo url_for('recipes.php'); ?>">Recipes</a>
+                </li>  
+            </ul>
         </div>
     </nav>
     <div id="userHeader">
