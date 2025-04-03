@@ -2,6 +2,9 @@
     <div id="logoCR">
         <img src="<?php echo url_for('/images/logo.svg');?>" alt="Culinnnari Logo" title="Culinnari | Share Recipes, Enjoy Food" width="251" height="60">
         <p>&copy; 2025 Sydney Farrington<p>
+        <?php if($current_page === 'index.php'): ?>
+            <p><a href="https://www.freepik.com/free-photo/chicken-eggs-milk-oil-notebook-marble-surface_11623345.htm#fromView=search&page=1&position=24&uuid=000115ba-ed80-4ab2-9310-5de791f90e83&query=recipe+cooking">(Hero) Image by azerbaijan_stockers on Freepik</a></p>
+        <?php endif; ?>
     </div>    
     <div id="secondaryNav">
         <ul>
