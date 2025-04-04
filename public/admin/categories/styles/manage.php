@@ -1,6 +1,7 @@
 <?php require_once('../../../../private/initialize.php');?>
 <title>Manage Style</title>
 <?php include(SHARED_PATH . '/public_header.php');
+require_mgmt_login();
 
 $styleId = $_GET['style_id'] ?? '1';
 $style = Style::find_by_id($styleId);
@@ -22,7 +23,7 @@ if(is_post_request()){
         $result = $style->delete();
         if($result === true){
             $_SESSION['message'] = 'The style was deleted successfully.';
-            redirect_to(url_for('/admin/index.php'));
+            redirect_to(url_for('/admin/categories/index.php'));
         }
         else {
             
@@ -40,7 +41,7 @@ if(is_post_request()){
     <div id="wrapper">
         <div class="manageCategoryCard">
             <div>
-                &laquo;<a href="<?php echo url_for('/admin/index.php');?>">Back to Admin Management Index</a>
+                &laquo;<a href="<?php echo url_for('/admin/categories/index.php');?>">Back to Categories Index</a>
             </div>
             <h2>Manage Style: <?php echo h($style->style_name); ?> </h2>
             <div class="edit">
@@ -48,7 +49,7 @@ if(is_post_request()){
                 <form action="" method="post">
                     <div>
                         <label for="style_name">Style Name</label>
-                        <input type="text" name="style['style_name']" value="<?php echo h($style->style_name); ?>">
+                        <input type="text" name="style[style_name]" value="<?php echo h($style->style_name); ?>">
                     </div>
                     <div>
                         <input type="submit" name="update" value="Update Style">

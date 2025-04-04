@@ -1,11 +1,34 @@
 <?php require_once('../../../../private/initialize.php');?>
 <title>Manage Diet</title>
 <?php include(SHARED_PATH . '/public_header.php');
+require_mgmt_login();
 
-$dietId = $_GET['id'] ?? '1';
+$dietId = $_GET['diet_id'] ?? 1;
 $diet = Diet::find_by_id($dietId);
 if($diet === false){
-    redirect_to(url_for('/admin/index.php'));
+    redirect_to(url_for('/admin/categories/index.php'));
+}
+if(is_post_request()){
+    if(isset($_POST['update'])){
+        $args = $_POST['diet'];
+        $diet->merge_attributes($args);
+        $result = $diet->save();
+        if($result === true){
+            $_SESSION['message'] = 'The diet was updated successfully.';
+            redirect_to(url_for('/admin/categories/diets/manage.php?diet_id=' . $dietId));
+        }
+    }
+    if(isset($_POST['delete'])){
+        $result = $diet->delete();
+        if($result === true){
+            $_SESSION['message'] = 'The diet was deleted successfully.';
+            redirect_to(url_for('/admin/categories/index.php'));
+        }
+        else {
+            
+        }
+    }
+
 }
 
 ?>
@@ -13,18 +36,18 @@ if($diet === false){
     <div id="adminHero">
         <h2>Management Area : Diet</h2>
     </div>
-    <div id="wrapper">
+    <div class="wrapper">
         <div class="manageCategoryCard">
             <div>
                 &laquo;<a href="<?php echo url_for('/admin/index.php');?>">Back to Admin Management Index</a>
             </div>
-            <h2>Manage Meal Type: <?php echo h($diet->diet_name); ?> </h2>
+            <h2>Manage Diet: <?php echo h($diet->diet_name); ?> </h2>
             <div class="edit">
                 <h3>Edit Diet</h3>
                 <form action="" method="post">
                     <div>
                         <label for="meal_type_name">Diet Name:</label>
-                        <input type="text" name="diet['diet_name']" value="<?php echo h($diet->diet_name); ?>">
+                        <input type="text" name="diet[diet_name]" value="<?php echo h($diet->diet_name); ?>" required>
                     </div>
                     <div>
                         <input type="submit" name="update" value="Update">
@@ -38,7 +61,7 @@ if($diet === false){
                 </p>
                 <form action="" method="post">
                     <div>
-                        <input type="hidden" name="diet['id']" value=<?php echo $diet->id; ?>>
+                        <input type="hidden" name="diet[id]" value=<?php echo $diet->id; ?>>
                         <input type="submit" name="delete" value="Delete">
                     </div>
                 </form>

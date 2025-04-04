@@ -1,6 +1,7 @@
 <?php require_once('../../../../private/initialize.php');?>
 <title>Manage Meal Type</title>
 <?php include(SHARED_PATH . '/public_header.php');
+require_mgmt_login();
 
 $mealTypeId = $_GET['meal_type_id'] ?? '1';
 $mealType = MealType::find_by_id($mealTypeId);
@@ -15,14 +16,14 @@ if(is_post_request()){
         $result = $mealType->save();
         if($result === true){
             $_SESSION['message'] = 'The meal type was updated successfully.';
-            redirect_to(url_for('/admin/categories/mealTypes/manage.php?mealType_id=' . $mealTypeId));
+            redirect_to(url_for('/admin/categories/mealTypes/manage.php?meal_type_id=' . $mealTypeId));
         }
     }
     if(isset($_POST['delete'])){
         $result = $mealType->delete();
         if($result === true){
             $_SESSION['message'] = 'The meal type was deleted successfully.';
-            redirect_to(url_for('/admin/index.php'));
+            redirect_to(url_for('/admin/categories/index.php'));
         }
         else {
             
@@ -37,10 +38,10 @@ if(is_post_request()){
     <div id="adminHero">
         <h2>Management Area : Meal Type</h2>
     </div>
-    <div id="wrapper">
+    <div class="wrapper">
         <div class="manageCategoryCard">
             <div>
-                &laquo;<a href="<?php echo url_for('/admin/index.php');?>">Back to Admin Management Index</a>
+                &laquo;<a href="<?php echo url_for('/admin/categories/index.php');?>">Back to Categories Index</a>
             </div>
             <h2>Manage Meal Type: <?php echo h($mealType->meal_type_name); ?> </h2>
             <div class="edit">
@@ -48,7 +49,7 @@ if(is_post_request()){
                 <form action="" method="post">
                     <div class="formField">
                         <label for="meal_type_name">Meal Type Name:</label>
-                        <input type="text" name="mealType['meal_type_name']" value="<?php echo h($mealType->meal_type_name); ?>">
+                        <input type="text" name="mealType[meal_type_name]" value="<?php echo h($mealType->meal_type_name); ?>">
                     </div>
                     <div>
                         <input type="submit" name="update" value="Update">

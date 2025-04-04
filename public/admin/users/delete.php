@@ -1,6 +1,7 @@
 <title>Delete User | Culinnari</title>
 <?php
 require_once('../../../private/initialize.php');
+include(SHARED_PATH . '/public_header.php'); 
 require_mgmt_login();
 
 $user_id = $_GET['id'];
@@ -24,13 +25,13 @@ else {
     <div id="adminHero">
         <h2>Management Area : User</h2>
     </div>
-    <div id="wrapper">
+    <div class="wrapper">
         <div id="adminWrapper">
-        <div class="manageCategoryCard">
+        <div class="manageUserCard">
             <div>
                 &laquo;<a href="<?php echo url_for('/admin/users/index.php');?>">Back to Management Index</a>
             </div>
-            <h2>Delete User: <?php echo h($user->full_name()); ?> </h2>
+            <h2>Delete User: <?php echo h($user->username); ?> </h2>
             <div class="delete">
                 <h3>Delete User</h3>
                 <p>Are you sure you want to delete this user?<strong>This cannot be undone.</strong></p>
@@ -44,3 +45,4 @@ else {
         </div>
     </div>
 </main>
+<?php include(SHARED_PATH . '/public_footer.php'); ?>
