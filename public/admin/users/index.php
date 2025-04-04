@@ -9,7 +9,7 @@ $current_user_role = $session->user_role;?>
         <div id="adminHero">
             <h2>Management Area</h2>
         </div>
-        <div id="wrapper">
+        <div class="wrapper">
             <a class="back-link" href="<?php echo url_for('/admin/index.php'); ?>">&laquo; Back to Management Index</a>
             <div  id="adminWrapper">
                 <section id="users">
@@ -36,17 +36,9 @@ $current_user_role = $session->user_role;?>
                     <td><?php echo h($user->user_email_address); ?></td>
                     <td><?php echo h(formatDate($user->user_create_account_date));?></td>
                     <td><?php echo h($user->user_role); ?></td>
-                    <td><a  href="<?php echo url_for('/admin/users/show.php?id=' . h(u($user->id)));
-                    ?>">View</a></td>
-                    <?php 
-                        if (
-                            ($current_user_role == 's') || // Super admins can edit/delete anyone
-                            ($current_user_role == 'a' && $user->user_role == 'm') // Admins can only edit/delete members
-                        ) { 
-                        ?>
-                            <td><a href="<?php echo url_for('/admin/users/edit.php?id=' . h(u($user->id))); ?>">Edit</a></td>
-                            <td><a href="<?php echo url_for('/admin/users/delete.php?id=' . h(u($user->id))); ?>">Delete</a></td>
-                    <?php } ?>
+                    <td><a href="<?php echo url_for('/admin/users/show.php?id=' . h(u($user->id)));
+                    ?>">Manage</a></td>
+                    
                 </tr>
                 <?php } ?>
                 </table>

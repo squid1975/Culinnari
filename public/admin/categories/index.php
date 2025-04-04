@@ -9,9 +9,9 @@ require_mgmt_login();
         <h2>Management Area</h2>
     </div>
 
-    <div id="wrapper">
+    <div class="wrapper">
         <a class="back-link" href="<?php echo url_for('/admin/index.php'); ?>">&laquo; Back to Management Home</a>
-        <div id="adminWrapper">
+        
         <section id="categories">
                 <div class="mgmtTableHeading">
                     <img src="<?php echo url_for('/images/icon/categories.svg');?>" width="32" height="36">
@@ -31,7 +31,7 @@ require_mgmt_login();
                         foreach($mealTypes as $mealType) { ?>
                         <tr>
                             <td><?php echo h($mealType->meal_type_name); ?></td>
-                            <td><a href="<?php echo url_for('/admin/categories/meal_types/manage.php?id=' . h(u($mealType->id)));
+                            <td><a href="<?php echo url_for('/admin/categories/meal_types/manage.php?meal_type_id=' . h(u($mealType->id)));
                             ?>">Manage</a></td>
                         </tr>
                         <?php } ?>
@@ -51,7 +51,7 @@ require_mgmt_login();
                         foreach($styles as $style) { ?>
                         <tr>
                             <td><?php echo h($style->style_name); ?></td>
-                            <td><a href="<?php echo url_for('/admin/categories/styles/manage.php?id=' . h(u($style->id)));
+                            <td><a href="<?php echo url_for('/admin/categories/styles/manage.php?style_id=' . h(u($style->id)));
                             ?>">Manage</a></td>
                         </tr>
                         <?php } ?>
@@ -71,9 +71,8 @@ require_mgmt_login();
                         foreach($diets as $diet) { ?>
                         <tr>
                             <td><img src="<?php echo url_for($diet->diet_icon_url); ?>">  <?php echo h($diet->diet_name); ?> </td>
-                            <td><a href="<?php echo url_for('/admin/categories/diets/manage.php?id=' . h(u($diet->id)));
+                            <td><a href="<?php echo url_for('/admin/categories/diets/manage.php?diet_id=' . h(u($diet->id)));
                             ?>">Manage</a></td>
-                            
                         </tr>
                         <?php } ?>
                     </table>
@@ -87,4 +86,3 @@ require_mgmt_login();
     <?php include(SHARED_PATH . '/public_footer.php'); ?>
 </body>
 
-<?php include(SHARED_PATH . '/public_footer.php'); ?>

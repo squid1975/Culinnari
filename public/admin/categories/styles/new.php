@@ -1,6 +1,7 @@
 <?php require_once('../../../../private/initialize.php');?>
 <title>Create New Style | Culinnari</title>
 <?php include(SHARED_PATH . '/public_header.php');
+require_mgmt_login();
 
 if(is_post_request()){
     $args = $_POST['style'];
@@ -36,10 +37,10 @@ else {
                 <form action="" method="post">
                     <div class="formField">
                         <label for="style_name">Style Name:</label>
-                        <input type="text" name="style['style_name']" value="<?php echo h($style->style_name); ?>">
+                        <input type="text" name="style[style_name]" value="<?php echo h($style->style_name); ?>" required>
                     </div>
                     <div>
-                        <input type="submit" name="create" value="Create new style">
+                        <input type="submit" name="create" value="Create new style" class="primaryButton">
                     </div>
                 </form>
             </div>

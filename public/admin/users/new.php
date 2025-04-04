@@ -16,23 +16,24 @@ if($result === true) {
   $_SESSION['message'] = 'The user was created successfully.';
   redirect_to(url_for('/users/show.php?id=' . $new_id));
 } else {
-  // show errors
+  $_SESSION['message'] = 'Unable to create user. Please try again later.';
 }
 
 } else {
-// display the form
+
 $user = new User;
 }
 
 ?>
+<script src="<?php echo url_for('/js/script.js'); ?>" defer></script>
 
 <main role="main" tabindex="-1">
     <div id="adminHero">
         <h2>Management Area: New User</h2>
     </div>
-    <div id="wrapper">
+    <div class="wrapper">
+      <a class="back-link" href="<?php echo url_for('/admin/users/index.php'); ?>">&laquo; Back to User Index</a>
       <div class="manageUserCard">
-        <a class="back-link" href="<?php echo url_for('/admin/index.php'); ?>">&laquo; Back to Management Home</a>
         <h2>Create User</h2>
 
         <?php echo display_errors($user->errors); ?>
