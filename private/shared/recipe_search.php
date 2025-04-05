@@ -23,7 +23,8 @@ $diets = Diet::find_all();
         <div class="filters">
             <!-- Meal Type Filter -->
             <div class="searchFilter">
-                <label for="mealType">Meal Type</label>
+                <fieldset>
+                    <legend>Meal Type</legend>
                 <div class="dropdown">
                     <button type="button" class="dropdown-button">ANY</button> 
                     <div class="dropdown-content">
@@ -36,11 +37,13 @@ $diets = Diet::find_all();
                         <?php endforeach; ?>
                     </div>
                 </div>
+                </fieldset>
             </div>
 
             <!-- Style Filter -->
             <div class="searchFilter">
-                <label for="style">Style</label>
+                <fieldset>
+                    <legend>Style</legend>
                 <div class="dropdown">
                     <button type="button" class="dropdown-button">ANY</button> 
                     <div class="dropdown-content">
@@ -53,11 +56,13 @@ $diets = Diet::find_all();
                         <?php endforeach; ?>
                     </div>
                 </div>
+                </fieldset>
             </div>
 
             <!-- Diet Filter -->
             <div class="searchFilter">
-                <label for="diet">Diet</label>
+                <fieldset>
+                    <legend>Diet</legend>
                 <div class="dropdown">
                     <button type="button" class="dropdown-button">ANY</button> 
                     <div class="dropdown-content">
@@ -70,11 +75,13 @@ $diets = Diet::find_all();
                         <?php endforeach; ?>
                     </div>
                 </div>
+                </fieldset>
             </div>
 
             <!-- Difficulty Filter -->
             <div class="searchFilter">
-                <label for="difficulty">Difficulty</label>
+                <fieldset>
+                    <legend>Difficulty</legend>
                 <div class="dropdown">
                     <button type="button" class="dropdown-button">ANY</button> 
                     <div class="dropdown-content">
@@ -86,34 +93,40 @@ $diets = Diet::find_all();
                             <?php echo isset($_GET['difficulty']) && in_array('advanced', $_GET['difficulty']) ? 'checked' : ''; ?>>Advanced</label>
                     </div>
                 </div>
+                </fieldset>
             </div>
 
             <!-- Total Time Filter -->
             <div class="searchFilter">
-                <label for="prepCookTimeTotal">Total Time</label>
+                <fieldset>
+                    <legend>Total Time</legend>
                 <div class="dropdown">
                     <button type="button" class="dropdown-button">ANY</button> 
                     <div class="dropdown-content">
                         <label><input type="checkbox" name="prepCookTimeTotal[]" value="900" 
-                            <?php echo isset($_GET['prepCookTimeTotal']) && in_array('900', $_GET['prepCookTimeTotal']) ? 'checked' : ''; ?>>15 mins or less</label>
+                            <?php echo isset($_GET['prepCookTimeTotal']) && in_array('900', $_GET['prepCookTimeTotal']) ? 'checked' : ''; ?>>15 min or less</label>
                         <label><input type="checkbox" name="prepCookTimeTotal[]" value="1800" 
-                            <?php echo isset($_GET['prepCookTimeTotal']) && in_array('1800', $_GET['prepCookTimeTotal']) ? 'checked' : ''; ?>>30 mins or less</label>
+                            <?php echo isset($_GET['prepCookTimeTotal']) && in_array('1800', $_GET['prepCookTimeTotal']) ? 'checked' : ''; ?>>30 min or less</label>
                         <label><input type="checkbox" name="prepCookTimeTotal[]" value="2700" 
-                            <?php echo isset($_GET['prepCookTimeTotal']) && in_array('2700', $_GET['prepCookTimeTotal']) ? 'checked' : ''; ?>>45 mins or less</label>
+                            <?php echo isset($_GET['prepCookTimeTotal']) && in_array('2700', $_GET['prepCookTimeTotal']) ? 'checked' : ''; ?>>45 min or less</label>
                         <label><input type="checkbox" name="prepCookTimeTotal[]" value="3600-7200" 
                             <?php echo isset($_GET['prepCookTimeTotal']) && in_array('3600-7200', $_GET['prepCookTimeTotal']) ? 'checked' : ''; ?>>1-2 hours</label>
                         <label><input type="checkbox" name="prepCookTimeTotal[]" value="7200+" 
                             <?php echo isset($_GET['prepCookTimeTotal']) && in_array('7200+', $_GET['prepCookTimeTotal']) ? 'checked' : ''; ?>>2+ hours</label>
                     </div>
                 </div>
+                </fieldset>
             </div>
 
             <!-- Sort By Filter -->
             <div class="searchFilter">
-                <label for="sortBy">Sort By</label>
+                <fieldset>
+                    <legend>Sort By</legend>
                 <div class="dropdown">
                     <button type="button" id="sortByButton">Newest</button> 
                     <div class="dropdown-content">
+                        
+                        
                         <label><input type="radio" name="sortBy" value="recipe[recipe_post_date] DESC" 
                             <?php echo (!isset($_GET['sortBy']) || $_GET['sortBy'] == 'recipe[recipe_post_date] DESC') ? 'checked' : ''; ?>>Newest</label>
                         <label><input type="radio" name="sortBy" value="recipe[recipe_post_date] ASC" 
@@ -124,12 +137,13 @@ $diets = Diet::find_all();
                             <?php echo isset($_GET['sortBy']) && $_GET['sortBy'] == 'rating[rating_value] DESC' ? 'checked' : ''; ?>>Rating: High to Low</label>
                         <label><input type="radio" name="sortBy" value="rating[rating_value] ASC" 
                             <?php echo isset($_GET['sortBy']) && $_GET['sortBy'] == 'rating[rating_value] ASC' ? 'checked' : ''; ?>>Rating: Low to High</label>
-                    </div>
+                         
+                        </div>
                 </div>
+                </fieldset>
             </div>
             <button type="reset" class="searchReset">Reset</button>
         </div>
     </form>
     
 </div>
-<script src="<?php echo url_for('/js/search.js'); ?>" defer></script>
