@@ -11,7 +11,7 @@ if(is_post_request()){
     if($result === true){
         $new_id = $mealType->id;
         $_SESSION['message'] = 'The meal type was created successfully.';
-        redirect_to(url_for('/manage.php?mealType_id=' . $new->id));
+        redirect_to(url_for('admin/categories/meal_types/manage.php?meal_type_id=' . $new->id));
     } else {
 
     }
@@ -30,7 +30,7 @@ else {
     <div class="wrapper">
         <div class="manageCategoryCard">
             <div>
-                &laquo;<a href="<?php echo url_for('/admin/index.php');?>">Back to Admin Management Index</a>
+                &laquo;<a href="<?php echo url_for('/admin/categories/index.php');?>">Back to Categories Index</a>
             </div>
             <h2>Create New Meal Type</h2>
             <div class="new">

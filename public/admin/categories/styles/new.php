@@ -30,7 +30,7 @@ else {
     <div id="wrapper">
         <div class="manageCategoryCard">
             <div>
-                &laquo;<a href="<?php echo url_for('/admin/index.php');?>">Back to Admin Management Index</a>
+                &laquo;<a href="<?php echo url_for('/admin/categories/index.php');?>">Back to Categories Index</a>
             </div>
             <h2>Create New Style</h2>
             <div class="new">

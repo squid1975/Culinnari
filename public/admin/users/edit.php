@@ -18,7 +18,7 @@ if(is_post_request()) {
 
   if($result === true) {
     $_SESSION['message'] = 'User updated successfully.';
-    redirect_to(url_for('/users/show.php?id=' . $user->id));
+    redirect_to(url_for('/admin/users/show.php?id=' . $user->id));
   } else {
     // show errors
     
@@ -41,7 +41,7 @@ if(is_post_request()) {
       <div class="manageUserCard">
         <h2>Edit user</h2>
         <?php echo display_errors($user->errors); ?>
-        <form action="<?php echo url_for('/users/edit.php?id=' . h(u($id))); ?>" method="post">
+        <form action="<?php echo url_for('/admin/users/edit.php?id=' . h(u($id))); ?>" method="post">
           <?php include('form_fields.php'); ?>
           <input type="submit" value="Update User">
         </form>
