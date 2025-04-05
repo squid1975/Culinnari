@@ -1,20 +1,36 @@
 "use strict";
 
-const deleteRecipe = document.querySelectorAll('.profileDeleteRecipe');
-const deleteRecipeContainer = document.querySelector('.deleteRecipeForm');
-const cancelDeleteRecipe = document.querySelector('.cancelRecipeDelete');
 
-deleteRecipe.forEach(deleteItem => {
-    deleteItem.addEventListener('click', showDeleteForm);
+const deleteRecipeButtons = document.querySelectorAll(".deleteRecipeButton");
+const removeRecipeButtons = document.querySelectorAll(".removeRecipeButton");
+
+deleteRecipeButtons.forEach(button => {
+  
+  const container = button.closest(".profileDeleteRecipe");
+  const modal = container.querySelector(".modal");
+  const closeBtn = modal.querySelector(".close");
+  const cancelBtn = modal.querySelector(".cancelRecipeDelete");
+
+  
+  button.addEventListener("click", () => {
+    modal.style.display = "block";
+  });
+
+ 
+  closeBtn.addEventListener("click", () => {
+    modal.style.display = "none";
+  });
+
+  
+  cancelBtn.addEventListener("click", () => {
+    modal.style.display = "none";
+  });
+
+  
+  window.addEventListener("click", event => {
+    if (event.target === modal) {
+      modal.style.display = "none";
+    }
+  });
 });
 
-cancelDeleteRecipe.addEventListener('click', hideDeleteForm);
-
-
-function showDeleteForm() {
-    deleteRecipeContainer.style.display = 'block';
-}
-
-function hideDeleteForm() {
-    deleteRecipeContainer.style.display = 'none';
-}
