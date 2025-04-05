@@ -61,7 +61,7 @@
     }
   }
 
-  // has_inclusion_of( 5, [1,3,5,7,9] )
+  
   // * validate inclusion in a set
   function has_inclusion_of($value, $set) {
   	return in_array($value, $set);
@@ -107,6 +107,11 @@
     } else {
       return false; 
     }
+  }
+
+  function is_signup_error_present() {
+    global $signup_errors;
+    return !empty($signup_errors);
   }
 
 ?>
