@@ -38,7 +38,7 @@ $user = new User;
 
         <?php echo display_errors($user->errors); ?>
 
-        <form action="<?php echo url_for('/users/new.php'); ?>" method="post">
+        <form action="<?php echo url_for('/admin/users/new.php'); ?>" method="post">
 
             <?php include('form_fields.php'); ?>
 
