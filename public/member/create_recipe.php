@@ -1,9 +1,7 @@
 <title>Create Recipe | Culinnari</title>
-<?php require_once('../../private/initialize.php'); 
-include(SHARED_PATH . '/public_header.php'); ?>
-<script src="<?php echo url_for('js/script.js'); ?>" defer></script>
-
-<?php
+<?php 
+require_once('../../private/initialize.php'); 
+include(SHARED_PATH . '/public_header.php'); 
 require_login();
 $mealTypes = MealType::find_all();
 $styles = Style::find_all();
@@ -12,73 +10,119 @@ $errors = [];
 $current_user_id = $session->user_id;
 
 if (is_post_request()) {
+    // Get arrays of values 
     $steps = $_POST['step'] ?? [];
+    if(empty($steps)){
+        $errors['steps'] = "At least one step is required.";
+    }
     $ingredients = $_POST['ingredient'] ?? [];
+    if(empty($ingredients)){
+        $errors['ingredients'] = "At least one ingredient is required.";
+    }
     $selectedMealTypes = $_POST['meal_types'] ?? [];
+    if(count($selectedMealTypes) > 3){
+        $errors['meal_types'] = "You can select up to 3 meal types only.";
+    }
     $selectedStyles = $_POST['styles'] ?? [];
+    if(count($selectedStyles) > 3){
+        $errors['styles'] = 'You can select up to 3 styles only.';
+    }
     $selectedDiets = $_POST['diets']?? [];
-
+    if(count($selectedDiets) > 3){
+        $errors['diets'] = 'You can select up to 3 diets only.';
+    }
     // Handle time conversion
     $prep_hours = (int)($_POST['prep_hours']) ?? 0;
     $prep_minutes = (int)($_POST['prep_minutes'])?? 0;
-    $recipe_prep_time_seconds = (int) $prep_hours * 3600 + $prep_minutes * 60;
-
-
+    $recipe_prep_time_seconds = (int) $prep_hours * 3600 + $prep_minutes * 60;    
+    // Validate prep and cook time values
     $cook_hours = isset($_POST['cook_hours']) ? (int)$_POST['cook_hours'] : 0;
     $cook_minutes = isset($_POST['cook_minutes']) ? (int)$_POST['cook_minutes'] : 0;
     $recipe_cook_time_seconds = timetoSeconds($cook_hours, $cook_minutes);
 
     if ($recipe_cook_time_seconds === 0 && $recipe_prep_time_seconds === 0) {
-        $errors[] = "Please enter a value for the prep and/or cook time.";
+        $errors['time'] = "Please enter a value for the prep and/or cook time.";
     } else {
         $_POST['recipe_prep_time_seconds'] = $recipe_prep_time_seconds;
         $_POST['recipe_cook_time_seconds'] = $recipe_cook_time_seconds;
     }
 
+    // Image Upload
     if (isset($_FILES['recipe_image']) && $_FILES['recipe_image']['error'] === UPLOAD_ERR_OK) {
         // Get file details
         $fileTmpPath = $_FILES['recipe_image']['tmp_name'];
         $fileName = $_FILES['recipe_image']['name'];
         $fileType = $_FILES['recipe_image']['type'];
-        $allowedTypes = ['image/jpg','image/jpeg', 'image/png', 'image/webp'];
+        $allowedTypes = ['image/jpg', 'image/jpeg', 'image/png', 'image/webp'];
     
         if (in_array($fileType, $allowedTypes)) {
-            // Define the upload directory
+            // Define upload directory
             $uploadDir = __DIR__ . '/../images/uploads/recipe_image/';
     
-            // Ensure the directory exists
+            // Ensure directory exists
             if (!is_dir($uploadDir)) {
                 mkdir($uploadDir, 0777, true);
             }
     
-            // Generate a unique file name to avoid conflicts
-            $newFileName = uniqid() . '_' . basename($fileName);
+            // Generate a unique filename
+            $uniqueName = uniqid() . '_' . pathinfo($fileName, PATHINFO_FILENAME);
+            $webpFileName = $uniqueName . '.webp';
+            $webpPath = $uploadDir . $webpFileName;
     
-            // Full destination path
-            $destPath = $uploadDir . $newFileName;
+            // Process image based on file type
+            $image = false;
     
-            // Move the uploaded file to the destination
-            if (move_uploaded_file($fileTmpPath, $destPath)) {
-                // If successful, set the image URL
-                $imageURL = '/images/uploads/recipe_image/' . $newFileName;
+            switch ($fileType) {
+                case 'image/jpeg':
+                case 'image/jpg':
+                    $image = imagecreatefromjpeg($fileTmpPath);
+                    break;
+                case 'image/png':
+                    $image = imagecreatefrompng($fileTmpPath);
+                    imagepalettetotruecolor($image);
+                    imagealphablending($image, false);
+                    imagesavealpha($image, true);
+                    break;
+                case 'image/webp':
+                    if (move_uploaded_file($fileTmpPath, $webpPath)) {
+                        $imageURL = '/images/uploads/recipe_image/' . $webpFileName;
+                        return;
+                    } else {
+                        $errors[] = "Error moving the uploaded WebP file.";
+                    }
+                    break;
+                default:
+                    $errors[] = "Unsupported file type.";
+            }
+    
+            // Convert and save as WebP
+            if ($image !== false) {
+                if (imagewebp($image, $webpPath, 80)) {
+                    imagedestroy($image);
+                    $imageURL = '/images/uploads/recipe_image/' . $webpFileName;
+                    unlink($fileTmpPath); // Optional: delete original file
+                } else {
+                    $errors[] = "Failed to convert image to WebP.";
+                }
             } else {
-                // If there is an error moving the file
-                $errors[] = "Error moving the uploaded file.";
+                $errors[] = "Image processing failed.";
             }
         } else {
-            // If the file type is not allowed
-            $errors[] = "Invalid file type. Only JPEG, PNG, GIF, and WEBP are allowed.";
+            $errors[] = "Invalid file type. Only JPEG, PNG, and WEBP are allowed.";
         }
     } else {
-        // Use default image if no file was uploaded or there was an error
+        // Default image if no file uploaded
         $imageURL = '/images/default_recipe_image.webp';
+    }
+
+    if (isset($_POST['recipe_video_url']) && !empty($_POST['recipe_video_url'])) {
+        $inputUrl = trim($_POST['recipe_video_url']);
+        $videoID = extractYouTubeID($inputUrl);  
+        $embeddableURL = convertToEmbedURL($videoID);
     }
     
 
     if (empty($errors)) {
-        
-        
-        $video = $_POST['recipe_video_url'] ?? '';
         $_POST['recipe_image'] = $imageURL;
             try {
                 $args = $_POST['recipe'];
@@ -180,9 +224,9 @@ if (is_post_request()) {
                     throw new Exception(message: "Unable to insert recipe image.");
                 }
 
-                if(!empty($video)){
+                if($videoID){
                     $recVid = [
-                        'recipe_video_url' => $_POST['recipe_video_url'],
+                        'recipe_video_url' => $embeddableURL,
                         'recipe_id' => $recipe->id
                     ];
                     $recipeVideo = new RecipeVideo(args:$recVid);
@@ -193,21 +237,25 @@ if (is_post_request()) {
                 }
                 // If all insertions succeed, commit the transaction
                 $database->commit();
-                redirect_to(url_for('/member/profile.php'));
+                redirect_to(url_for('/member/profile.php?id=' . $current_user_id));
+                $_SESSION['message'] = 'Recipe created successfully.';
             } catch (Exception $e) {
                 $database->rollback(); // Undo changes if anything fails
                 $errors[] = $e->getMessage();
+                $_SESSION['errors'] = [$e->getMessage()];
+                redirect_to(url_for('/member/create_recipe.php'));
             }
-    }
+    } 
+    
 }
 else {
     $recipe = new Recipe;
 }
 
+
 ?>
-
+<script src="<?php echo url_for('/js/createRecipe.js'); ?>" defer></script>
 <main role="main" tabindex="-1">
-
     <div class="recipeFormWrapper">
         <div class="recipeFormHeading">
             <h2>Create Recipe</h2>
@@ -215,7 +263,8 @@ else {
             <p>Fields marked with * required.</p>
             <?php echo display_errors($errors); ?>
         </div>
-        <form action="create_recipe.php" method="POST" enctype="multipart/form-data" id="createRecipeForm" onsubmit="return validateRecipeForm()">
+        <form action="create_recipe.php" method="POST" enctype="multipart/form-data" id="createRecipeForm">
+
             <label for="recipeName" class="recipePartName">Recipe Name:*</label>
             <input type="text" id="recipeName" name="recipe[recipe_name]" maxlength="100" required>
 
@@ -242,18 +291,17 @@ else {
                     </div>
                 </div>
             </fieldset>
-            
-            
-
-
-
             <div id="timeInput">
+            <?php if (!empty($errors['time'])): ?>
+                <p class="error-message"><?php echo $errors['time']; ?></p>
+                <?php endif; ?>
                     <fieldset>
                         <legend>Prep Time</legend>
                         <div class="timeContainer">
-                            <label for="prep_time_hours">Hours:<input type="number" id="prep_time_hours" name="prep_hours" min="0" max="99" step="1" placeholder="Hrs" maxlength="2"></label>
-                            
-                            <label for="prepTimeMinutes">Minutes:<input type="number" id="prepTimeMinutes" name="prep_minutes" min="0" max="59" step="1" placeholder="Min" maxlength="2"></label>
+                            <label for="prepTimeHours">Hours:
+                                <input type="number" id="prepTimeHours" name="prep_hours" min="0" max="99" step="1" placeholder="Hrs" maxlength="2"></label>
+                            <label for="prepTimeMinutes">Minutes:
+                                <input type="number" id="prepTimeMinutes" name="prep_minutes" min="0" max="59" step="1" placeholder="Min" maxlength="2"></label>
                         </div>
                     </fieldset>
 
@@ -261,8 +309,8 @@ else {
                     <fieldset>
                         <legend>Cook Time</legend>
                         <div class="timeContainer">
-                            <label for="cook_time_hours">Hours:
-                                <input type="number" id="cook_time_hours" name="cook_hours" min="0" max="99" step="1" placeholder="Hrs" maxlength="2"></label>
+                            <label for="cookTimeHours">Hours:
+                            <input type="number" id="cookTimeHours" name="cook_hours" min="0" max="99" step="1" placeholder="Hrs" maxlength="2"></label>
                             
                             <label for="cookTimeMinutes">Minutes:<input type="number" id="cookTimeMinutes" name="cook_minutes" min="0" max="59" step="1" placeholder="Min" maxlength="2"></label>
                         </div>
@@ -276,10 +324,13 @@ else {
 
             <fieldset id="ingredients">
                 <legend>Ingredients:*</legend>
-                <span id="ingredientDirections">Type the measurement amount. Select a unit (if applicable). Then type the ingredient name, and any special instructions (packed, crushed, etc.) into the text box. Click the 'plus' to add your ingredient.</span>
+                <span id="ingredientDirections">Type the measurement amount and select a unit if applicable. Type the ingredient name with any special instructions in parentheses. Click 'plus' to add.</span>
+                <?php if (!empty($errors['ingredients'])): ?>
+                <p class="error-message"><?php echo $errors['ingredients']; ?></p>
+                <?php endif; ?>
                 <div id="ingredientInputs">
-                    <label for="measurementAmount">Amount:
-                        <input type="text" id="measurementAmount" placeholder="e.g., 1, 1/2, 1 1/2" pattern="^\d+(\s\d+\/\d+)?$|^\d+\/\d+$" maxlength="5"></label>
+                    <label for="measurementAmount">Amount:*
+                        <input type="text" id="measurementAmount" placeholder="1,1/2,1 1/2" pattern="^\d{1,2}(\s\d{1,2}\/\d{1,2})?$|^\d{1,2}\/\d{1,2}$" maxlength="6"></label>
                         <label for="ingredientUnit">Unit:
                             <select id="ingredientUnit">
                                 <option value="n/a" selected></option>
@@ -295,7 +346,7 @@ else {
                                 <option value="ounce">ounce(s)</option>
                                 <option value="pound">pound(s)</option>
                             </select></label>
-                        <label for="ingredientName">Name:
+                        <label for="ingredientName">Name:*
                         <input type="text" placeholder="Cookies (crushed)" id="ingredientName"></label>
                         <button type="button" id="addIngredient">+ Add Ingredient</button>
                 </div>
@@ -304,11 +355,12 @@ else {
                 </div>    
             </fieldset>
 
-            
-
             <fieldset id="steps">
                 <legend>Steps:*</legend>
                 <span id="stepDirections">Enter a step to make your recipe. Click the 'plus' to add a step.</span>
+                <?php if (!empty($errors['steps'])): ?>
+                <p class="error-message"><?php echo $errors['steps']; ?></p>
+                <?php endif; ?>
                 <label for="stepInput" class="visuallyHidden">Step:</label>
                 <div id="stepInputAndButton">
                     <textarea  placeholder="Describe the step in one or two short sentences." id="stepInput" rows="2" cols="25" maxlength="255"></textarea>
@@ -325,9 +377,12 @@ else {
                 <fieldset>  
                     <div class="checkboxContainer">
                         <legend class="recipePartName">Meal Type</legend>
+                        <?php if (!empty($errors['meal_types'])): ?>
+                            <p class="error-message"><?php echo $errors['meal_types']; ?></p>
+                        <?php endif; ?>
                         <?php foreach ($mealTypes as $mealType): ?>
                             <label>
-                                <input type="checkbox" name="meal_types[]" id="mealType - <?php echo $mealType->meal_type_name; ?>" value="<?php echo $mealType->id; ?>">
+                                <input type="checkbox" name="meal_types[]" id="mealType - <?php echo $mealType->meal_type_name; ?>" value=<?php echo $mealType->id; ?>>
                                 <?php echo ucfirst($mealType->meal_type_name); ?>
                             </label>
                         <?php endforeach; ?>
@@ -337,6 +392,9 @@ else {
                 <fieldset>
                     <div class="checkboxContainer">
                         <legend class="recipePartName">Style</legend>
+                        <?php if (!empty($errors['styles'])): ?>
+                            <p class="error-message"><?php echo $errors['styles']; ?></p>
+                        <?php endif; ?>
                         <?php foreach ($styles as $style): ?>
                             <label>
                                 <input type="checkbox" name="styles[]" id="style - <?php echo $style->style_name; ?>" value="<?php echo $style->id; ?>">
@@ -349,6 +407,9 @@ else {
                 <fieldset>
                     <div class="checkboxContainer">
                         <legend class="recipePartName">Diet</legend>
+                        <?php if (!empty($errors['diets'])): ?>
+                            <p class="error-message"><?php echo $errors['diets']; ?></p>
+                        <?php endif; ?>
                         <?php foreach ($diets as $diet): ?>
                             <label>
                                 <input type="checkbox" name="diets[]" id="diet - <?php echo $diet->diet_name; ?>" value="<?php echo $diet->id; ?>">
@@ -360,16 +421,17 @@ else {
                 </fieldset>
 
             <label for="recipe_image" class="recipePartName">Image Upload</label>
-            <span>Accepted file types: JPG, PNG, WEBP</span>
+            <span id="recipeAcceptedFileTypes">Accepted file types: JPG, PNG, WEBP</span>
             <input type="file" id="recipe_image" name="recipe_image">
-            <img id="imagePreview" src="#" alt="Image Preview" style="display:none; width: 300px; height: auto; margin-top: 10px;">
+            <img id="imagePreview" src="#" alt="Image Preview">
 
             <label for="youtube_link" class="recipePartName">YouTube Video Link:</label>
-            <input type="url" id="youtube_link" name="recipe_video[recipe_video_url]" placeholder="https://www.youtube.com/watch?v=...">
-
-                <input type="submit" value="Create Recipe" id="createRecipeButton">
-                <input type="reset" value="Clear Form" id="clearRecipeFormButton">
+            <input type="url" id="youtube_link" name="recipe_video_url" placeholder="https://www.youtube.com/watch?v=...">
             
+            <div class="recipeSubmitReset">
+                <input type="submit" value="Create Recipe" id="createRecipeButton" class="createRecipeButton">
+                <input type="reset" value="Clear Form" id="clearRecipeFormButton">
+            </div>
         </form>
     </div>
 </main>
