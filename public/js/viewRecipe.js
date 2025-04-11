@@ -1,6 +1,6 @@
 "use strict";
 
-/**     VIEW RECIPE VARIABLES */
+/** VIEW RECIPE VARIABLES */
 const addToCookbookButton = document.querySelector('#recipeDisplayAddToCookbook');
 const servingAmtElement = document.querySelector("#servingAmt");
 const originalServingAmt = parseFloat(servingAmtElement.textContent.trim());
@@ -17,15 +17,22 @@ ingredientAmounts.forEach(item => {
     item.setAttribute("data-original", item.innerHTML.trim());
 });
 
+/**
+ * Resets all ingredient amounts and the serving amount
+ * back to their original values displayed on the page.
+ */
 function resetAmounts() {
     ingredientAmounts.forEach(item => {
         item.innerHTML = item.getAttribute("data-original");
     });
-
     // Reset serving amount
     servingAmtElement.textContent = originalServingAmt;
 }
 
+/**
+ * Updates ingredient amounts and serving size by the given multiplier.
+ * @param {number} multiplier - The value to multiply each ingredient amount by.
+ */
 function updateAmounts(multiplier) {
     ingredientAmounts.forEach(item => {
         let fraction = item.getAttribute("data-original"); // Get original value
@@ -64,7 +71,11 @@ threeTimeButton.addEventListener('click', function() {
     setActiveButton(threeTimeButton);
 });
 
-// Function to update active button state
+/**
+ * Applies the "selected" class state to the clicked serving size button.
+ * Removes the state from all other buttons.
+ * @param {HTMLElement} activeButton - The button that was clicked.
+ */
 function setActiveButton(activeButton) {
     [oneTimeButton, twoTimeButton, threeTimeButton, halfButton].forEach(btn => {
         btn.id = ""; // Remove 'selected' from all buttons
@@ -85,7 +96,11 @@ function convertToDecimal(fraction) {
     return parseFloat(fraction); // if it's a whole number
 }
 
-// Helper function to convert a decimal to a mixed fraction
+/**
+ * Converts a decimal number to a simplified mixed fraction string.
+ * @param {number} decimal - The decimal value to convert.
+ * @returns {string} - A string representing a mixed fraction (e.g., "1 1/2").
+ */
 function decimalToMixedFraction(decimal) {
     const whole = Math.floor(decimal);
     const fractionPart = decimal - whole;
@@ -125,7 +140,7 @@ function decimalToMixedFraction(decimal) {
 
 
 /**
- * Function to print the recipe
+ * Opens browser dialog to print recipe
  */
 function printRecipe() {
     window.print();
