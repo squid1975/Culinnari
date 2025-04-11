@@ -13,7 +13,7 @@ $displayQuickRecipes = array_slice($quickRecipes, 0, 4);
 
 
 <body>
-    
+<script src="<?php echo url_for('/js/search.js'); ?>" defer></script>
     <main role="main" tabindex="-1">
         <div id="homePageWrapper">
             <div id="homeHero">
