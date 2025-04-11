@@ -1,6 +1,6 @@
 <?php
-require_login();
 require_once('../../private/initialize.php'); 
+require_login();
 if(!isset($_GET['recipe_id'])) {
     redirect_to(url_for('/index.php'));
   }
