@@ -1,10 +1,9 @@
-@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Lustria&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lustria&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 @import url('components/forms.css');
 @import url('components/headerfooter.css');
 @import url('components/cards.css');
 @import url('components/recipePage.css');
 @import url('main.css');
-
 
 /*** SITEWIDE STYLES *******/
 
@@ -13,7 +12,7 @@
 }
 
 html {
-    font-family: "Lato", serif;
+    font: 16px 'Poppins', sans-serif;
 }
 
 body {
@@ -21,6 +20,7 @@ body {
     padding: 0;
     height: 100%;
     overflow-x: hidden;
+    
 }
 
 h2 {
@@ -39,8 +39,10 @@ a {
     cursor: pointer;
 }
 
-input[type="submit"] {
+input[type="submit"],
+button {
     cursor: pointer;
+    font: 17px "Poppins", sans-serif;
 }
 
 li {
@@ -48,7 +50,7 @@ li {
 }
 
 main {
-    background-color: #8B9B8B;
+    background-color: #a4b6a4;
 }
 
 
@@ -69,7 +71,8 @@ section {
 
 div.errors {
     border: 1px solid #eb0f0f;
-    box-shadow: 0 0 5px #eb0f0f;
+    padding: 5px;
+    margin: 10px;
 }
 
 .error {
@@ -77,7 +80,8 @@ div.errors {
     padding: 5px;
     width: max-content;
     font-style: italic;
-    content: '!';
+    
+    margin: 5px;
 }
 
 .primaryButton {
@@ -88,8 +92,56 @@ div.errors {
     padding: 10px;
     background: #D8A7A0;
     transition: 0.2s ease-in-out;
+    cursor: pointer;
 
     &:hover {
         background:#c0c7b3;
     }
 }
+
+.session-message {
+    background: #D8A7A0;
+    border-radius: 5px;
+    width: fit-content;
+    padding: 10px;
+    margin: 10px 0;
+}
+
+/*********** MODAL *************/
+/* The Modal (background) */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+  }
+  
+  /* Modal Content/Box */
+  .modal-content {
+    background-color: #fefefe;
+    margin: 15% auto; /* 15% from the top and centered */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%; /* Could be more or less, depending on screen size */
+  }
+  
+  /* The Close Button */
+  .close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+  }
+  
+  .close:hover,
+  .close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+  }

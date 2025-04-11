@@ -1,6 +1,6 @@
 .recipeCard {
     width: 270px;
-    height: 380px;
+    height: 400px;
     box-shadow: 0 0 5px #3C2F2F;
     margin: 10px;
     background: #ffffff;
@@ -27,6 +27,7 @@
 .recipeCardImage {
     box-shadow: 0 0 2px #3C2F2F;
     margin: 10px 10px 0;
+    object-fit: cover;
 }
 
 .recipeCardDietIcons {
@@ -53,7 +54,7 @@
 
 .manageCategoryCard {
     width: 800px;
-    min-height: 500px;
+    min-height: 700px;
     background: #ffffff;
     padding: 10px;
     margin: auto;
@@ -70,7 +71,7 @@
 
     > .edit, .delete {
         padding: 10px;
-        border: 1px solid red;
+        border: 1px solid black;
     }
 
 }
@@ -81,15 +82,12 @@
     background: white;
     padding: 10px;
     margin: auto;
-    border: 1px solid red;
-
+    
+    > ul li {
+        margin: 20px 0;
+    }
     > div {
         margin: 10px;
         
-    }
-
-    > .edit, .delete {
-        padding: 10px;
-        border: 1px solid red;
     }
 }
