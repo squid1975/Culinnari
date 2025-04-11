@@ -12,7 +12,6 @@ h1 {
     font-family: "Lustria", serif;
 }
 
-
 .menuButton {
     display: none;
 }
@@ -33,12 +32,19 @@ nav ul {
         font: 20px 'Lustria', serif;
         padding: 10px;
         transition: 0.2s ease-in;
+        margin: 30px 0;
 
         &:hover {
             box-shadow: 0 5px 5px -5px #3C2F2F;
             color: #6a756a;
         }
     }
+}
+
+.active {
+    border-top: 1px solid rgb(0, 0, 0);
+    border-bottom: 1px solid rgb(0, 0, 0);
+    padding: 10px;
 }
 
 /************* GEN  PUBLIC *********/
@@ -225,14 +231,12 @@ footer {
         padding: 10px;
         border-radius: 5px;
         z-index: 10;
-        min-width: 150px;
+        min-width: 200px;
 
         & a{
             display: block;
 
-            &:nth-of-type(2){
-                margin-top: 15px;
-            }
+            
         }
     }
     

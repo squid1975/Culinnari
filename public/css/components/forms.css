@@ -9,89 +9,85 @@
 }
 
 
-/**** signup & login pages ***/
+/**** signup & login page ***/
+.container{
 
-#loginSignupWrapper {
-    width: 1200px;
-}
-
-#loginSignupPage {
-    align-items: center;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-around;
-    min-height: 700px;
-
-    & div {
-        flex: .5;
-    }
-
-    > div:first-of-type {
-        border-right: 1px solid #000000;
-    }
-
-    > div:nth-of-type(2) {
-        margin-left: 20px;
-    }
-
-}
-
-.signUpFormField {
-    min-height: 70px;
-    background: white;
-}
-
-.signupInput {
-    display: flex;
-    flex-wrap: nowrap;
-    padding: 10px;
-    margin-top: 10px;
-    
-    & label {
-        margin-right: 5px;
-    }
-
-    & input {
-        border-radius: 3px;
-    }
-}
-
-.requirements {
+    width: 100%;
+    background: #fff;
+    border-radius: 7px;
+    box-shadow: 0 5px 10px rgba(0,0,0,0.3);
+  }
+  .container .registration{
     display: none;
-    color: #ff0000; 
-    font-size: 14px;
-    margin: 5px;
+  }
+  #check:checked ~ .registration{
+    display: block;
+  }
+  #check:checked ~ .login{
+    display: none;
+  }
+  #check{
+    display: none;
+  }
+  .container .form{
+    padding: 2rem;
+  }
+  .form h2{
+    font-size: 2rem;
+    font-weight: 500;
+    text-align: center;
+    margin-bottom: 1.5rem;
+  }
+   .form input{
+     height: 50px;
+     width: 100%;
+     padding: 0 15px;
+     font-size: 17px;
+     margin-bottom: 1.3rem;
+     border: 1px solid #ddd;
+     border-radius: 6px;
+     outline: none;
+   }
+   .form input:focus{
+     box-shadow: 0 1px 0 rgba(0,0,0,0.2);
+   }
+  .form a{
+    font-size: 16px;
+    color: #009579;
+    text-decoration: none;
+  }
+  .form a:hover{
+    text-decoration: underline;
+  }
+  .form input.button{
+    color: #fff;
+    background: #009579;
+    font-size: 1.2rem;
+    font-weight: 500;
+    letter-spacing: 1px;
+    margin-top: 1.7rem;
+    cursor: pointer;
+    transition: 0.4s;
+  }
+  .form input.button:hover{
+    background: #006653;
+  }
+  .signup{
+    font-size: 18px;
+    text-align: center;
+  }
+  .signup label{
+    color: #009579;
+    cursor: pointer;
+  }
+  .signup label:hover{
+    text-decoration: underline;
   }
 
-#password-requirements ul li {
-    list-style-type: circle;
-}
-
-.loginSignupButton {
-    color: #fff;
-    padding: 10px 20px;
-    background-color: #8B9B8B;
-    font-family: 'Lustria', sans-serif;
-    border-radius: 10px;
-
-    &:hover {
-        background-color: #cbe2cb;
-        color: #000000;
-    }
-}
 
 
-label {
-    display: block;
-    margin-bottom: 5px;
-}
 
-input[type="submit"] {
-    display: block;
-    margin: 10px;
-}
-
-/** SEARCH FORM **/
+/*********************************** SEARCH BAR ********************/
 div#searchWithFilters {
     background-color: #fdfcfc;
     margin: 0 auto;
@@ -123,12 +119,7 @@ input#mainSearch {
     cursor: pointer;
 }
 
-#filterHeading {
-    text-align: center;
-    font-family: 'Lato', sans-serif;
-    margin-top: 10px;
-    margin-bottom: 10px;
-}
+
 
 #filterToggle,
 #filterToggleLabel {
@@ -139,17 +130,26 @@ input#mainSearch {
     display: flex;
     justify-content: space-evenly;
     flex-wrap: wrap;
+    align-items: center;
+}
+
+#filterHeading {
+    font-size: 22px;
+    font-family: 'Poppins', sans-serif;
+    margin: 10px 0;
+    text-align: center;
 }
 
 .searchFilter {
-    width: 150px;
+    width: 160px;
     display: flex;
     flex-direction: column;
     padding: 10px;
 }
 
-.searchFilter > label {
-    margin-bottom: 10px;
+.searchFilter legend {
+    font-size: 18px;
+    font-family: 'Poppins', sans-serif;
     text-transform: uppercase;
     text-align: center;
 }
@@ -175,7 +175,7 @@ input#mainSearch {
     display: none;
     position: absolute;
     background-color: white;
-    min-width: 160px;
+    min-width: 190px;
     box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
     z-index: 1;
 }
@@ -187,15 +187,12 @@ input#mainSearch {
 
 /* Style for the checkboxes inside the dropdown */
 .dropdown-content label {
-    display: block;
+    display: flex;
     padding: 8px;
     font-size: 16px;
 }
 
-.dropdown-content input[type="checkbox"]:checked + label {
-    background-color: #f0f0f0;  /* Change to desired highlight color */
-    color: #333;  /* Optional, to change text color */
-}
+
 
 .dropdown-content input[type="checkbox"] {
     margin-right: 10px;
@@ -213,6 +210,10 @@ input#mainSearch {
 
 /*********************************** CREATE/EDIT RECIPE PAGE ********************/
 
+p.error-message {
+    color: red;
+}
+
 .recipeFormWrapper {
     max-width: 1000px;
     margin: 0 auto;
@@ -223,11 +224,17 @@ input#mainSearch {
     & input {
         border-radius: 5px;
         padding: 5px 10px;
+        font-size: 16px;
     }
 
     & select {
         border-radius: 5px;
         padding: 5px 10px;
+        font-size: 16px;
+    }
+
+    & textarea {
+        font: 16px 'Poppins', sans-serif;
     }
 }
 
@@ -237,12 +244,16 @@ input#mainSearch {
     width: 100%;
 }
 
-#createRecipeForm {
+.recipeForm {
     padding: 20px;
-    
 }
 
-#createRecipeForm span {
+.recipeForm label {
+    display: block;
+    padding: 10px 0;
+}
+
+.recipeForm span {
     display: block;
     margin-top: 5px;
     margin-bottom: 5px;
@@ -272,7 +283,7 @@ label.recipePartName {
 textarea#recipeDescription {
     width: 100%;
     border-radius: 5px;
-    font: 16px 'Lato', serif;
+    
     padding: 3px;
 }
 
@@ -300,6 +311,7 @@ legend {
 
     & .formField {
         align-items: baseline;
+        margin: 0;
     }
 }
 
@@ -330,18 +342,18 @@ legend {
 
 #ingredientInputs {
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
     align-items: center;
     margin-bottom: 10px;
 
-    & select {
-        font-family: 'Lato', serif;
+    & input#ingredientName {
+        width: 250px;
     }
 }
 
 #ingredientInputSet {
     display: flex;
-    justify-content: space-evenly;
+    justify-content: space-between;
     margin: 10px 0;
 }
 
@@ -431,12 +443,20 @@ button.removeIngredient {
 .addedSteps {
     display: flex;
     align-items: center;
-    margin: 10px 5px;
-    background: #dfdcd7;
+    margin: 10px 0;
     padding: 5px;
     width: 100%;
     border: 1px solid #3C2F2F;
     border-radius: 5px;
+
+    > textarea {
+        width: 95%;
+        font: 15px 'Poppins', sans-serif;
+        resize: none;
+        background: none;
+        border: none;
+        overflow-y: visible;
+    }
 }
 
 #measurementAmount {
@@ -463,17 +483,26 @@ button.removeIngredient {
     }
 }
 
-
+#imagePreview {
+    display: none;
+    width: 300px;
+    height: auto;
+    margin-top: 10px;
+}
 
 #youtube_link {
     width: 100%;
 }
 
 .recipeSubmitReset {
-    text-align: center;
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
 }
 
-#createRecipeButton {
+.createRecipeButton {
     font-family: 'Lustria', sans-serif;
     padding: 10px;
     margin-top: 20px;
@@ -501,16 +530,6 @@ button.removeIngredient {
     }
 }
 
-.profileDeleteRecipe {
-    position: relative;
-}
-
-.deleteRecipeForm {
-    position: absolute;
-    background: white;
-    border: 1px solid #ff0000;
-    width: 300px;
-}
 
 /******* ADMIN AREA *********/
 
@@ -528,12 +547,31 @@ button.removeIngredient {
         display: flex;
         justify-content: space-between;
         width: 300px;
+        
+        > label {
+            margin: 0;
+        }
 
     }
 }
 
 /***************************************************************** MEDIA QUERIES ******************************************************************/
 
+@media screen and (max-width: 800px) {
+    #ingredientInputs {
+       display: block;
+       width: fit-content;
+    }
+
+    .addedIngredients .ingredientInputSet {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .signupInput {
+       display: block;
+    }
+}
 /*************** SEARCH BAR*********************/
 @media screen and (max-width: 650px) {
     /****  SEARCH BAR ***/
@@ -550,8 +588,17 @@ button.removeIngredient {
     }
 
     #filterToggle:checked ~ .filters {
-        display: block;
+        display: flex;
+        flex-direction: column;
         align-items: center;
+
+        > .searchFilter {
+            width: 100%;
+        }
+
+        .dropdown-content {
+            min-width: 100%;
+        }
     }
 
     /*** CREATE RECIPE PAGE ****/
@@ -574,12 +621,7 @@ button.removeIngredient {
 }
 
 /************************ CREATE RECIPE ******************/
-@media screen and (max-width: 800px) {
-     #ingredientInputs {
-        display: block;
-        width: fit-content;
-     }
-}
+
 
 @media screen and (max-width: 500px) {
     .radio-group {
