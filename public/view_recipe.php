@@ -55,6 +55,23 @@ if(is_post_request()){
     if(isset($_POST['cookbook_recipe'])) {
         $args = $_POST['cookbook_recipe'];
         $recipe_id = $args['recipe_id'];
+        $cookbook_ids = $_POST['cookbooks'] ?? []; 
+        foreach ($cookbook_ids as $cookbook_id) {
+            $cookbook_recipe = new CookbookRecipe([
+                'cookbook_id' => $cookbook_id,
+                'recipe_id' => $recipe_id
+            ]);
+            $result = $cookbook_recipe->save();
+            if (!$result) {
+                throw new Exception("Unable to save cookbook recipe.");
+                
+                $_SESSION['message'] = 'Cookbook recipe failed. Please try again later.';
+            } else {
+                
+                $_SESSION['message'] = 'Recipe added to cookbook.';
+            }
+            redirect_to(url_for('/view_recipe.php?recipe_id=' . $recipe->id));
+        }
         
 
     }
@@ -103,6 +120,7 @@ if(is_post_request()){
 
             <div class="star-rating">
                 <?php 
+                // Fetch the average rating for the recipe
                 $average_rating = Rating::get_average_rating($recipe->id);
                 if ($average_rating != 0): ?>
                     <div>
