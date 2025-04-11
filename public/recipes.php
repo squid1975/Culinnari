@@ -1,6 +1,7 @@
+<title>Recipe Search | Culinnari
+</title>
 <?php 
 require_once('../private/initialize.php');
-$pageTitle = "Recipes | Culinnari";
 include(SHARED_PATH . '/public_header.php');
 
 $recipes = Recipe::find_all(); // Get all recipes first
