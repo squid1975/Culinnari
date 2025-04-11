@@ -6,7 +6,8 @@ require_mgmt_login();
 $mealTypeId = $_GET['meal_type_id'] ?? '1';
 $mealType = MealType::find_by_id($mealTypeId);
 if($mealType === false){
-    redirect_to(url_for('/admin/index.php'));
+    $_SESSION['message'] = 'Meal type not found.';
+    redirect_to(url_for('/admin/categories/index.php'));
 }
 
 if(is_post_request()){
@@ -16,7 +17,7 @@ if(is_post_request()){
         $result = $mealType->save();
         if($result === true){
             $_SESSION['message'] = 'The meal type was updated successfully.';
-            redirect_to(url_for('/admin/categories/mealTypes/manage.php?meal_type_id=' . $mealTypeId));
+            redirect_to(url_for('/admin/categories/meal_types/manage.php?meal_type_id=' . $mealTypeId));
         }
     }
     if(isset($_POST['delete'])){
@@ -43,6 +44,12 @@ if(is_post_request()){
             <div>
                 &laquo;<a href="<?php echo url_for('/admin/categories/index.php');?>">Back to Categories Index</a>
             </div>
+            <?php if(isset($_SESSION['message'])): ?>
+            <div class="session-message">
+                <?php echo $_SESSION['message']; ?>
+            </div>
+            <?php unset($_SESSION['message']); // Clear message after displaying ?>
+        <?php endif; ?>
             <h2>Manage Meal Type: <?php echo h($mealType->meal_type_name); ?> </h2>
             <div class="edit">
                 <h3>Edit Meal Type</h3>
