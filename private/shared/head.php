@@ -10,5 +10,4 @@ $id = $_SESSION['user_id'] ?? false; ?>
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
     <link href="<?php echo url_for('css/global.css'); ?>" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <script src="<?php echo url_for('/js/search.js'); ?>" defer></script>
 </head>
