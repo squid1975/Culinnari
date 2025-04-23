@@ -50,7 +50,11 @@ if(is_post_request()) {
     $user = User::find_by_username($username);
     if (!$user) {
       $login_errors[] = "User not found.";
-    } else {
+    } 
+    elseif($user->user_is_active == 0) {
+      $login_errors[] = "Your account is inactive. Please contact support.";
+    }
+    else {
       // Test if user found and password is correct
       if ($user->verify_password($password)) {
         // Mark user as logged in
@@ -63,14 +67,14 @@ if(is_post_request()) {
         }
       } else {
         // Username not found or password does not match
-        $login_errors[] = "Log in was unsuccessful.";
+        $login_errors[] = "Log in was unsuccessful. Please check your username and password. If you forgot your password, please contact support at hello@culinnari.com.";
       }
     }
   }
 }
 }
 ?>
-<script src="<?php echo url_for('/js/script.js'); ?>" defer></script>
+<script src="<?php echo url_for('/js/loginSignup.js'); ?>" defer></script>
 <main role="main" tabindex="-1">
   <div class="loginSignupWrapper">
     <div class="wrapper">
