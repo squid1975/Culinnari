@@ -6,7 +6,7 @@ $current_page = basename($_SERVER['SCRIPT_NAME']);
     <div id="headerIcon">
         <h1 class="visuallyHidden">Culinnari | Recipe Sharing</h1>
         <a href="<?php echo url_for('/index.php'); ?>">
-            <img src="<?php echo url_for('/images/logo.svg'); ?>" width="215" height="60" alt="Culinnari Logo" aria-hidden="true">
+            <img src="<?php echo url_for('/images/logo.svg'); ?>" width="215" height="60" alt="Culinnari Logo" >
         </a>
     </div>
     <nav role="navigation" id="mainMenu">

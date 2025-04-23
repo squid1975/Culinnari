@@ -7,7 +7,7 @@
 <div id="memberNav">
     <input type="checkbox" id="userMenuToggle">
     <label for="userMenuToggle">
-        <img src="<?php echo url_for(script_path: '/images/icon/memberIcon.svg');?>" width="30" height="30" alt="User Icon" title="User Profile"> </a>
+        <img src="<?php echo url_for(script_path: '/images/icon/memberIcon.svg');?>" width="30" height="30" alt="User Icon" title="User Profile">
     </label>
     <div id="userMenu"> 
         <a href="<?php echo url_for('/member/profile.php?id=' . $user->id); ?>">

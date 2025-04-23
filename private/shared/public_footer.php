@@ -1,10 +1,7 @@
 <footer role="contentinfo">
     <div id="logoCR">
-        <img src="<?php echo url_for('/images/logo.svg');?>" alt="Culinnnari Logo" title="Culinnari | Share Recipes, Enjoy Food" width="251" height="60">
+        <img src="<?php echo url_for('/images/logo.svg');?>" alt="Culinnari Logo" title="Culinnari | Share Recipes, Enjoy Food" width="251" height="60">
         <p>&copy; 2025 Sydney Farrington<p>
-        <?php if($current_page == url_for('/index.php')):?>
-            <p><a href="https://www.freepik.com/free-photo/chicken-eggs-milk-oil-notebook-marble-surface_11623345.htm#fromView=search&page=1&position=24&uuid=000115ba-ed80-4ab2-9310-5de791f90e83&query=recipe+cooking">(Hero) Image by azerbaijan_stockers on Freepik</a></p>
-        <?php endif; ?>
     </div>    
     <div id="secondaryNav">
         <ul>
@@ -18,7 +15,7 @@
             <?php if(!$session->is_logged_in()){ ?>
             <li><a href="<?php echo url_for('/login_signup.php');?>">Log In / Create Account</a></li>
             <?php } elseif($session->is_logged_in()) { ?>
-            <li><a href="<?php echo url_for('/member/profile.php'); ?>">My Profile</a></li>
+            <li><a href="<?php echo url_for('/member/profile.php?id=' . $session->user_id); ?>">My Profile</a></li>
             <li><a href="<?php echo url_for('/member/create_recipe.php'); ?> ">Create Recipe</a></li>
             <?php } ?>
             <?php if($session->is_mgmt_logged_in()){ ?>
