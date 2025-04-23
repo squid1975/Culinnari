@@ -108,7 +108,10 @@
       return false; 
     }
   }
-
+  /**
+   * Check if there are any signup errors present
+   * @return bool Determines if there are values in the signup value array
+   */
   function is_signup_error_present() {
     global $signup_errors;
     return !empty($signup_errors);

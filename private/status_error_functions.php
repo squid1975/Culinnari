@@ -9,9 +9,9 @@ function require_login (){
 function require_mgmt_login() {
   global $session;
   if(!$session->is_mgmt_logged_in()) {
-    redirect_to(url_for('/login_signup.php'));
+    redirect_to(url_for('/404.php'));
   } else {
-    // Do nothing, let the rest of the page proceed
+    // Do nothing, allow access
   }
 }
 
@@ -20,7 +20,7 @@ function require_super_admin_login() {
   if(!$session->is_super_admin_logged_in()){
     redirect_to(url_for('/login_signup.php'));
   } else {
-    //
+    // Do nothing, allow access
   }
 }
 

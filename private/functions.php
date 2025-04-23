@@ -16,8 +16,8 @@ function url_for($script_path) {
 /**
  * URL-encode a string.
  *
- * @param string $string
- * @return string
+ * @param string $string The string to encode
+ * @return string Encoded string
  */
 function u($string="") {
   return urlencode($string);
@@ -26,8 +26,8 @@ function u($string="") {
 /**
  * Raw URL-encode a string (for path components).
  *
- * @param string $string
- * @return string
+ * @param string $string The string to encode
+ * @return string Encoded string
  */
 function raw_u($string="") {
   return rawurlencode($string);
@@ -36,8 +36,8 @@ function raw_u($string="") {
 /**
  * Escape HTML characters in a string.
  *
- * @param string $string
- * @return string
+ * @param string $string The string to escape
+ * @return string Escaped string
  */
 function h($string="") {
   return htmlspecialchars($string);
@@ -46,7 +46,7 @@ function h($string="") {
 /**
  * Send a 404 Not Found header and terminate the script.
  *
- * @return void
+ * @return void If the script is not found, this function sends a 404 header and exits
  */
 function error_404() {
   header($_SERVER["SERVER_PROTOCOL"] . " 404 Not Found");
@@ -77,7 +77,7 @@ function redirect_to($location) {
 /**
  * Check if the current request is a POST request.
  *
- * @return bool
+ * @return bool True if the request method is POST, false otherwise
  */
 function is_post_request() {
   return $_SERVER['REQUEST_METHOD'] == 'POST';
@@ -86,29 +86,19 @@ function is_post_request() {
 /**
  * Check if the current request is a GET request.
  *
- * @return bool
+ * @return bool True if the request method is GET, false otherwise
  */
 function is_get_request() {
   return $_SERVER['REQUEST_METHOD'] == 'GET';
 }
 
-/**
- * Format a number into USD currency.
- *
- * @param string $format Ignored (for compatibility)
- * @param float $number Amount to format
- * @return string
- */
-function money_format($format, $number) {
-  return '$' . number_format($number, 2);
-}
 
 /**
  * Convert hours and minutes into total seconds.
  *
- * @param int $hours
- * @param int $minutes
- * @return int Total seconds
+ * @param int $hours The number of hours 
+ * @param int $minutes The number of minutes
+ * @return int Hour plus minute value converted to seconds
  */
 function timeToSeconds($hours, $minutes){
   return ($hours * 3600) + ($minutes * 60);
@@ -129,8 +119,8 @@ function convertSeconds($seconds) {
 /**
  * Format a timestamp as MM/DD/YYYY.
  *
- * @param string $timestamp
- * @return string
+ * @param string $timestamp The timestamp to format 
+ * @return string Formatted date string
  */
 function formatDate($timestamp) {
   return date("m/d/Y", strtotime($timestamp));
@@ -139,8 +129,8 @@ function formatDate($timestamp) {
 /**
  * Convert a fraction or mixed number string to decimal.
  *
- * @param string $fraction
- * @return float|null
+ * @param string $fraction The fraction or mixed number string to convert
+ * @return float|null The decimal representation of the fraction 
  */
 function fractionToDecimal($fraction) {
   $fraction = trim($fraction);
@@ -168,8 +158,8 @@ function fractionToDecimal($fraction) {
 /**
  * Convert a decimal number into a simplified fraction or mixed number.
  *
- * @param float|string $decimal
- * @return string
+ * @param float|string $decimal The decimal number to convert
+ * @return string The fraction or mixed number representation of the decimal
  */
 function decimal_to_fraction($decimal) {
   if (!is_numeric($decimal)) return $decimal;
@@ -191,9 +181,9 @@ function decimal_to_fraction($decimal) {
 /**
  * Calculate the greatest common divisor.
  *
- * @param int $a
- * @param int $b
- * @return int
+ * @param int $a The first number
+ * @param int $b The second number
+ * @return int The greatest common divisor of the first and second number
  */
 function gcd($a, $b) {
   while ($b != 0) {
@@ -207,7 +197,7 @@ function gcd($a, $b) {
 /**
  * Extract the YouTube video ID from a given URL.
  *
- * @param string $url
+ * @param string $url The YouTube URL to extract the ID from
  * @return string|false Video ID or false if not found
  */
 function extractYouTubeID($url) {
@@ -218,8 +208,8 @@ function extractYouTubeID($url) {
 /**
  * Convert a YouTube video ID into an embed URL.
  *
- * @param string $videoID
- * @return string
+ * @param string $videoID The YouTube video ID to convert 
+ * @return string The YouTube embed URL
  */
 function convertToEmbedURL($videoID) {
   return "https://www.youtube.com/embed/$videoID";
@@ -228,8 +218,8 @@ function convertToEmbedURL($videoID) {
 /**
  * Convert a YouTube embed URL into a shareable watch link.
  *
- * @param string $embedUrl
- * @return string
+ * @param string $embedUrl The YouTube embed URL
+ * @return string The shareable watch link / original URL 
  */
 function embedToShareLink($embedUrl) {
   if (preg_match('/^https:\/\/www\.youtube\.com\/embed\/([a-zA-Z0-9_-]+)/', $embedUrl, $matches)) {
