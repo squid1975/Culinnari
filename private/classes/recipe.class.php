@@ -35,8 +35,13 @@ class Recipe extends DatabaseObject
         $this->recipe_difficulty = $args['recipe_difficulty'] ?? '';
         $this->user_id = $args['user_id'] ?? '';
     }
-  
-    public static function getUserRecipes($user_id) {
+
+/**
+ * Finds all recipes associated with a user based on the user_id
+ * @param mixed $user_id The user_id (id in user table) of the user to look up
+ * @return Recipe[] Array of recipe objects associated with the user
+ */
+public static function get_user_recipes($user_id) {
       $sql = "SELECT * FROM recipe WHERE user_id = '" . self::$database->escape_string($user_id) . "'";
       return Recipe::find_by_sql($sql); // 
   }
@@ -52,6 +57,16 @@ class Recipe extends DatabaseObject
     if(is_blank($this->recipe_description)){
       $this->errors[] = "Recipe description cannot be blank.";
     }
+    if(has_length($this->recipe_description, ['min' => 2, 'max' => 255])){
+      $this->errors[] = "Recipe description must be between 2 and 255 characters.";
+    }
+    if(is_blank($this->recipe_prep_time_seconds) && is_blank($this->recipe_cook_time_seconds)){
+      $this->errors[] = "Recipe prep time and cook time cannot be blank.";
+    } elseif(!is_numeric($this->recipe_prep_time_seconds) || !is_numeric($this->recipe_cook_time_seconds)){
+      $this->errors[] = "Recipe prep time and cook time must be numeric values.";
+    } elseif($this->recipe_prep_time_seconds < 0 || $this->recipe_cook_time_seconds < 0){
+      $this->errors[] = "Recipe prep time and cook time must be greater than or equal to 0.";
+    }
 
     if(is_blank($this->recipe_total_servings)){
       $this->errors[] = "Recipe total servings cannot be blank.";
@@ -66,76 +81,131 @@ class Recipe extends DatabaseObject
    * @param mixed $recipe_id
    * @return array $diet_icons array of diet_icon urls
    */
-  public static function get_diet_icons($recipe_id) {
-    $recipe_diets = RecipeDiet::find_by_recipe_id($recipe_id); // Use find_by_recipe_id method to get related rows
-    $diet_icons = [];
-    
-    // Check if the result is an array and iterate over it
-    if ($recipe_diets) {
-        foreach ($recipe_diets as $recipe_diet) {
-            $diet = Diet::find_by_id($recipe_diet->diet_id);
-            if ($diet) {
-                $diet_icons[] = $diet->diet_icon_url; // Store the diet icon URL
+public static function get_diet_icons($recipe_id) {
+        $recipe_diets = RecipeDiet::find_by_recipe_id($recipe_id); // Use find_by_recipe_id method to get related rows
+        $diet_icons = [];
+        
+        // Check if the result is an array and iterate over it
+        if ($recipe_diets) {
+            foreach ($recipe_diets as $recipe_diet) {
+                $diet = Diet::find_by_id($recipe_diet->diet_id);
+                if ($diet) {
+                    $diet_icons[] = $diet->diet_icon_url; // Store the diet icon URL
+                }
+            }
+        }
+        
+        return $diet_icons;
+    }
+
+/**
+ * Takes the recipe id and finds the meal type names associated with the recipe's meal types
+ * @param mixed $recipe_id The recipe ID to look up
+ * @return array $meal_type_names An array of meal type names associated with the recipe
+ */
+public static function get_meal_type_names($recipe_id) {
+    $recipe_meal_types = RecipeMealType::find_by_recipe_id($recipe_id);
+    $meal_type_names = [];
+
+    if ($recipe_meal_types) {
+        foreach ($recipe_meal_types as $recipe_meal_type) {
+            $meal_type = MealType::find_by_id($recipe_meal_type->meal_type_id);
+            if ($meal_type) {
+                $meal_type_names[] = $meal_type->meal_type_name;
             }
         }
     }
-    
-    return $diet_icons;
-}
+    return $meal_type_names;
+    }
 
-public static function get_meal_type_names($recipe_id) {
-  $recipe_meal_types = RecipeMealType::find_by_recipe_id($recipe_id);
-  $meal_type_names = [];
-
-  if ($recipe_meal_types) {
-      foreach ($recipe_meal_types as $recipe_meal_type) {
-          $meal_type = MealType::find_by_id($recipe_meal_type->meal_type_id);
-          if ($meal_type) {
-              $meal_type_names[] = $meal_type->meal_type_name;
-          }
-      }
-  }
-
-  return $meal_type_names;
-}
-
+/**
+ * Gets the style names associated with a recipe based on the recipe ID (id in recipe table)
+ * @param mixed $recipe_id The recipe ID to look up
+ * @return array $style_names An array of style names associated with the recipe
+ */
 public static function get_style_names($recipe_id) {
-  $recipe_styles = RecipeStyle::find_by_recipe_id($recipe_id);
-  $style_names = [];
+    $recipe_styles = RecipeStyle::find_by_recipe_id($recipe_id);
+    $style_names = [];
 
-  if ($recipe_styles) {
-      foreach ($recipe_styles as $recipe_style) {
-          $style = Style::find_by_id($recipe_style->style_id);
-          if ($style) {
-              $style_names[] = $style->style_name;
-          }
-      }
-  }
+    if ($recipe_styles) {
+        foreach ($recipe_styles as $recipe_style) {
+            $style = Style::find_by_id($recipe_style->style_id);
+            if ($style) {
+                $style_names[] = $style->style_name;
+            }
+        }
+    }
+    return $style_names;
+    }
 
-  return $style_names;
-}
-
+/**
+ * * Takes the recipe id and finds the username of the user who created the recipe
+ * @param mixed $recipe_id The id of the recipe 
+ * @return string $username The username of the user who created the recipe
+ */
 public static function get_recipe_username($recipe_id) {
-  $recipe = Recipe::find_by_id($recipe_id);
-  $user = User::find_by_id($recipe->user_id);
-  return $user->username;
-}
+    $recipe = Recipe::find_by_id($recipe_id);
+    $user = User::find_by_id($recipe->user_id);
+    return $user->username;
+    }
 
+/**
+ * Finds the newest recipes in the database ordered by recipe_post_date in descending order
+ * @return Recipe[] Array of Recipe objects ordered by the most recently posted
+ */
 public static function find_newest_recipes() {
-  // Perform the query to fetch the newest recipes, ordered by post date descending
-  return Recipe::find_by_sql("SELECT * FROM recipe ORDER BY recipe_post_date DESC");
-}
+    // Perform the query to fetch the newest recipes, ordered by post date descending
+    return Recipe::find_by_sql("SELECT * FROM recipe ORDER BY recipe_post_date DESC");
+    }
 
+/**
+ * Finds recipes that have 'beginner' value in the recipe_difficulty column
+ * 
+ * @return Recipe[] Array of Recipe objects with 'beginner' difficulty
+ */
 public static function find_beginner_recipes() {
   // Perform the query to fetch recipes with 'beginner' difficulty without ordering
   return Recipe::find_by_sql("SELECT * FROM recipe WHERE recipe_difficulty = 'beginner'");
 }
 
+/**
+ * Finds recipes that the sum of the recipe_prep_time and recipe_cook_time is less than 1800 seconds (30 minutes)
+ * 
+ * @return Recipe[] Array of Recipe objects with prep and cook time sum of less than 30 minutes
+ */
 public static function find_quick_recipes() {
   // Perform the query to fetch recipes where the sum of prep time and cook time is less than 1800 seconds (30 minutes)
   return Recipe::find_by_sql("SELECT * FROM recipe WHERE (recipe_prep_time_seconds + recipe_cook_time_seconds) < 1800");
 }
 
+/**
+ * Finds recipes with the highest average rating
+ * 
+ * @return Recipe[] Array of Recipe objects ordered by average rating in descending order
+ */
+public static function find_highest_rated_recipes() {
+    return Recipe::find_by_sql("
+      SELECT r.*, AVG(rt.rating_value) AS avg_rating 
+      FROM recipe AS r 
+      INNER JOIN rating AS rt ON r.id = rt.recipe_id AND rt.rating_value IS NOT NULL
+      GROUP BY r.id 
+      HAVING COUNT(rt.rating_value) > 0
+      ORDER BY avg_rating DESC
+    ");
+  }
+  
+
+/**
+ * * Builds Query String for searching for recipes based on various criteria including search query, prep/cook time, difficulty, meal types, styles, and diets.
+ * @param mixed $searchQuery Search query string to match against recipe name and description.
+ * @param mixed $prepCookTimeTotal Array of time filters for total prep and cook time.
+ * @param mixed $recipeDifficulty Array of recipe difficulty levels to filter by.
+ * @param mixed $mealTypes Array of meal type IDs to filter by.
+ * @param mixed $styles Array of style IDs to filter by.
+ * @param mixed $diets  Array of diet IDs to filter by.
+ * @param mixed $sortBy Sorting criteria for the results.
+ * @return DatabaseObject[]  An array of Recipe objects that match the search criteria 
+ */
 public static function search_recipes(
     $searchQuery = '', 
     $prepCookTimeTotal = [], 
@@ -143,8 +213,10 @@ public static function search_recipes(
     $mealTypes = [], 
     $styles = [], 
     $diets = [], 
-    $sortBy = 'recipe[recipe_post_date] DESC'
-) {
+    $sortBy = 'recipe[recipe_post_date] DESC',
+   
+    
+    ) {
     // Base query with average rating calculation
     $sql = "SELECT r.*, 
                    COALESCE(AVG(rt.rating_value), 0) AS avg_rating 
@@ -284,33 +356,38 @@ public static function search_recipes(
             $sql .= " ORDER BY r.recipe_post_date DESC"; // Default sorting (Newest first)
             break;
     }
-
     return self::find_by_sql($sql);
-}
-
-  public static function get_username_by_recipe_id($recipe_id) {
-    // Get the user_id from the recipe table using the recipe_id
-    $sql = "SELECT user_id FROM " . static::$table_name . " WHERE id='" . self::$database->escape_string($recipe_id) . "'";
-    $result = self::$database->query($sql);
-
-    // Check if a result was returned
-    if ($result && $row = $result->fetch_assoc()) {
-        $user_id = $row['user_id'];
-
-        // Now that we have the user_id, fetch the username from the user table
-        $user_sql = "SELECT username FROM user WHERE id='" . self::$database->escape_string($user_id) . "'";
-        $user_result = self::$database->query($user_sql);
-
-        // Check if a result was returned and return the username
-        if ($user_result && $user_row = $user_result->fetch_assoc()) {
-            return $user_row['username'];
-        } else {
-            return false; // User not found
-        }
-    } else {
-        return false; // Recipe not found or user_id is invalid
     }
-}
+
+/**
+ * Finds the username of the user who created a recipe based on the recipe ID
+* @param mixed $recipe_id The ID of the recipe to look up 
+* @return string|bool The username of the user who created the recipe or false if not found
+*/
+public static function get_username_by_recipe_id($recipe_id) {
+        // Get the user_id from the recipe table using the recipe_id
+        $sql = "SELECT user_id FROM " . static::$table_name . " WHERE id='" . self::$database->escape_string($recipe_id) . "'";
+        $result = self::$database->query($sql);
+
+        // Check if a result was returned
+        if ($result && $row = $result->fetch_assoc()) {
+            $user_id = $row['user_id'];
+
+            // Now that we have the user_id, fetch the username from the user table
+            $user_sql = "SELECT username FROM user WHERE id='" . self::$database->escape_string($user_id) . "'";
+            $user_result = self::$database->query($user_sql);
+
+            // Check if a result was returned and return the username
+            if ($user_result && $user_row = $user_result->fetch_assoc()) {
+                return $user_row['username'];
+            } else {
+                return false; // User not found
+            }
+        } else {
+            return false; // Recipe not found or user_id is invalid
+        }
+    }
+
 }
 
 

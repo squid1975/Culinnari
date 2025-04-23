@@ -1,7 +1,10 @@
 <?php 
 class Diet extends DatabaseObject {
-    static protected $table_name = 'diet';
-    static protected $db_columns = ['diet_name', 'diet_icon_url'];
+    protected static $table_name = 'diet';
+    protected static $db_columns = [
+        'id',
+        'diet_name', 
+        'diet_icon_url'];
     
     public $id;
     public $diet_name;
@@ -12,6 +15,4 @@ class Diet extends DatabaseObject {
         $this->diet_icon_url = $args['diet_icon_url'] ?? '';
     }
     
-   
 }
-?>

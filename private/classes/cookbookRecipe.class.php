@@ -2,7 +2,10 @@
 
 class CookbookRecipe extends DatabaseObject {
     protected static $table_name = 'cookbook_recipe';
-    protected static $db_columns = ['id','cookbook_id', 'recipe_id'];
+    protected static $db_columns = [
+        'id',
+        'cookbook_id', 
+        'recipe_id'];
     
     public $id;
     public $cookbook_id;
@@ -14,13 +17,15 @@ class CookbookRecipe extends DatabaseObject {
     }
     
 
-    public static function get_cookbook_recipes ($cookbook_id){
-        $sql = "SELECT * FROM cookbook_recipe WHERE id = '" . self::$database->escape_string($cookbook_id) . "'";
+    /**
+     * Returns all recipes in a cookbook
+     * @param mixed $cookbook_id the id value of the cookbook 
+     * @return CookbookRecipe[] Array of CookbookRecipe objects
+     */
+    public static function get_cookbook_recipes_by_cookbook_id ($cookbook_id){
+        $sql = "SELECT * FROM cookbook_recipe WHERE cookbook_id = '" . self::$database->escape_string($cookbook_id) . "'";
         return self::find_by_sql($sql);
     }
 
-    
-   
 }
 
-?>

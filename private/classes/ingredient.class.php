@@ -35,9 +35,15 @@ class Ingredient extends DatabaseObject
         return $this->errors;
     }
 
+    /**
+     * Finds ingredients associated with a recipe
+     * @param mixed $recipe_id the recipe_id (id in recipe table) of the recipe
+     * @return Ingredient[] An array of ingredient objects matching the recipe ID
+     */
     public static function find_by_recipe_id($recipe_id) {
         $sql = "SELECT * FROM " . static::$table_name . " WHERE recipe_id = '" . self::$database->escape_string($recipe_id) . "'";
         $result_array = static::find_by_sql($sql);
         return $result_array; // Ensure this returns an array of objects
     }
+
 }

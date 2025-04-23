@@ -19,6 +19,12 @@ class Step extends DatabaseObject {
         $this->step_description = $args['step_description'] ??'';
 
     }
+    
+    /**
+     * Finds all steps associated with a recipe
+     * @param int $recipe_id the recipe_id (id in recipe table) of the recipe to look up
+     * @return DatabaseObject[] array of Step objects matching the recipe ID
+     */
     public static function find_by_recipe_id($recipe_id) {
         $sql = "SELECT * FROM " . static::$table_name . " WHERE recipe_id = '" . self::$database->escape_string($recipe_id) . "'";
         $result_array = static::find_by_sql($sql);

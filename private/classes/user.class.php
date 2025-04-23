@@ -4,10 +4,16 @@ class User extends DatabaseObject
 {
     protected static $table_name = 'user';
     protected static $db_columns = [ 
-        'username', 'user_email_address', 'user_hash_password',
-        'user_first_name', 'user_last_name', 'user_create_account_date',
-        'user_role', 'user_is_active'
+        'username', 
+        'user_email_address', 
+        'user_hash_password',
+        'user_first_name', 
+        'user_last_name', 
+        'user_create_account_date',
+        'user_role', 
+        'user_is_active'
     ];
+    
 
     public $id;
     public $username;
@@ -66,6 +72,10 @@ class User extends DatabaseObject
         return parent::update();
     }
 
+    /**
+     * Validates the user input for creating or updating a user
+     * @return array $errors - Array of validation errors
+     */
     public function validate()
     {
         $this->errors = [];

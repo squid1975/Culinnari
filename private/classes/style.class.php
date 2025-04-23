@@ -1,8 +1,10 @@
 <?php
 class Style extends DatabaseObject
 {
-    static protected $table_name = 'style';
-    static protected $db_columns = ['id','style_name'];
+    protected static $table_name = 'style';
+    protected static $db_columns = [
+        'id',
+        'style_name'];
 
     public $id;
     public $style_name;

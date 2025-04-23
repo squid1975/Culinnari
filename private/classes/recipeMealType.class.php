@@ -2,7 +2,10 @@
 
 class RecipeMealType extends DatabaseObject {
 static protected $table_name = 'recipe_meal_type';
-    static protected $db_columns = ['recipe_id','meal_type_id'];
+    static protected $db_columns = [ 
+        'id',
+        'recipe_id',
+        'meal_type_id'];
 
     public $id;
     public $recipe_id;
@@ -20,4 +23,4 @@ static protected $table_name = 'recipe_meal_type';
     }
     
 }
-?>
+
