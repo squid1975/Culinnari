@@ -1,5 +1,5 @@
-<title>Management: Edit User | Culinnari</title>
 <?php require_once('../../../private/initialize.php'); 
+$title = 'Management: Edit User | Culinnari';
 include(SHARED_PATH . '/public_header.php'); 
 require_mgmt_login();
 

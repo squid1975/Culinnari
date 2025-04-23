@@ -1,31 +1,32 @@
-<title>Management: Create User | Culinnari</title>
-<?php require_once('../../../private/initialize.php'); ?>
+<?php require_once('../../../private/initialize.php'); 
+$title = 'Management: Create User | Culinnari';
+include(SHARED_PATH . '/public_header.php'); 
 
-<?php include(SHARED_PATH . '/public_header.php'); ?>
-<?php
 if(is_post_request()) {
 
-// Create record using post parameters
-$args = $_POST['user'];
-$user = new User($args);
-$user->set_hashed_password();
-$result = $user->save();
+  // Create record using post parameters
+  $args = $_POST['user'];
+  $user = new User($args);
+  $user->set_hashed_password();
+  $result = $user->save();
 
-if($result === true) {
-  $new_id = $user->id;
-  $_SESSION['message'] = 'The user was created successfully.';
-  redirect_to(url_for('/users/show.php?id=' . $new_id));
+  if($result === true) {
+    $new_id = $user->id;
+    $_SESSION['message'] = 'The user was created successfully.';
+    redirect_to(url_for('/admin/users/show.php?id=' . $new_id));
+  } else {
+    redirect_to(url_for('/admin/users/new.php'));
+    // Display errors if save failed
+    $_SESSION['message'] = 'Unable to create user. Please try again later.';
+  }
+
 } else {
-  $_SESSION['message'] = 'Unable to create user. Please try again later.';
-}
-
-} else {
-
-$user = new User;
+  // Display the blank form
+  $user = new User;
 }
 
 ?>
-<script src="<?php echo url_for('/js/script.js'); ?>" defer></script>
+<script src="<?php echo url_for('/js/loginSignup.js'); ?>" defer></script>
 
 <main role="main" tabindex="-1">
     <div id="adminHero">
@@ -35,6 +36,12 @@ $user = new User;
       <a class="back-link" href="<?php echo url_for('/admin/users/index.php'); ?>">&laquo; Back to User Index</a>
       <div class="manageUserCard">
         <h2>Create User</h2>
+        <?php if(isset($_SESSION['message'])): ?>
+            <div class="session-message">
+                <?php echo $_SESSION['message']; ?>
+            </div>
+            <?php unset($_SESSION['message']); // Clear message after displaying ?>
+        <?php endif; ?>
 
         <?php echo display_errors($user->errors); ?>
 

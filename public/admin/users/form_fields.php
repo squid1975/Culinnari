@@ -46,7 +46,8 @@ if(!isset($user)) {
 
   <?php if($session->is_super_admin_logged_in()) { ?>
   <div class="userFormInput">
-    <label>User role:</label>
+    <fieldset>
+      <legend>User Role:</legend>
     <div>
       <label for="userRole">
         <input type="radio" id="userRole" name="user[user_role]" value="m" <?php echo ($user->user_role == 'm'); ?> checked>
@@ -61,16 +62,21 @@ if(!isset($user)) {
         Super Admin
       </label>
     </div>
+    </fieldset>
   </div>
 <?php } ?>
 
   <div class="userFormInput">
+    <fieldset>
+      <legend>Active Level:</legend>
+    
     <label for="userIsActiveTrue">
       <input type="radio" id="userIsActiveTrue" name="user[user_is_active]" value="1" checked>Active
     </label>
     <label for="userIsActiveFalse">
       <input type="radio" id="userIsActiveFalse" name="user[user_is_active]" value="0">Inactive
     </label>
+    </fieldset>
   </div>
 
 
