@@ -1,11 +1,9 @@
-
 header {
     align-items: center;
     display: flex;
     padding: 10px;
     justify-content: space-evenly;
     background: #FFFAF0;
-    
 }
 
 h1 {
@@ -19,36 +17,34 @@ h1 {
 #menu-toggle {
     display: none;
 }
-  
+
 nav ul {
     padding: 0;
-
-    & li {
-        display: inline-block;
-    }
-
-    & a {
-        color: #333;
-        font: 20px 'Lustria', serif;
-        padding: 10px;
-        transition: 0.2s ease-in;
-        margin: 30px 0;
-
-        &:hover {
-            box-shadow: 0 5px 5px -5px #3C2F2F;
-            color: #6a756a;
-        }
-    }
 }
 
-.active {
-    border-top: 1px solid rgb(0, 0, 0);
-    border-bottom: 1px solid rgb(0, 0, 0);
+nav ul li {
+    display: inline-block;
+}
+
+nav ul a {
+    color: #333;
+    font: 20px 'Lustria', serif;
     padding: 10px;
+    transition: 0.2s ease-in;
+    margin: 30px 0;
+}
+
+nav ul a:hover {
+    box-shadow: 0 5px 5px -5px #3C2F2F;
+    color: #6a756a;
+}
+
+.active a {
+    color: #6a756a;
 }
 
 /************* GEN  PUBLIC *********/
-#headerLoginSignup  {
+#headerLoginSignup {
     display: flex;
     align-items: center;
     background: #D8A7A0;
@@ -56,17 +52,15 @@ nav ul {
     padding: 5px 10px;
     transition: 0.2s ease-in;
     border-radius: 5px;
+}
 
-    &:hover {
-        background:#c0c7b3;
-    }
+#headerLoginSignup:hover {
+    background: #c0c7b3;
 }
 
 #headerLoginSignup a {
     margin-left: 10px;
-    
 }
-
 
 /***************** MEMBER ***********/
 #memberNav {
@@ -91,31 +85,30 @@ nav ul {
 #userMenu {
     display: flex;
     flex-direction: column;
-
-    & a {
-        
-        padding: 3px;
-
-        &:hover {
-            box-shadow: 0 0 3px #868b7c;
-        }
-    }
 }
 
+#userMenu a {
+    padding: 3px;
+}
+
+#userMenu a:hover {
+    box-shadow: 0 0 3px #868b7c;
+}
+
+/********************** Admin ********************/
 #adminNav {
     align-items: center;
     display: flex;
     gap: 5px;
-
-    & a {
-        padding: 3px;
-
-        &:hover {
-            box-shadow: 0 0 3px #868b7c;
-        }
-    }
 }
 
+#adminNav a {
+    padding: 3px;
+}
+
+#adminNav a:hover {
+    box-shadow: 0 0 3px #868b7c;
+}
 
 #adminMenu {
     display: flex;
@@ -126,58 +119,50 @@ nav ul {
     display: none;
 }
 
-
-
 /******** FOOTER ************/
 footer {
     align-items: center;
     display: flex;
     padding: 20px;
     background-color: #c3d3c3;
-
-    & div {
-        flex: 1;
-    }
-
-    & li {
-        font-size: 18px;
-        padding: 5px;
-    }
-
-    & a {
-        color: #333;
-    }
-
-    & #businessInfo  li:first-of-type {
-        align-items: center;
-        display: flex;
-
-        & img {
-            margin-right: 5px;
-        }
-    }
 }
 
+footer div {
+    flex: 1;
+}
 
+footer li {
+    font-size: 18px;
+    padding: 5px;
+}
 
+footer a {
+    color: #333;
+}
 
-/**************************************************** MEDIA QUERIES *****************************************************/  
+#businessInfo li:first-of-type {
+    align-items: center;
+    display: flex;
+}
 
+#businessInfo li:first-of-type img {
+    margin-right: 5px;
+}
 
-
-@media screen and (max-width:800px){
+/**************************************************** MEDIA QUERIES *****************************************************/
+@media screen and (max-width: 800px) {
     header {
         display: grid;
-        grid-template-columns: repeat(1fr, 3);
+        grid-template-columns: repeat(3, 1fr);
         grid-auto-flow: column;
-        justify-content:space-between;
+        justify-content: space-between;
     }
 
-    & #headerIcon {
+    #headerIcon {
         grid-column: 2;
     }
 
-    & #navMenu {
+    #navMenu {
         grid-column: 1;
     }
 
@@ -187,10 +172,9 @@ footer {
         cursor: pointer;
         z-index: 100;
         position: relative;
-      }
-    
-      /* Hide the menu by default */
-      #menuContent {
+    }
+
+    #menuContent {
         position: absolute;
         left: -150px;
         top: -80px;
@@ -200,67 +184,70 @@ footer {
         gap: 10px;
         transition: left 0.3s ease;
         z-index: 100;
-      }
-      
-    
-      /* Show menu when checked */
-      #menu-toggle:checked ~ #menuContent {
+    }
+
+    #menu-toggle:checked ~ #menuContent {
         top: 80px;
         left: 0;
-        
-      }
+    }
 
-      #memberNav {
+    #headerLoginSignup {
+        width: fit-content;
+        margin: 0 auto;
+        padding: 5px;
+    }
+
+    #headerLoginSignup a {
+        margin-left: 0;
+    }
+
+    #userHeader {
+        text-align-last: end;
+    }
+
+    #memberNav {
         position: relative;
         display: inline-block;
     }
-    
-    /* Hide the checkbox */
+
     #userMenuToggle {
         display: none;
     }
-    
-    /* Style for the dropdown menu */
+
     #userMenu {
-        display: none; /* Initially hidden */
+        display: none;
         position: absolute;
         top: 100%;
-        right: 0;
+        right: -10px;
         background: white;
         box-shadow: 0 4px 8px #00000033;
         padding: 10px;
         border-radius: 5px;
         z-index: 10;
         min-width: 200px;
-
-        & a{
-            display: block;
-
-            
-        }
+        text-align-last: left;
     }
-    
-    /* Show the menu when the checkbox is checked */
+
+    #userMenu a {
+        display: block;
+    }
+
     #userMenuToggle:checked + label + #userMenu {
         display: block;
     }
-    
-    /* Style for profile link */
+
     #profileLink {
         cursor: pointer;
         display: flex;
         align-items: center;
         gap: 5px;
     }
-    
-    /* Ensure the label is interactive */
+
     label[for="userMenuToggle"] {
         cursor: pointer;
         display: block;
         width: fit-content;
     }
-
-    /******************* ADMIN MENU ***************/
 
     #adminNav {
         position: relative;
@@ -268,7 +255,7 @@ footer {
     }
 
     #adminMenu {
-        display: none; /* Initially hidden */
+        display: none;
         position: absolute;
         top: 100%;
         right: 0;
@@ -278,40 +265,31 @@ footer {
         border-radius: 5px;
         z-index: 10;
         width: fit-content;
-
-       
-
-        & a{
-            display: flex;
-            flex-wrap: nowrap;
-            padding: 10px;
-
-            & img {
-                margin-right: 5px;
-            }
-        }
-        
     }
-    
-    /* Show the menu when the checkbox is checked */
+
+    #adminMenu a {
+        display: flex;
+        flex-wrap: nowrap;
+        padding: 10px;
+    }
+
+    #adminMenu a img {
+        margin-right: 5px;
+    }
+
     #adminMenuToggle:checked ~ #adminMenu {
         display: block;
     }
-    
-    
-    /* Ensure the label is interactive */
+
     label[for="adminMenuToggle"] {
         cursor: pointer;
         display: block;
         width: fit-content;
     }
 
-    /***************** FOOTER **************/
-
-      footer {
+    footer {
         display: block;
-      }
-    
+    }
 }
 
 @media screen and (max-width: 500px) {
@@ -319,4 +297,3 @@ footer {
         display: none;
     }
 }
-

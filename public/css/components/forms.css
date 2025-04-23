@@ -9,117 +9,125 @@
 }
 
 
-/**** signup & login page ***/
-.container{
-
-    width: 100%;
+/************************************ LOGIN/REGISTRATION PAGE ********************/
+.container {
     background: #fff;
     border-radius: 7px;
     box-shadow: 0 5px 10px rgba(0,0,0,0.3);
-  }
-  .container .registration{
+    width: 100%;
+}
+
+.container .registration {
     display: none;
-  }
-  #check:checked ~ .registration{
+}
+
+#check:checked ~ .registration {
     display: block;
-  }
-  #check:checked ~ .login{
+}
+
+#check:checked ~ .login {
     display: none;
-  }
-  #check{
+}
+
+#check {
     display: none;
-  }
-  .container .form{
+}
+
+.container .form {
     padding: 2rem;
-  }
-  .form h2{
+}
+
+.form h2 {
     font-size: 2rem;
     font-weight: 500;
-    text-align: center;
     margin-bottom: 1.5rem;
-  }
-   .form input{
-     height: 50px;
-     width: 100%;
-     padding: 0 15px;
-     font-size: 17px;
-     margin-bottom: 1.3rem;
-     border: 1px solid #ddd;
-     border-radius: 6px;
-     outline: none;
-   }
-   .form input:focus{
-     box-shadow: 0 1px 0 rgba(0,0,0,0.2);
-   }
-  .form a{
-    font-size: 16px;
+    text-align: center;
+}
+
+.form input {
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 17px;
+    height: 50px;
+    margin-bottom: 1.3rem;
+    outline: none;
+    padding: 0 15px;
+    width: 100%;
+}
+
+.form input:focus {
+    box-shadow: 0 1px 0 rgba(0,0,0,0.2);
+}
+
+.form a {
     color: #009579;
+    font-size: 16px;
     text-decoration: none;
-  }
-  .form a:hover{
+}
+
+.form a:hover {
     text-decoration: underline;
-  }
-  .form input.button{
-    color: #fff;
+}
+
+.form input.button {
     background: #009579;
+    color: #fff;
+    cursor: pointer;
     font-size: 1.2rem;
     font-weight: 500;
     letter-spacing: 1px;
     margin-top: 1.7rem;
-    cursor: pointer;
     transition: 0.4s;
-  }
-  .form input.button:hover{
-    background: #006653;
-  }
-  .signup{
+}
+
+.form input.button:hover {
+    background: #6a756a;
+}
+
+.signup {
     font-size: 18px;
     text-align: center;
-  }
-  .signup label{
-    color: #009579;
+}
+
+.signup label {
+    color: #617061;
     cursor: pointer;
-  }
-  .signup label:hover{
+}
+
+.signup label:hover {
     text-decoration: underline;
-  }
-
-
-
+}
 
 /*********************************** SEARCH BAR ********************/
-div#searchWithFilters {
+#searchWithFilters {
     background-color: #fdfcfc;
+    box-shadow: 0 0 5px #3C2F2F;
     margin: 0 auto;
     max-width: 1200px;
     padding: 10px;
     position: relative;
-    box-shadow: 0 0 5px #3C2F2F;
-    
 }
 
-div#searchBox {
+#searchBox {
     display: grid;
     grid-auto-flow: column;
     grid-template-columns: 1fr;
 }
 
-input#mainSearch {
-    width: 100%;
-    padding: 10px;
+#mainSearch {
     margin-bottom: 5px;
+    padding: 10px;
+    width: 100%;
 }
 
 .mainSearchButton {
-    border: none;
     background: none;
-    position: relative;
-    right: 50px;
+    border: none;
     bottom: 2px;
     cursor: pointer;
+    position: relative;
+    right: 50px;
 }
-
-
 
 #filterToggle,
 #filterToggleLabel {
@@ -127,120 +135,103 @@ input#mainSearch {
 }
 
 .filters {
-    display: flex;
-    justify-content: space-evenly;
-    flex-wrap: wrap;
     align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
 }
 
 #filterHeading {
-    font-size: 22px;
     font-family: 'Poppins', sans-serif;
+    font-size: 22px;
     margin: 10px 0;
     text-align: center;
 }
 
 .searchFilter {
-    width: 160px;
     display: flex;
     flex-direction: column;
     padding: 10px;
+    width: 160px;
 }
 
 .searchFilter legend {
-    font-size: 18px;
     font-family: 'Poppins', sans-serif;
-    text-transform: uppercase;
+    font-size: 18px;
     text-align: center;
+    text-transform: uppercase;
 }
 
-
-/* Style for the dropdown button */
 .dropdown {
     position: relative;
 }
 
 .dropdown-button,
 #sortByButton {
-    color: rgb(0, 0, 0);
-    padding: 10px;
     border: 1px solid #333;
+    color: rgb(0, 0, 0);
     cursor: pointer;
     font-size: 16px;
+    padding: 10px;
     width: 100%;
 }
 
-/* Style for the dropdown content (hidden by default) */
 .dropdown-content {
-    display: none;
-    position: absolute;
     background-color: white;
-    min-width: 190px;
     box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+    display: none;
+    min-width: 190px;
+    position: absolute;
     z-index: 1;
 }
 
-/* Display the dropdown content when the dropdown button is clicked */
 .dropdown:hover .dropdown-content {
     display: block;
 }
 
-/* Style for the checkboxes inside the dropdown */
 .dropdown-content label {
     display: flex;
-    padding: 8px;
     font-size: 16px;
+    padding: 8px;
 }
-
-
 
 .dropdown-content input[type="checkbox"] {
     margin-right: 10px;
 }
 
 .searchReset {
+    background: none;
     border: none;
+    cursor: pointer;
     font-size: 18px;
     margin-top: 10px;
     text-align: center;
     text-decoration: underline;
-    cursor: pointer;
-    background: none;
 }
 
-/*********************************** CREATE/EDIT RECIPE PAGE ********************/
+/*********************************** CREATE/EDIT RECIPE PAGES ********************/
 
-p.error-message {
-    color: red;
-}
 
 .recipeFormWrapper {
-    max-width: 1000px;
-    margin: 0 auto;
     background: #fdfbf4;
-    padding: 15px;
     box-shadow: 0 0 5px #3C2F2F;
-
-    & input {
-        border-radius: 5px;
-        padding: 5px 10px;
-        font-size: 16px;
-    }
-
-    & select {
-        border-radius: 5px;
-        padding: 5px 10px;
-        font-size: 16px;
-    }
-
-    & textarea {
-        font: 16px 'Poppins', sans-serif;
-    }
+    margin: 0 auto;
+    max-width: 1000px;
+    padding: 15px;
 }
 
+.recipeFormWrapper input,
+.recipeFormWrapper select {
+    border-radius: 5px;
+    padding: 5px 10px;
+}
+
+.recipeFormWrapper textarea {
+    font: 16px 'Poppins', sans-serif;
+}
 .recipeFormHeading {
-    text-align: center;
     border-bottom: 1px solid #3C2F2F;
+    text-align: center;
     width: 100%;
 }
 
@@ -255,100 +246,93 @@ p.error-message {
 
 .recipeForm span {
     display: block;
-    margin-top: 5px;
-    margin-bottom: 5px;
     font-size: 16px;
-    font-style:italic;
+    font-style: italic;
+    margin-bottom: 5px;
+    margin-top: 5px;
     min-width: 300px;
 }
 
 h3.recipePartName {
-    padding-top: 20px;
     border-top: 1px solid #969696;
+    padding-top: 20px;
     text-align: center;
+}
 
-    + span {
-        text-align: center;
-    }
+h3.recipePartName + span {
+    text-align: center;
 }
 
 label.recipePartName {
-    font-size: 22px;
-    margin-top: 20px;
-    margin-bottom: 5px;
     font-family: 'Lustria', serif;
+    font-size: 22px;
+    margin-bottom: 5px;
+    margin-top: 20px;
     width: fit-content;
 }
 
-textarea#recipeDescription {
-    width: 100%;
+#recipeDescription {
     border-radius: 5px;
-    
     padding: 3px;
+    width: 100%;
 }
 
-input#recipeName {
-    width: 100%;
+#recipeName {
     padding: 10px;
+    width: 100%;
 }
 
 fieldset {
-    margin: 10px 0;
     border: none;
-    
+    margin: 10px 0;
 }
+
 legend {
-    font-size: 22px;
     font-family: 'Lustria', serif;
+    font-size: 22px;
 }
 
-.radio-group {
-    display: flex;
+.radio-group + label {
+    margin-right: 10px;
+}
 
-    + label {
-       margin-right: 10px; 
-    }
-
-    & .formField {
-        align-items: baseline;
-        margin: 0;
-    }
+.radio-group .formField {
+    align-items: baseline;
+    margin: 0;
 }
 
 .timeContainer {
     display: flex;
-
-    & input {
-        margin: 10px;
-    }
 }
 
+.timeContainer input {
+    margin: 10px;
+}
 
 #totalServingsContainer {
-    display: flex;
     align-items: baseline;
+    display: flex;
     margin-bottom: 20px;
     padding-bottom: 10px;
+}
 
-    & label {
-        margin-right: 5px;
-    }
+#totalServingsContainer label {
+    margin-right: 5px;
 }
 
 #ingredients {
     border-top: 1px solid #333;
 }
 
-
 #ingredientInputs {
+    align-items: center;
     display: flex;
     justify-content: space-between;
-    align-items: center;
     margin-bottom: 10px;
+}
 
-    & input#ingredientName {
-        width: 250px;
-    }
+#ingredientInputs input#ingredientName {
+    width: 250px;
 }
 
 #ingredientInputSet {
@@ -367,7 +351,7 @@ legend {
     padding: 5px 10px;
 }
 
-fieldset#steps {
+#steps {
     border-top: 1px solid black;
     margin-top: 30px;
 }
@@ -375,34 +359,33 @@ fieldset#steps {
 #stepInput {
     width: 90%;
 }
+
 #stepInputAndButton {
     display: flex;
     justify-content: space-evenly;
 }
 
 .removeStep {
-    margin-left: 5px;
-    border-radius: 5px;
-    padding: 5px;
-    cursor: pointer;
     background: #f75252;
-
-    & ::hover {
-        background: rgb(238, 134, 134);
-
-    }
-
+    border-radius: 5px;
+    cursor: pointer;
+    margin-left: 5px;
+    padding: 5px;
 }
 
-button#addStep {
+.removeStep:hover {
+    background: rgb(238, 134, 134);
+}
+
+#addStep {
     background: #9ddf94;
     border: none;
-    padding: 10px;
     box-shadow: 0 0 3px #3C2F2F;
     cursor: pointer;
+    padding: 10px;
 }
 
-button#addStep:hover {
+#addStep:hover {
     background: #9ac594;
 }
 
@@ -411,83 +394,83 @@ button#addStep:hover {
 }
 
 .addedIngredients {
+    background: #F0F0F0;
     border: 1px solid #3C2F2F;
     border-radius: 5px;
-    padding: 3px;
     margin-bottom: 5px;
-    background: #F0F0F0;
+    padding: 3px;
 }
 
-button#addIngredient {
-    border: none;
+#addIngredient {
     background: #9ddf94;
-    padding: 10px;
+    border: none;
     cursor: pointer;
+    padding: 10px;
+}
 
-    &:hover {
-        background: #9ac594;
-    }
+#addIngredient:hover {
+    background: #9ac594;
 }
 
 button.removeIngredient {
-    padding: 5px 10px;
-    border-radius: 5px;
     background: #ff0000;
+    border-radius: 5px;
+    padding: 5px 10px;
+}
 
-    &:hover {
-        background: #ee8686;
-    }
-
+button.removeIngredient:hover {
+    background: #ee8686;
 }
 
 .addedSteps {
-    display: flex;
     align-items: center;
+    border: 1px solid #3C2F2F;
+    border-radius: 5px;
+    display: flex;
     margin: 10px 0;
     padding: 5px;
     width: 100%;
-    border: 1px solid #3C2F2F;
-    border-radius: 5px;
+}
 
-    > textarea {
-        width: 95%;
-        font: 15px 'Poppins', sans-serif;
-        resize: none;
-        background: none;
-        border: none;
-        overflow-y: visible;
-    }
+.addedSteps textarea {
+    background: none;
+    border: none;
+    font: 15px 'Poppins', sans-serif;
+    overflow-y: visible;
+    resize: none;
+    width: 95%;
 }
 
 #measurementAmount {
     width: 100px;
 }
 
+.ingredientQuantity {
+    width: 100px;
+}
+
 #checkboxes {
-    display: flex;
     border-bottom: 1px solid #969696;
+    display: flex;
     padding-bottom: 10px;
+}
 
-    & fieldset {
-        border: 1px solid #cecece;
-        width: 100%;
-        background: #fff;
-    }
+#checkboxes fieldset {
+    background: #fff;
+    border: 1px solid #cecece;
+    width: 100%;
+}
 
-    & label {
-        cursor: pointer;
-    }
-
-    & input[type="checkbox"] {
-        cursor: pointer;
-    }
+#checkboxes input[type="checkbox"],
+#checkboxes label {
+    cursor: pointer;
 }
 
 #imagePreview {
     display: none;
-    width: 300px;
     height: auto;
     margin-top: 10px;
+    width: 300px;
 }
 
 #youtube_link {
@@ -495,136 +478,118 @@ button.removeIngredient {
 }
 
 .recipeSubmitReset {
-    margin-top: 20px;
+    align-items: center;
     display: flex;
     flex-direction: column;
-    align-items: center;
     gap: 30px;
+    margin-top: 20px;
 }
 
 .createRecipeButton {
-    font-family: 'Lustria', sans-serif;
-    padding: 10px;
-    margin-top: 20px;
     background: #3ceb62;
     border: none;
     box-shadow: 0 0 5px #333;
-    transition: 0.2 ease;
-    cursor:pointer;
+    cursor: pointer;
+    font-family: 'Lustria', sans-serif;
+    margin-top: 20px;
+    padding: 10px;
+    transition: 0.2s ease;
+}
 
-    &:hover {
-        background: #b3dbbc;
-
-        
-    }
-   
+.createRecipeButton:hover {
+    background: #b3dbbc;
 }
 
 #clearRecipeFormButton {
-    font-family: 'Lato', serif;
     background-color: #ff0000;
     cursor: pointer;
-    
-    &:hover {
-        background-color: #f18484;
-    }
+    font-family: 'Lato', serif;
 }
 
-
+#clearRecipeFormButton:hover {
+    background-color: #f18484;
+}
 /******* ADMIN AREA *********/
-
-/**Create / Update User Form**/
 
 .userFormInput {
     display: flex;
     margin: 10px 0;
+}
 
-    & label {
-        margin-right: 5px;
-    }
+.userFormInput label {
+    margin-right: 5px;
+}
 
-    & div {
-        display: flex;
-        justify-content: space-between;
-        width: 300px;
-        
-        > label {
-            margin: 0;
-        }
+.userFormInput div {
+    display: flex;
+    justify-content: space-between;
+    width: 300px;
+}
 
-    }
+.userFormInput div > label {
+    margin: 0;
 }
 
 /***************************************************************** MEDIA QUERIES ******************************************************************/
 
-@media screen and (max-width: 800px) {
-    #ingredientInputs {
-       display: block;
-       width: fit-content;
-    }
-
-    .addedIngredients .ingredientInputSet {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-
-    .signupInput {
-       display: block;
-    }
-}
-/*************** SEARCH BAR*********************/
-@media screen and (max-width: 650px) {
-    /****  SEARCH BAR ***/
+@media screen and (max-width: 1050px) {
     .filters {
         display: none;
-        
     }
 
     #filterToggle + label {
+        cursor: pointer;
         display: block;
         text-align: center;
         text-decoration: underline;
-        cursor: pointer;
     }
 
     #filterToggle:checked ~ .filters {
+        align-items: center;
         display: flex;
         flex-direction: column;
-        align-items: center;
-
-        > .searchFilter {
-            width: 100%;
-        }
-
-        .dropdown-content {
-            min-width: 100%;
-        }
     }
 
-    /*** CREATE RECIPE PAGE ****/
+    #filterToggle:checked ~ .filters .searchFilter {
+        width: 100%;
+    }
 
-    #timeInput {
+    #filterToggle:checked ~ .filters .dropdown-content {
+        min-width: 100%;
+    }
+}
+
+@media screen and (max-width: 800px) {
+    #ingredientInputs {
         display: block;
+        width: fit-content;
+    }
 
-        & fieldset {
-            width: 100%;
-        }
+    .addedIngredients .ingredientInputSet {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .signupInput {
+        display: block;
+    }
+}
+
+@media screen and (max-width: 650px) {
+    #checkboxes {
+        display: block;
     }
 
     #ingredientInputSet {
         display: block;
     }
 
-    #checkboxes {
+    #timeInput {
         display: block;
+    }
+
+    #timeInput fieldset {
+        width: 100%;
     }
 }
 
-/************************ CREATE RECIPE ******************/
-
-
-@media screen and (max-width: 500px) {
-    .radio-group {
-        display: block;
-    }
-}
