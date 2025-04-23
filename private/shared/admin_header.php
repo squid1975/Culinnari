@@ -2,12 +2,12 @@
 <div id="adminNav">
     <input type="checkbox" id="adminMenuToggle">
     <label for="adminMenuToggle">
-            <img src="<?php echo url_for('/images/icon/adminIcon.svg'); ?>" width="30" height="30" alt="User Icon" title="User Profile">
+            <img src="<?php echo url_for('/images/icon/adminIcon.svg'); ?>" width="30" height="30" alt="Admin User Icon" title="User Profile">
             
     </label>
 
     <div id="adminMenu">         
-        <a href="<?php echo url_for('/member/profile.php'); ?>">
+        <a href="<?php echo url_for('/member/profile.php?id=' . $user->id); ?>">
             <img src="<?php echo url_for('/images/icon/profileIcon.svg'); ?>" width="20" height="20" alt="Profile Icon" title="View culinnari profile">
             My Profile
         </a>     

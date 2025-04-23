@@ -6,7 +6,7 @@ $current_page = basename($_SERVER['SCRIPT_NAME']);
     <div id="headerIcon">
         <h1 class="visuallyHidden">Culinnari | Recipe Sharing</h1>
         <a href="<?php echo url_for('/index.php'); ?>">
-            <img src="<?php echo url_for('/images/logo.svg'); ?>" width="215" height="60" alt="Culinnari Logo" title="">
+            <img src="<?php echo url_for('/images/logo.svg'); ?>" width="215" height="60" alt="Culinnari Logo" aria-hidden="true">
         </a>
     </div>
     <nav role="navigation" id="mainMenu">
@@ -16,12 +16,15 @@ $current_page = basename($_SERVER['SCRIPT_NAME']);
         </label>
         <div id="menuContent">
             <ul>
-                <li class="<?php echo ($current_page == 'index.php') ? 'active' : ''; ?>">
+                <li class="<?php echo ($current_page == 'public/index.php') ? 'active' : ''; ?>">
                     <a href="<?php echo url_for('index.php'); ?>">Home</a>
                 </li>
                 <li class="<?php echo ($current_page == 'recipes.php') ? 'active' : ''; ?>">
                     <a href="<?php echo url_for('recipes.php'); ?>">Recipes</a>
-                </li>  
+                </li>
+                <li class="<?php echo ($current_page == 'about.php') ? 'active' : ''; ?>">
+                    <a href="<?php echo url_for('about.php'); ?>">About Us</a>
+                </li>    
             </ul>
         </div>
     </nav>

@@ -5,7 +5,7 @@
                 <?php 
                 $recipeImage = RecipeImage::find_image_by_recipe_id($recipe->id); 
                 if ($recipeImage): ?>
-                    <img class="recipeCardImage" src="<?php echo url_for($recipeImage->recipe_image); ?>" width="250" height="250" alt="recipe" title="recipe">
+                    <img class="recipeCardImage" src="<?php echo url_for($recipeImage->recipe_image); ?>" width="250" height="250" alt="A photo of <?php echo h($recipe->recipe_name);?>" title="Recipe thumbnail image for <?php echo h($recipe->recipe_name);?>">
                 <?php endif; ?>
             </div>
 
@@ -15,7 +15,7 @@
                 <?php $diet_icons = Recipe::get_diet_icons($recipe->id); ?>
                 <?php if($diet_icons): ?>
                     <?php foreach ($diet_icons as $diet_icon): ?>
-                        <img src="<?php echo url_for($diet_icon); ?>" alt="Diet Icon">
+                        <img src="<?php echo url_for($diet_icon); ?>" alt="Diet Icon for <?php echo h($recipe->recipe_name);?>" title="Diet:<?php echo h($recipe->recipe_name);?>" width="20" height="20">
                     <?php endforeach; ?>
                 <?php endif; ?>
             </div>

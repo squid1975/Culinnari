@@ -10,7 +10,7 @@
         <img src="<?php echo url_for(script_path: '/images/icon/memberIcon.svg');?>" width="30" height="30" alt="User Icon" title="User Profile"> </a>
     </label>
     <div id="userMenu"> 
-        <a href="<?php echo url_for('/member/profile.php'); ?>">
+        <a href="<?php echo url_for('/member/profile.php?id=' . $user->id); ?>">
             <img src="<?php echo url_for('/images/icon/profileIcon.svg'); ?>" width="20" height="20" alt="Profile icon" title="My Culinnari Profile Icon">My Profile</a>        
         <a href="<?php echo url_for('/member/create_recipe.php'); ?>">
             <img src="<?php echo url_for('/images/icon/addRecipe.svg'); ?>" width="20" height="20" alt="Add recipe icon" title="Add recipe">

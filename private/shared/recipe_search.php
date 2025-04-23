@@ -14,7 +14,7 @@ $diets = Diet::find_all();
                     value="<?php echo isset($_GET['recipeQuery']) ? h($_GET['recipeQuery']) : ''; ?>">
             </div>
             <button type="submit" class="mainSearchButton" aria-label="Search">
-                <img src="<?php echo url_for('/images/icon/search.svg'); ?>" alt="search icon">
+                <img src="<?php echo url_for('/images/icon/search.svg'); ?>" alt="search icon" width="25" height="25">
             </button>
         </div>
         <h3 id="filterHeading">FILTER BY:</h3>
