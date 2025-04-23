@@ -11,7 +11,7 @@ if(is_post_request()){
     if($result === true){
         $new_id = $mealType->id;
         $_SESSION['message'] = 'The meal type was created successfully.';
-        redirect_to(url_for('admin/categories/meal_types/manage.php?meal_type_id=' . $new->id));
+        redirect_to(url_for('admin/categories/meal_types/manage.php?meal_type_id=' . $new_id));
     } else {
 
     }
