@@ -31,50 +31,52 @@ if (is_get_request()){
 
 ?>
 
-<body>
+
 <script src="<?php echo url_for('/js/search.js'); ?>" defer></script>
 <main role="main" tabindex="-1">
     <div id="searchPageWrapper">
     <section id="searchHero">
         <div id="heroText">
             <h2>Find your next feast.</h2>
+                <p>Filter by meal types, styles, dietary needs and more to uncover your perfect recipe match.</p>
         </div>
-        
-        <?php include SHARED_PATH .'/recipe_search.php' ?>
-        
+            <?php include SHARED_PATH . '/recipe_search.php' ?>
     </section>
+        
     <section>
+    <h2 class="visuallyHidden">Diet Key</h2>
     <div class="dietKey">
         <div class="dietIconWithName">
-            <img src="images/icon/dietIcons/glutenFree.svg" width="20" height="20" alt="gluten free icon" title="Gluten free recipe icon">
+                <img src="images/icon/dietIcons/glutenFree.svg" width="20" height="20" alt="gluten free icon"
             <p>Gluten-Free</p>
         </div>
         <div class="dietIconWithName">
-            <img src="images/icon/dietIcons/keto.svg" width="20" height="20" alt="keto icon" title="Keto recipe icon">
+                <img src="images/icon/dietIcons/keto.svg" width="20" height="20" alt="keto icon"
             <p>Keto</p>
         </div>
         <div class="dietIconWithName">
-            <img src="images/icon/dietIcons/lowCarb.svg" width="20" height="20" alt="Low carb icon" title="Low carb recipe icon">
+                <img src="images/icon/dietIcons/lowCarb.svg" width="20" height="20" alt="Low carb icon"   
             <p>Low Carb</p>
         </div>
         <div class="dietIconWithName">
-            <img src="images/icon/dietIcons/sugarFree.svg" width="20" height="20" alt="Sugar free icon" title="Sugar free recipe icon">
+                <img src="images/icon/dietIcons/sugarFree.svg" width="20" height="20" alt="Sugar free icon" 
             <p>Sugar-Free</p>
         </div>
         <div class="dietIconWithName">
-            <img src="images/icon/dietIcons/paleo.svg" width="20" height="20" alt="Paleo icon" title="Paleo recipe icon">
+                <img src="images/icon/dietIcons/paleo.svg" width="20" height="20" alt="Paleo icon"
             <p>Paleo</p>
         </div>
         <div class="dietIconWithName">
-            <img src="images/icon/dietIcons/vegan.svg" width="20" height="20"  alt="Vegan icon" title="Vegan recipe icon">
+                <img src="images/icon/dietIcons/vegan.svg" width="20" height="20" alt="Vegan icon"                      
             <p>Vegan</p>
         </div>
         <div class="dietIconWithName">
-            <img src="images/icon/dietIcons/vegetarian.svg" width="20"  height="20" alt="Vegetarian icon" title="Vegetarian recipe icon">
+                <img src="images/icon/dietIcons/vegetarian.svg" width="20" height="20" alt="Vegetarian icon"
             <p>Vegetarian</p>
         </div>
     </div>
     </section>
+
     <section>  
         <div id="searchPageResultsWrapper">        
             <div id="recipePagePosts">
