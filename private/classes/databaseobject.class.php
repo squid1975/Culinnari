@@ -152,7 +152,8 @@ class DatabaseObject {
     $result = self::$database->query($sql);
     return $result;
   }
-  public static function begin_transaction() {
+  
+public static function begin_transaction() {
     return self::$database->begin_transaction();
 }
 
@@ -164,8 +165,5 @@ public function commit() {
 public function rollback() {
   return self::$database->rollback();
 }
-
-
-
 }
 
