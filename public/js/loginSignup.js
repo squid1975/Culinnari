@@ -14,17 +14,17 @@ const newUserForm = document.getElementById("newUserForm");
 
 // Add event listeners for each input field, displays required information when focused and hides on blur
 newUsername.addEventListener('focus', function() {
-    document.getElementById('username-requirements').innerHTML = 'Username must be between 5 and 25 characters long.';
+    document.getElementById('username-requirements').innerHTML = 'Username must start with a letter and only contain letters, numbers, and underscores (5–25 characters).';
     document.getElementById('username-requirements').style.display = 'block';
   });
   
 userFirstName.addEventListener('focus', function() {
-    document.getElementById('firstname-requirements').innerHTML = 'First name must be between 2 and 50 characters long. ';
+    document.getElementById('firstname-requirements').innerHTML = 'First name must be between 2 and 25 characters long. ';
     document.getElementById('firstname-requirements').style.display = 'block';
   });
   
 userLastName.addEventListener('focus', function() {
-    document.getElementById('lastname-requirements').innerHTML = 'Last name must be between 2 and 50 characters long.';
+    document.getElementById('lastname-requirements').innerHTML = 'Last name must be between 2 and 25 characters long.';
     document.getElementById('lastname-requirements').style.display = 'block';
   });
   
@@ -72,12 +72,16 @@ newPassword.addEventListener('focus', function() {
 });
 
   function displayErrors(errors) {
+
+    document.querySelectorAll('.error-message').forEach(el => el.remove());
+
     errors.forEach(error => {
         const inputField = document.getElementById(error.field);
         if (inputField) {
             const errorMessage = document.createElement('span');
             errorMessage.classList.add('error-message');
             errorMessage.style.color = 'red';
+            errorMessage.style.display = 'block';
             errorMessage.textContent = error.message;
             inputField.parentNode.appendChild(errorMessage);
         }
@@ -107,20 +111,24 @@ function validateUser() {
   // Username
   if (isBlank(username)) {
     errors.push({ field: 'newUsername', message: 'Username cannot be blank.' });
-  } else if (!hasLength(username, { min: 8, max: 25 })) {
+  } else if (!hasLength(username, { min: 5, max: 25 })) {
     errors.push({ field: 'newUsername', message: 'Username must be between 5 and 25 characters.' });
+  } else if (!/^[A-Za-z][A-Za-z0-9_]*$/.test(username)) {
+    errors.push({ field: 'newUsername', message: 'Username must start with a letter and only contain letters, numbers, and underscores.' });
   }
 
   // First name
   if (isBlank(userFirstName)) {
     errors.push({ field: 'userFirstName', message: 'First name cannot be blank.' });
+  } else if (!hasLength(userFirstName, { min: 2, max: 25})) {
+    errors.push({ field: 'userFirstName', message: 'First name must be between 2 and 25 characters.' });
   }
 
   // Last name
   if (isBlank(userLastName)) {
     errors.push({ field: 'userLastName', message: 'Last name cannot be blank.' });
-  } else if (!hasLength(userLastName, { min: 2, max: 50 })) {
-    errors.push({ field: 'userLastName', message: 'Last name must be between 2 and 50 characters.' });
+  } else if (!hasLength(userLastName, { min: 2, max: 25})) {
+    errors.push({ field: 'userLastName', message: 'Last name must be between 2 and 25 characters.' });
   }
 
   // Email
@@ -138,19 +146,19 @@ function validateUser() {
       errors.push({ field: 'newPassword', message: 'Password cannot be blank.' });
     } else {
       if (!hasLength(password, { min: 12 })) {
-        errors.push({ field: 'newPassword', message: 'Password must contain 12 or more characters.' });
+        errors.push({ field: 'newPassword', message: 'Password must have 12 or more characters.' });
       }
       if (!/[A-Z]/.test(password)) {
-        errors.push({ field: 'newPassword', message: 'Password must contain at least 1 uppercase letter.' });
+        errors.push({ field: 'newPassword', message: 'Password must have at least 1 uppercase letter.' });
       }
       if (!/[a-z]/.test(password)) {
-        errors.push({ field: 'newPassword', message: 'Password must contain at least 1 lowercase letter.' });
+        errors.push({ field: 'newPassword', message: 'Password must have at least 1 lowercase letter.' });
       }
       if (!/[0-9]/.test(password)) {
-        errors.push({ field: 'newPassword', message: 'Password must contain at least 1 number.' });
+        errors.push({ field: 'newPassword', message: 'Password must have at least 1 number.' });
       }
       if (!/[^A-Za-z0-9\s]/.test(password)) {
-        errors.push({ field: 'newPassword', message: 'Password must contain at least 1 symbol.' });
+        errors.push({ field: 'newPassword', message: 'Password must have at least 1 symbol.' });
       }
     }
 
