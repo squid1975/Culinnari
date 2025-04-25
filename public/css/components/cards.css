@@ -1,3 +1,4 @@
+/*********** RECIPE CARDS ***********/
 .recipeCard {
     background: #ffffff;
     box-shadow: 0 0 5px #3C2F2F;
@@ -47,45 +48,4 @@
     margin-top: 5px;
     max-width: 250px;
     text-align: right;
-}
-
-
-/******************* ADMIN AREA *******************/
-
-.manageCategoryCard {
-    background: #ffffff;
-    border: 3px solid black;
-    margin: auto;
-    min-height: 700px;
-    padding: 10px;
-    width: 800px;
-}
-
-.manageCategoryCard h2 {
-    margin-top: 30px;
-}
-
-.manageCategoryCard > div {
-    margin-top: 10px;
-}
-
-.manageCategoryCard > .edit,
-.manageCategoryCard > .delete {
-    padding: 10px;
-}
-
-.manageUserCard {
-    background: #ffffff;
-    margin: auto;
-    max-width: 800px;
-    min-height: 500px;
-    padding: 10px;
-}
-
-.manageUserCard ul li {
-    margin: 20px;
-}
-
-.manageUserCard ul li div {
-    margin: 10px;
 }
