@@ -28,7 +28,7 @@ else {
     </div>
     <div class="wrapper">
         <div id="adminWrapper">
-        <div class="manageUserCard">
+        <div class="manageUserWrapper">
             <div>
                 &laquo;<a href="<?php echo url_for('/admin/users/show.php?id=' . h(u($user->id)));
                     ?>">Back to User Info</a>

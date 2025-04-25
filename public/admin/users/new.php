@@ -34,7 +34,7 @@ if(is_post_request()) {
     </div>
     <div class="wrapper">
       <a class="back-link" href="<?php echo url_for('/admin/users/index.php'); ?>">&laquo; Back to User Index</a>
-      <div class="manageUserCard">
+      <div class="manageUserWrapper">
         <h2>Create User</h2>
         <?php if(isset($_SESSION['message'])): ?>
             <div class="session-message">

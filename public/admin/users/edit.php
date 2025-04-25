@@ -38,7 +38,7 @@ if(is_post_request()) {
     </div>
     <div class="wrapper">
       <a class="back-link" href="<?php echo url_for('/admin/users/index.php'); ?>">&laquo; Back to User Index</a>
-      <div class="manageUserCard">
+      <div class="manageUserWrapper">
         <h2>Edit user</h2>
         <?php echo display_errors($user->errors); ?>
         <form action="<?php echo url_for('/admin/users/edit.php?id=' . h(u($id))); ?>" method="post">
