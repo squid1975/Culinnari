@@ -25,26 +25,17 @@ deleteRecipeButtons.forEach(button => {
   const modal = container.querySelector(".modal");
   const closeBtn = modal.querySelector(".close");
 
-  
   button.addEventListener("click", () => {
     modal.style.display = "block";
   });
 
- 
   closeBtn.addEventListener("click", () => {
     modal.style.display = "none";
   });
 
-  
-
-  
   window.addEventListener("click", event => {
     if (event.target === modal) {
       modal.style.display = "none";
     }
   });
 });
-
-
-
-

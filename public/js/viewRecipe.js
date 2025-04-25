@@ -1,7 +1,11 @@
 "use strict";
 
 /** VIEW RECIPE VARIABLES */
-const addToCookbookButton = document.querySelector('#recipeDisplayAddToCookbook');
+const addToCookbookButton = document.querySelector('#addToCookbookButton');
+const addToCookbookModal = document.querySelector('#addToCookbookModal');
+
+
+/** Change Ingredient Amount Variables */
 const servingAmtElement = document.querySelector("#servingAmt");
 const originalServingAmt = parseFloat(servingAmtElement.textContent.trim());
 const halfButton = document.getElementById("halfButton");
@@ -16,6 +20,26 @@ const ingredientAmounts = document.querySelectorAll(".recipeDisplayMeasurementAm
 ingredientAmounts.forEach(item => {
     item.setAttribute("data-original", item.innerHTML.trim());
 });
+
+if (addToCookbookButton && addToCookbookModal) {
+    const closeCookbookModalButton = addToCookbookModal.querySelector('.close');
+  
+    addToCookbookButton.addEventListener('click', function () {
+      addToCookbookModal.style.display = 'block';
+    });
+  
+    if (closeCookbookModalButton) {
+      closeCookbookModalButton.addEventListener('click', () => {
+        addToCookbookModal.style.display = 'none';
+      });
+    }
+  
+    window.addEventListener('click', function (event) {
+      if (event.target === addToCookbookModal) {
+        addToCookbookModal.style.display = 'none';
+      }
+    });
+  }
 
 /**
  * Resets all ingredient amounts and the serving amount
@@ -50,7 +74,7 @@ function updateAmounts(multiplier) {
     servingAmtElement.textContent = originalServingAmt * multiplier;
 }
 
-// Event listeners
+// Event listeners for serving size buttons
 oneTimeButton.addEventListener('click', function() {
     resetAmounts();
     setActiveButton(oneTimeButton);
@@ -74,7 +98,7 @@ threeTimeButton.addEventListener('click', function() {
 /**
  * Applies the "selected" class state to the clicked serving size button.
  * Removes the state from all other buttons.
- * @param {HTMLElement} activeButton - The button that was clicked.
+ * @param {HTMLElement} activeButton - The serving amount button that was clicked.
  */
 function setActiveButton(activeButton) {
     [oneTimeButton, twoTimeButton, threeTimeButton, halfButton].forEach(btn => {
@@ -83,6 +107,12 @@ function setActiveButton(activeButton) {
     activeButton.id = "selected"; // Set the clicked button as active
 }
 
+/**
+ * Converts a numerical string (example: 1 1/2, 3/4, 2) to a decimal number
+ * 
+ * @param {string} fraction 
+ * @returns {number} - The decimal value of the fraction
+ */
 function convertToDecimal(fraction) {
     if (fraction.includes(' ')) {
         const [whole, frac] = fraction.split(' ');
@@ -93,7 +123,7 @@ function convertToDecimal(fraction) {
         const [numerator, denominator] = fraction.split('/');
         return parseFloat(numerator) / parseFloat(denominator);
     }
-    return parseFloat(fraction); // if it's a whole number
+    return parseFloat(fraction); 
 }
 
 /**

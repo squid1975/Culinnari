@@ -1,23 +1,26 @@
 "use strict";
-/**************************************************** CREATE RECIPE, VIEW RECIPE PAGES ********************************************************************/
-document.createElement('p.error');
+/**************************************************** CREATE RECIPE PAGE ********************************************************************/
+const errorsBox = document.createElement('div');
+errorsBox.classList.add('errors');
 const error = document.createElement('p');
 /***  CREATE RECIPE VARIABLES */
-const createRecipeForm = document.querySelector("#createRecipeForm");
+const recipeFormHeading = document.querySelector(".recipeFormHeading");
+const recipeForm = document.querySelector(".recipeForm");
 
 /** Checkboxes */
 const checkboxes = document.querySelector("#checkboxes");
 const timeInputContainer = document.querySelector("#timeInput");
 const totalServingsContainer = document.querySelector("#totalServingsContainer");
 
-/** Ingredient */
+/** Ingredients */
 const addIngredientButton = document.querySelector("#addIngredient");
 const ingredientDirections = document.querySelector("#ingredientDirections");
 const measurementAmount = document.querySelector("#measurementAmount");
 const measurementUnit = document.querySelector("#ingredientUnit");
 const ingredientName = document.querySelector("#ingredientName");
+const newIngredientSet = document.createElement("div");
+newIngredientSet.classList.add("addedIngredients");
 let ingredientIndex = 0;
-
 const ingredientSet = document.querySelector("#ingredientInputSet");
 const enteredIngredients = document.querySelector("#enteredIngredients");
 
@@ -38,13 +41,58 @@ const recipeAcceptedFiles = document.getElementById('recipeAcceptedFileTypes');
 /**Submit, Reset, Validation */
 const resetRecipeFormButton = document.querySelector("#clearRecipeFormButton");
 const submitRecipeButton = document.querySelector("#createRecipeButton");
+const clearRecipeFormModal = document.getElementById('clearRecipeFormModal');
+const confirmFormResetButton = document.getElementById('confirmFormReset');
+const cancelResetButton = document.getElementById('cancelReset');
 
 addIngredientButton.addEventListener('click', addIngredient);
 addStepButton.addEventListener('click', addStep);
 
+enteredIngredients.addEventListener("click", function (event) {
+    if (event.target.classList.contains("removeIngredient")) {
+        const ingredientSet = event.target.closest(".addedIngredients");
+        if (ingredientSet) {
+            ingredientSet.remove(); // Remove the clicked ingredient set
+        }
+    }
+});
+
+enteredSteps.addEventListener("click", function (event) {
+    if (event.target.classList.contains("removeStep")) {
+        const stepSet = event.target.closest(".addedSteps");
+        if (stepSet) {
+            stepSet.remove(); // Remove the clicked ingredient set
+        }
+    }
+});
+
+recipeForm.addEventListener('submit', function (event) {
+    event.preventDefault();
+    const errors = validateRecipeForm();
+    if(errors.length === 0) {
+        recipeForm.submit();
+    } else {
+        window.scrollTo(0,0);
+        errorsBox.innerHTML = ""; // Clear previous error messages
+        errorsBox.textContent = "Please fix the following errors!:";
+        recipeFormHeading.appendChild(errorsBox);
+
+    }
+
+});
+
+
+limitCheckboxSelection("meal_types");
+limitCheckboxSelection("styles");
+limitCheckboxSelection("diets");
+
+/**
+ * Limits the number of checkboxes that can be selected in a category to 3
+ * 
+ * @param {string} category the name of the category (diet, meal type, style, etc)
+ */
 function limitCheckboxSelection(category) {
     const checkboxes = document.querySelectorAll(`input[name="${category}[]"]`);
-
     checkboxes.forEach((checkbox) => {
         checkbox.addEventListener("change", function () {
             let checkedBoxes = document.querySelectorAll(`input[name="${category}[]"]:checked`);
@@ -56,9 +104,6 @@ function limitCheckboxSelection(category) {
     });
 }
 
-limitCheckboxSelection("meal_types");
-limitCheckboxSelection("styles");
-limitCheckboxSelection("diets");
 
 /**
  * Adds a new ingredient list input box to form
@@ -81,28 +126,30 @@ function addIngredient() {
     // Populate the new ingredient set with the last input values
     newIngredientSet.innerHTML = `
         <div class="ingredientInputSet">
-            <label for="measurementAmount">Amount:
-                <input type="text" name="ingredient[${ingredientIndex}][ingredient_quantity]" 
+            <label for="measurementAmount-${ingredientIndex}">Amount:
+                <input type="text" 
+                name="ingredient[${ingredientIndex}][ingredient_quantity]" 
                 pattern="^\\d{1,2}(\\s\\d{1,2}\\/\\d{1,2})?$|^\\d{1,2}\\/\\d{1,2}$"
                 placeholder="1, 1/2, 1 1/2" 
                 maxlength="6" 
                 id="measurementAmount-${ingredientIndex}" 
+                class="ingredientQuantity"
                 value="${lastQuantity}">
             </label>
             <label for="ingredientUnit">Unit:
                 <select name="ingredient[${ingredientIndex}][ingredient_measurement_name]" class="ingredientUnit">
                     <option value="n/a" ${lastUnit === "n/a" ? "selected" : ""}></option>
-                    <option value="teaspoon" ${lastUnit === "teaspoon" ? "selected" : ""}>teaspoon(s)</option>
-                    <option value="tablespoon" ${lastUnit === "tablespoon" ? "selected" : ""}>tablespoon(s)</option>
-                    <option value="fluid ounce" ${lastUnit === "fluid ounce" ? "selected" : ""}>fluid ounce(s)</option>
-                    <option value="cup" ${lastUnit === "cup" ? "selected" : ""}>cup(s)</option>                           
-                    <option value="pint" ${lastUnit === "pint" ? "selected" : ""}>pint(s)</option>
-                    <option value="quart" ${lastUnit === "quart" ? "selected" : ""}>quart(s)</option>
-                    <option value="gallon" ${lastUnit === "gallon" ? "selected" : ""}>gallon(s)</option>
-                    <option value="milliliter" ${lastUnit === "milliliter" ? "selected" : ""}>milliliter(s)</option>                                    
-                    <option value="liter" ${lastUnit === "liter" ? "selected" : ""}>liter(s)</option>
-                    <option value="ounce" ${lastUnit === "ounce" ? "selected" : ""}>ounce(s)</option>
-                    <option value="pound" ${lastUnit === "pound" ? "selected" : ""}>pound(s)</option>
+                    <option value="teaspoon" ${lastUnit === "teaspoon" ? "selected" : ""}>teaspoon</option>
+                    <option value="tablespoon" ${lastUnit === "tablespoon" ? "selected" : ""}>tablespoon</option>
+                    <option value="fluid ounce" ${lastUnit === "fluid ounce" ? "selected" : ""}>fluid ounce</option>
+                    <option value="cup" ${lastUnit === "cup" ? "selected" : ""}>cup</option>                           
+                    <option value="pint" ${lastUnit === "pint" ? "selected" : ""}>pint</option>
+                    <option value="quart" ${lastUnit === "quart" ? "selected" : ""}>quart</option>
+                    <option value="gallon" ${lastUnit === "gallon" ? "selected" : ""}>gallon</option>
+                    <option value="milliliter" ${lastUnit === "milliliter" ? "selected" : ""}>milliliter</option>                                    
+                    <option value="liter" ${lastUnit === "liter" ? "selected" : ""}>liter</option>
+                    <option value="ounce" ${lastUnit === "ounce" ? "selected" : ""}>ounce</option>
+                    <option value="pound" ${lastUnit === "pound" ? "selected" : ""}>pound</option>
                 </select>
             </label>
             <label for="ingredientName">Name:
@@ -112,22 +159,22 @@ function addIngredient() {
         </div>
     `;
 
-    // Add the remove functionality for the new ingredient input set
-    newIngredientSet.querySelector(".removeIngredient").addEventListener('click', function () {
-        enteredIngredients.removeChild(newIngredientSet);
-    });
-
     // Append the new ingredient input set to the ingredientDirections container
     enteredIngredients.appendChild(newIngredientSet);
+    // Clear the input fields for the next ingredient
     measurementAmount.value = "";
-    measurementUnit.value = "n/a"
+    ingredientUnit.selectedIndex = 0;
     ingredientName.value = "";
     error.remove();
     ingredientIndex++;
     }
 }
 
-
+/**
+ * Adds a new step to the list of steps
+ * 
+ * @returns clears input box to type next step
+ */
 function addStep(){
     let stepInputValue = stepInput.value;
     if(stepInputValue === ""){
@@ -144,19 +191,14 @@ function addStep(){
         <button type="button" class="removeStep">X</button>                     
     `;
 
-    // Add the remove functionality for the new ingredient input set
-    newStep.querySelector(".removeStep").addEventListener('click', function () {
-        enteredSteps.removeChild(newStep);
-    });
-
     // Append the new ingredient input set to the ingredientDirections container
     enteredSteps.appendChild(newStep);
     stepInput.value = "";
     stepIndex++;
-}
+    }
 }
 
-// Add event listener for the file input
+// Add event listener for the recipe image to preview the image
 recipeImageInput.addEventListener('change', function(event) {
     const file = event.target.files[0]; // Get the selected file
     
@@ -189,95 +231,115 @@ recipeImageInput.addEventListener('change', function(event) {
     }
 });
 
-
-
-
+/**
+ * Validates the recipe form fields and returns an array of errors
+ * 
+ * @returns {Array} errors An array of error objects containing field names and messages
+ */
 function validateRecipeForm() {
-    let isValid = true;
     let errors = [];
-    
+    // Clear previous errors
+    document.querySelectorAll('.error-message').forEach(el => el.remove());
+
+    // Recipe name validation
+    const recipeName = document.getElementById('recipeName')?.value.trim();
+    if (!recipeName) {
+        errors.push({
+            field: 'recipeName',
+            message: 'Please enter a recipe name.'
+        });
+    }
+
+    const recipeDescription = document.getElementById('recipeDescription')?.value.trim();
+    if (!recipeDescription) {
+        errors.push({
+            field: 'recipeDescription',
+            message: 'Please enter a recipe description.'
+        });
+    }
+
     // Time validation
-    const prepHours = parseInt(document.getElementById('prep_time_hours').value || 0);
-    const prepMinutes = parseInt(document.getElementById('prep_time_minutes').value || 0);
-    const cookHours = parseInt(document.getElementById('cook_time_hours').value || 0);
-    const cookMinutes = parseInt(document.getElementById('cook_time_minutes').value || 0);
-    
+    const prepHours = parseInt(document.getElementById('prepTimeHours')?.value || 0);
+    const prepMinutes = parseInt(document.getElementById('prepTimeMinutes')?.value || 0);
+    const cookHours = parseInt(document.getElementById('cookTimeHours')?.value || 0);
+    const cookMinutes = parseInt(document.getElementById('cookTimeMinutes')?.value || 0);
+
     if (prepHours === 0 && prepMinutes === 0 && cookHours === 0 && cookMinutes === 0) {
         errors.push({
-            field: 'prep_time_hours',
+            field: 'prepTimeMinutes',
             message: 'Please enter a value for the prep time and/or cook time.'
         });
     }
-    
+
     // Ingredients validation
-    const ingredientInputs = document.querySelector('.addedIngredients');
-    if (!ingredientInputs) {
+    const ingredientInputs = document.querySelectorAll('.addedIngredients');
+    if (ingredientInputs.length === 0) {
         errors.push({
-            field: 'ingredientInputs',
+            field: 'ingredientDirections',
             message: 'At least one ingredient is required.'
         });
     }
-    
+
     // Steps validation
-    const stepInputs = document.querySelector('.addedSteps');
-    if (!stepInputs) {
+    const stepInputs = document.querySelectorAll('.addedSteps');
+    if (stepInputs.length === 0) {
         errors.push({
-            field: 'stepInputs',
-            message: 'At least one step is required'
+            field: 'stepDirections',
+            message: 'At least one step is required.'
         });
     }
-    
-    // YouTube link validation (optional)
-    const youtubeLink = document.getElementById('youtube_link').value.trim();
-    if (youtubeLink !== '') {
-        const youtubeRegex = /^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.be)\/.+$/;
+
+    // YouTube validation (optional)
+    const youtubeLink = document.getElementById('youtube_link')?.value.trim();
+    if (youtubeLink) {
+        const youtubeRegex = /^(https?:\/\/)?(www\.)?(youtube\.com\/(?:[^\/\n\s]+\/\S+|(?:v|e(?:mbed)?)\/(\S+))|youtu\.be\/\S+)$/;
         if (!youtubeRegex.test(youtubeLink)) {
             errors.push({
                 field: 'youtube_link',
-                message: 'Please enter a valid YouTube URL'
+                message: 'Please enter a valid YouTube URL.'
             });
         }
     }
-    
+
     // Image validation (optional)
     const recipeImage = document.getElementById('recipe_image');
-    if (recipeImage.files.length > 0) {
+    if (recipeImage?.files.length > 0) {
         const file = recipeImage.files[0];
-        const fileType = file.type;
         const validImageTypes = ['image/jpeg', 'image/png', 'image/jpg', 'image/webp'];
-        
-        if (!validImageTypes.includes(fileType)) {
+
+        if (!validImageTypes.includes(file.type)) {
             errors.push({
                 field: 'recipe_image',
-                message: 'Please upload a valid image file (JPEG, PNG, JPG, or WEBP)'
+                message: 'Please upload a valid image file (JPEG, PNG, JPG, or WEBP).'
             });
-        } 
+        }
     }
-    
-    // Display errors under the corresponding fields
+    displayErrors(errors);
+    return errors;
+}
+
+/**
+ * Display error messages for the corresponding input fields
+ * @param {Array} errors 
+ */
+function displayErrors(errors) {
     errors.forEach(error => {
         const inputField = document.getElementById(error.field);
         if (inputField) {
-            // Clear existing error messages
-            let existingError = inputField.nextElementSibling;
-            if (existingError && existingError.classList.contains('error-message')) {
-                existingError.remove();
-            }
-
-            // Create new error message
             const errorMessage = document.createElement('span');
             errorMessage.classList.add('error-message');
+            errorMessage.style.color = 'red';
             errorMessage.textContent = error.message;
             inputField.parentNode.appendChild(errorMessage);
         }
     });
-    
-    // Set isValid to false if there are errors
-    isValid = errors.length === 0;
-    
-    return isValid;
 }
 
+/**
+ * 
+ * @param {Integer} fraction The fraction, whole number, or mixed number to convert to a decimal 
+ * @returns 
+ */
 function convertToDecimal(fraction) {
     if (fraction.includes(' ')) {
         const [whole, frac] = fraction.split(' ');
@@ -291,7 +353,12 @@ function convertToDecimal(fraction) {
     return parseFloat(fraction); // if it's a whole number
 }
 
-// Helper function to convert a decimal to a mixed fraction
+/**
+ * Converts a decimal number to a simplified mixed fraction string.
+ * 
+ * @param {integer} decimal The decimal value to convert to a mixed fraction 
+ * @returns {string} A string representing a mixed fraction (e.g., "1 1/2").
+ */
 function decimalToMixedFraction(decimal) {
     const whole = Math.floor(decimal);
     const fractionPart = decimal - whole;
@@ -327,4 +394,5 @@ function decimalToMixedFraction(decimal) {
     }
 
     return `${whole} ${numerator}/${denominator}`;
+
 }

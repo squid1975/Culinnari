@@ -1,35 +1,69 @@
 "use strict";
 
-let dropdowns = document.querySelectorAll(".dropdown");
+const searchForm = document.getElementById('searchForm');
+const searchInputs = searchForm.querySelectorAll('input, select');
+const dropdowns = document.querySelectorAll(".dropdown");
 const sortByButton = document.getElementById("sortByButton");
 const radioButtons = document.querySelectorAll("input[name='sortBy']");
+const searchReset = document.querySelector('.searchReset');
 
-radioButtons.forEach(radio => {
-    radio.addEventListener("change", function () {
-    sortByButton.textContent = this.parentElement.textContent.trim();
-});
-});
-
-
-dropdowns.forEach((dropdown) => {
-const button = dropdown.querySelector(".dropdown-button");
-const checkboxes = dropdown.querySelectorAll("input[type='checkbox']");
-
-
-checkboxes.forEach((checkbox) => {
-    checkbox.addEventListener("change", function () {
-        updateDropdownButton(button, checkboxes);
+// --- Handle Sort By Radio Buttons ---
+if (sortByButton && radioButtons.length > 0) {
+    radioButtons.forEach(radio => {
+        radio.addEventListener("change", function () {
+            sortByButton.textContent = this.parentElement.textContent.trim();
+        });
     });
-});
-
-// Initialize button text in case of pre-selected options
-updateDropdownButton(button, checkboxes);
-});
-
-function updateDropdownButton(button, checkboxes) {
-let selected = Array.from(checkboxes)
-.filter((checkbox) => checkbox.checked)
-.map((checkbox) => checkbox.parentElement.textContent.trim()); // Get label text
-
-button.textContent = selected.length > 0 ? selected.join(", ") : "ANY"; // Join multiple selections or show "ANY"
 }
+
+// --- Handle Checkboxes inside Dropdowns ---
+if (dropdowns.length > 0) {
+    dropdowns.forEach((dropdown) => {
+        const button = dropdown.querySelector(".dropdown-button");
+        const checkboxes = dropdown.querySelectorAll("input[type='checkbox']");
+        if (!button || checkboxes.length === 0) return;
+
+        checkboxes.forEach((checkbox) => {
+            checkbox.addEventListener("change", function () {
+                updateCheckboxDropdownButton(button, checkboxes);
+            });
+        });
+
+        // Set initial state
+        updateCheckboxDropdownButton(button, checkboxes);
+    });
+}
+
+// If the search reset button exists on the page, add an event listener to reset the dropdowns and sortBy button text
+
+    searchReset.addEventListener('click', function () {
+        dropdowns.forEach((dropdown) => {
+            const button = dropdown.querySelector(".dropdown-button");
+            if (button) button.textContent = "ANY";
+        });
+
+        if (sortByButton) {
+            sortByButton.textContent = "Newest";
+        }
+    });
+
+
+/**
+ * Updates the text of the dropdown button based on selected checkboxes in the search menu
+ * 
+ * @param {Element} button - The button element whose text will be updated
+ * @param {Element} checkboxes A collection of checkbox elements inside the dropdown to check for selected filter options
+ *  
+ */
+function updateCheckboxDropdownButton(button, checkboxes) {
+    if (!button || !checkboxes) return;
+    let selected = Array.from(checkboxes)
+        .filter(checkbox => checkbox.checked)
+        .map(checkbox => checkbox.parentElement.textContent.trim());
+    button.textContent = selected.length > 0 ? selected.join(", ") : "ANY";
+}
+
+
+
+
+
