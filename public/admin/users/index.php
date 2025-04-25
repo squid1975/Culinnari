@@ -7,7 +7,7 @@ require_mgmt_login();
 
 <main role="main" tabindex="-1">
         <div id="adminHero">
-            <h2>Management Area</h2>
+            <h2>Management Area - Users</h2>
         </div>
         <div class="wrapper">
             <a class="back-link" href="<?php echo url_for('/admin/index.php'); ?>">&laquo; Back to Management Index</a>
@@ -20,10 +20,10 @@ require_mgmt_login();
         <div id="adminWrapper">
             <section id="users">
                 <div class="mgmtTableHeading">
-                    <img src="<?php echo url_for('/images/icon/users.svg'); ?>" width="32" height="36">
+                    <img src="<?php echo url_for('/images/icon/users.svg'); ?>" width="32" height="36" alt="Users icon">
                     <h3>Users</h3>
-                    <a class="adminAddNew" href="<?php echo url_for('/admin/users/new.php'); ?>">Add user</a>
                 </div>
+                <a class="adminAddNew" href="<?php echo url_for('/admin/users/new.php'); ?>">Create user</a>
                 <table id="users">
                     <tr>
                         <th class="adminTableUsername">Username</th>
