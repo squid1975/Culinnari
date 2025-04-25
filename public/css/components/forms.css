@@ -6,6 +6,7 @@
 
 .formField label {
     margin-right: 10px;
+    font-size: 18px;
 }
 
 
@@ -82,11 +83,6 @@
 
 .form input.button:hover {
     background: #6a756a;
-}
-
-.signup {
-    font-size: 18px;
-    text-align: center;
 }
 
 .signup label {

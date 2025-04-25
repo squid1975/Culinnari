@@ -35,7 +35,6 @@ nav ul a {
 }
 
 nav ul a:hover {
-    box-shadow: 0 5px 5px -5px #3C2F2F;
     color: #6a756a;
 }
 

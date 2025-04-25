@@ -40,7 +40,7 @@ if(is_post_request()){
         <h2>Management Area : Meal Type</h2>
     </div>
     <div class="wrapper">
-        <div class="manageCategoryCard">
+        <div class="manageCategoryWrapper">
             <div>
                 &laquo;<a href="<?php echo url_for('/admin/categories/index.php');?>">Back to Categories Index</a>
             </div>
@@ -50,6 +50,7 @@ if(is_post_request()){
             </div>
             <?php unset($_SESSION['message']); // Clear message after displaying ?>
         <?php endif; ?>
+        <section>
             <h2>Manage Meal Type: <?php echo h($mealType->meal_type_name); ?> </h2>
             <div class="edit">
                 <h3>Edit Meal Type</h3>
@@ -63,6 +64,8 @@ if(is_post_request()){
                     </div>
                 </form>
             </div>
+        </section>
+        <section>
             <div class="delete">
                 <h3>Delete Meal Type</h3>
                 <p>Are you sure you want to delete this Meal Type?
@@ -73,7 +76,8 @@ if(is_post_request()){
                         <input type="submit" name="delete" value="Delete">
                     </div>
                 </form>
-        </div>
+        </section>        
+            </div>
         </div>
     </div>
 </main>

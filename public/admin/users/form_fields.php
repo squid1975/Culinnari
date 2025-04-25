@@ -9,26 +9,26 @@ if(!isset($user)) {
 
   <div class="userFormInput">
     <label for="newUsername">Username:</label>
-    <input type="text" id="newUsername" name="user[username]" value="<?php echo h($user->username); ?>">
+    <input type="text" id="newUsername" name="user[username]" value="<?php echo h($user->username); ?>" required>
   </div>
   <div id="username-requirements" class="requirements"></div>
 
   <div class="userFormInput">
     <label for="userEmail">User Email Address:</label>
-    <input type="email" id="userEmail" name="user[user_email_address]" value="<?php echo h($user->user_email_address); ?>">
+    <input type="email" id="userEmail" name="user[user_email_address]" value="<?php echo h($user->user_email_address); ?>" required>
   </div>
   <div id="email-requirements" class="requirements"></div>
 
 
   <div class="userFormInput">
     <label for="userFirstName">User First Name:</label>
-    <input type="text" id="userFirstName" name="user[user_first_name]" value="<?php echo h($user->user_first_name); ?>">
+    <input type="text" id="userFirstName" name="user[user_first_name]" value="<?php echo h($user->user_first_name); ?>" required>
   </div>
   <div id="firstname-requirements" class="requirements"></div>
 
   <div class="userFormInput">
     <label for="userLastName">User Last Name:</label>
-    <input type="text" id="userLastName" name="user[user_last_name]" value="<?php echo h($user->user_last_name); ?>">
+    <input type="text" id="userLastName" name="user[user_last_name]" value="<?php echo h($user->user_last_name); ?>" required>
   </div>
   <div id="lastname-requirements" class="requirements"></div>
 

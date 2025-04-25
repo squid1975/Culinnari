@@ -9,7 +9,7 @@
 
 }
 
-#error404 a  {
+#error404 a {
     margin: 10px;
     padding: 10px;
     border: 1px solid black;
@@ -19,7 +19,7 @@
 }
 
 
-/******************** HOMEPAGE MAIN ELEMENTS *********************/
+/******************** HOMEPAGE ELEMENTS *********************/
 
 #homePageWrapper {
     width: 100%;
@@ -27,56 +27,60 @@
 
 #homeHero {
     margin: 0 auto;
-    height: 400px;
+    height: 300px;
     background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(255, 255, 255, 0.1)), url('../images/24674.jpg');
     background-repeat: no-repeat;
-    background-position-y: 80%;
-    position: relative;
-    
-
-    & h2 {
-        font-size: 40px;
-        margin: 0;
-        padding: 0;
-    }
-
-    & #mainHeroText {
-        text-align: center;
-        width: 100%;
-        height: 100%;
-        background: rgba(236, 236, 236, 0.5);
-        color: rgb(0, 0, 0);
-        padding: 20px;
-    }
-
-    > div#searchWithFilters {
-        position: absolute;
-        top: 200px;
-    }
+    background-position-y: 30%;
+    background-position-x: 90%;
+    background-size: cover;
 }
 
-.wrapper {
-    background-color: #f5f5f5;
-    margin: auto;
-    max-width: 1300px;
+#homeHero #mainHeroText {
+    text-align: center;
+    width: 100%;
+    height: 100%;
+    background: rgba(236, 236, 236, 0.5);
+    color: rgb(0, 0, 0);
     padding: 20px;
-    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
+#homeHero h2 {
+    font-size: 44px;
+    margin: 0;
+    padding: 0;
+}
+
+#homeHero p {
+    font-size: 18px;
+}
+
+#mainHeroText a {
+    background: white;
+    border: 1px solid black;
+    padding: 10px;
+    border-radius: 10px;
+    
+}
+
+/** Diet Key **/
 .dietKey {
     display: flex;
     justify-content: space-evenly;
     max-width: 1000px;
     margin: 0 auto;
+}
 
-    & .dietIconWithName {
-        align-items:center;
-        display: flex;
+.dietKey .dietIconWithName {
+    align-items: center;
+    display: flex;
+}
 
-        & p {
-            padding-left: 5px;
-        }
-    }
+.dietKey .dietIconWithName p {
+    padding-left: 5px;
 }
 
 section#becomeMemberCTA {
@@ -87,65 +91,63 @@ section#becomeMemberCTA {
     width: 100%;
     margin: 30px auto;
     padding: 20px;
-    
+}
 
-    > div {
-        margin: 10px 5px;
-        display: flex;
-        gap: 30px;
+section#becomeMemberCTA > div {
+    margin: 10px 5px;
+    display: flex;
+    gap: 30px;
+}
 
-        > div {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            width: fit-content;
-            padding: 10px;
-            flex: 1;
-            height: 200px;
-            
-            > p {
-                text-align: center;
-                margin: 0;
-            }
-        }
-    }
+section#becomeMemberCTA > div > div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: fit-content;
+    padding: 10px;
+    flex: 1;
+    height: 200px;
+}
 
+section#becomeMemberCTA > div > div > h3 {
+    text-align: center;
+}
+
+section#becomeMemberCTA > div > div > p {
+    text-align: center;
+    margin: 0;
 }
 
 .suggestions {
     margin-top: 20px;
     margin-bottom: 10px;
     padding: 10px;
-
-    & .suggestionsContent {
-        display: flex;
-        flex-wrap: wrap;
-        margin: 10px 0;
-    }
 }
 
-
-
-
+.suggestions .suggestionsContent {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 10px 0;
+}
 /**************************************** SEARCH (RECIPES) PAGE ******************************/
 #searchHero {
     margin: 0;
     padding: 10px;
-    
+
 }
 
-#heroText {
-    height: 100px;
+#searchHero #heroText {
+    flex-direction: column;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-left: 20px;
-    
+    text-align: center;
+    padding: 20px 0;
 }
 
 #searchHero h2 {
-    color: rgb(0, 0, 0);
+    color: #000000;
     margin: 0;
     padding: 0;
     text-align: center;
@@ -153,53 +155,307 @@ section#becomeMemberCTA {
 
 #searchPageWrapper {
     margin: auto 0;
-    
+
 }
 
 #searchPageResultsWrapper {
     max-width: 1200px;
     margin: auto;
     background: #fff;
+    min-height: 100vh;
 }
 
 h3.searchMessage {
     font-family: 'Poppins', sans-serif;
-    
     padding: 15px;
 }
 
-div#allRecipes,
-div#searchResults {
+#recipePagePosts {
     display: flex;
     flex-wrap: wrap;
 }
 
-.pagination-container {
+/********************************   view recipe **************************/
+#recipePageDisplayWrapper {
+    background: #ffffff;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+#recipeDisplayUsernameOptions {
+    display: flex;
+    justify-content: space-between;
+    border-top: 1px solid #4b4b4b;
+}
+
+
+
+#recipeNameImageDesc {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    border-bottom: 1px dotted #000000;
+    border-top: 1px solid #000000;
+    padding: 10px;
+}
+
+#recipeNameImageDesc .recipeImage {
+    border: 3px solid #333;
+    margin: 10px 0;
+    max-width: 100%;
+    height: auto;
+}
+
+#recipeDisplayrecipeDescription {
+    max-width: 500px;
+    text-align: center;
+}
+
+#recipeDisplayDietIconsCategoriesDifficulty {
+    align-items: center;
+    display: flex;
+    gap: 5px;
+}
+
+.recipeDisplayMealTypes,
+.recipeDisplayStyles {
+    background: #FFFAF0;
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid #ccccccac;
+}
+
+/** Difficulty Colors **/
+div#recipeDisplayDifficulty p {
+    padding: 5px;
+    text-transform: uppercase;
+    width: fit-content;
+}
+
+div#recipeDisplayDifficulty p#recipeDisplayBeginner {
+    background: #82db58;
+}
+
+div#recipeDisplayDifficulty p#recipeDisplayIntermediate {
+    background: #fcbb31;
+}
+
+div#recipeDisplayDifficulty p#recipeDisplayAdvanced {
+    background: #eb3434;
+}
+
+#recipeDisplayprepCook {
+    display: flex;
+}
+
+#recipeDisplayprepCook p {
+    margin-right: 10px;
+    padding-right: 5px;
+}
+
+#recipeDisplayOptions {
     display: flex;
     align-items: center;
-    position: absolute;
-    bottom: 0;
-    justify-content: center;
-  }
-  .pagination-number,
-  .pagination-button{
-    font-size: 1.1rem;
-    background-color: transparent;
+}
+
+#recipeDisplayOptions button {
+    align-items: center;
     border: none;
-    margin: 0.25rem 0.25rem;
+    background: none;
+    display: flex;
+    font-size: 16px;
+}
+
+#recipeDisplayOptions button img {
+    margin-right: 3px;
+}
+
+#recipeDisplayOptions div#recipeDisplayPrint a {
+    display: flex;
+    align-items: center;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+#recipeDisplayOptions div#recipeDisplayPrint a img {
+    margin-right: 5px;
+}
+
+#recipeDisplayIngredientsSteps {
+    margin: 20px 10px;
+    display: flex;
+    min-height: 400px;
+
+}
+
+#recipeDisplayIngredientsSteps h3 {
+    font-size: 24px;
+    margin: 20px 0;
+    padding: 5px 0;
+    border-bottom: 1px solid gray;
+    width: fit-content;
+}
+
+#recipeDisplayIngredients {
+    min-width: 500px;
+}
+
+
+#recipeDisplayChangeServingAmt {
+    margin-left: 10px;
+    margin-top: 10px;
+    padding: 5px;
+    border-radius: 10px;
+    display: flex;
+    flex-wrap: nowrap;
+}
+
+#recipeDisplayChangeServingAmt button {
+    text-align: center;
+    padding: 5px 10px;
+    border-radius: 10px;
+    margin-right: 5px;
+}
+
+#selected {
+    background: #D8A7A0;
+}
+
+li.recipeIngredientListing {
+    list-style-type: circle;
+    margin: 15px 0;
+}
+
+
+#recipeDisplaySteps ol li {
+    list-style-type: decimal;
+    margin: 20px 0;
+}
+
+#recipeDisplayAddRating {
+    border-top: 1px solid #333;
+    padding: 10px;
+}
+
+
+
+.star-widget {
+    padding: 5px;
+}
+
+#stars {
+    display: flex;
+    width: fit-content;
+    flex-direction: row-reverse;
+}
+
+.stars i {
+    color: #e6e6e6;
+    font-size: 35px;
     cursor: pointer;
-    height: 2.5rem;
-    width: 2.5rem;
-    border-radius: .2rem;
-  }
-  .pagination-number:hover,
-  .pagination-button:not(.disabled):hover {
-    background: #fff;
-  }
-  .pagination-number.active {
-    color: #fff;
-    background: #0085b6;
-  }
+    transition: color 0.2s ease;
+}
+
+.stars i.active {
+    color: #ff9c1a;
+}
+
+.star-widget form {
+    margin: 0;
+}
+
+.star-widget input {
+    display: none;
+}
+
+.star-widget label {
+    font-size: 20px;
+    color: #444;
+    padding: 10px;
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
+
+/* Hover and Selected Effects */
+.star-widget input:not(:checked)~label:hover,
+.star-widget input:not(:checked)~label:hover~label {
+    color: #fd4;
+}
+
+.star-widget input:checked~label {
+    color: #fd4;
+}
+
+/* Special Styling for 5-Star Rating */
+.star-widget input#rate-5:checked~label {
+    color: #fe7;
+}
+
+/* Submit Button */
+.submitRatingButton {
+    border: 1px solid #444;
+    border-radius: 5px;
+    background: rgb(209, 209, 209);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.submitRatingButton:hover {
+    background: #8dca63;
+}
+
+
+
+/*************************************************** PRINT STYLING ************************************************/
+
+@media print {
+    #recipePageDisplayWrapper {
+        max-width: 100%;
+        padding: 0;
+    }
+
+    #recipeDisplayrecipeDescription {
+        text-align: left;
+    }
+
+    #recipeDisplayprepCook p:first-of-type {
+        border: none;
+    }
+
+    #recipeNameImageDesc,
+    #recipeDisplayprepCook,
+    #recipeDisplayIngredientsSteps {
+        display: block;
+        width: 100%;
+    }
+
+    #recipeDisplayIngredients,
+    #recipeDisplaySteps {
+        width: 100%;
+        max-width: 100%;
+        padding: 0;
+    }
+
+    /* Hide elements that are not needed in print */
+    header,
+    #recipeDisplayUsername p,
+    #recipeNameImageDesc img,
+    #recipeDisplayRatingStars,
+    .star-rating,
+    #iconsStars,
+    #recipeDisplayCategories,
+    #recipeDisplayDifficulty,
+    #recipeDisplayOptions,
+    #recipeDisplayChangeServingAmt,
+    #recipeDisplayVideo,
+    #recipeDisplayAddRating,
+    footer {
+        display: none;
+    }
+
+}
+
 
 /******************************* PROFILE **********************************************/
 #profileHeading {
@@ -208,7 +464,7 @@ div#searchResults {
     text-align: center;
 }
 
-#profileHeading + h3 {
+#profileHeading+h3 {
     text-align: center;
     border-bottom: 1px solid #333;
     padding: 10px 0;
@@ -227,10 +483,6 @@ div#searchResults {
     align-items: center;
     display: flex;
     flex-wrap: nowrap;
-
-    > .createCookbookForm {
-        display: inline-block;
-    }
 }
 
 .profileSectionHead h3 {
@@ -242,10 +494,12 @@ div#searchResults {
     border: 1px solid black;
     border-radius: 5px;
     padding: 5px;
-    &:hover::before {
-        content: '+';
-    }
 }
+
+.createLink:hover::before {
+    content: '+';
+}
+
 .profileCards {
     display: flex;
     flex-wrap: wrap;
@@ -284,15 +538,15 @@ div#searchResults {
     box-shadow: 0 0 2px #333;
     padding: 5px;
 
-    > label {
+    >label {
         margin-right: 5px;
     }
 
-    > input[type="text"]{
+    >input[type="text"] {
         width: 50%;
     }
 
-    > input[type="submit"] {
+    >input[type="submit"] {
         background: #3c2f2f;
         color: white;
         border: none;
@@ -304,8 +558,8 @@ div#searchResults {
 
 
 
-/***************** Admin Area ***************************/
-/******** admin **********/
+/***************** ADMIN AREA ***************************/
+
 #adminHero {
     background-color: #3c2F2f;
     color: white;
@@ -319,119 +573,74 @@ div#searchResults {
     flex-wrap: nowrap;
     padding: 5px;
     margin: 10px;
+    justify-content: center;
+}
+
+
+#adminLinks a {
+    font-size: 20px;
+    display: block;
+}
+
+
+h3 {
+    font-size: 24px;
+}
+
+h4 {
+    font-size: 20px;
 }
 
 
 
-#adminWrapper {
-    background: #ebebeb;
-    min-height: 100vh;
-    max-width: 1200px;
-    padding: 20px;
-    }
-
-    .adminLink {
-        background: #D8A7A0;
-        color: #333;
-        padding: 5px;
-        border-radius: 5px;
-        margin: 10px;
-        font-size: 14px;
-        cursor:pointer;
-        transition: 0.2s ease-in;
-        max-width: 200px;
-        &:hover{
-            background: #f7d5cf;
-        }
-
-        > a {
-            font-size: 20px;
-            width: fit-content;
-        }
-    }
-
-    h3 {
-        font-size: 24px;
-    }
-
-    h4 {
-        font-size: 20px;
-    }
-
-    & section {
-        margin: 20px;
-        padding: 20px;
-    }
-
-    .adminAddNew {
-        background: #D8A7A0;
-        color: #333;
-        padding: 5px;
-        border-radius: 5px;
-        margin-left: 10px;
-        font-size: 14px;
-        cursor:pointer;
-        transition: 0.2s ease-in;
-        &:hover{
-            background: #f7d5cf;
-        }
-    }
-
+.adminAddNew {
+    background: #D8A7A0;
+    color: #333;
+    padding: 5px;
+    border-radius: 5px;
+    margin-left: 10px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.2s ease-in;
+}
 
 table {
     border: 1px solid black;
     border-collapse: collapse;
-    
     margin: 10px 20px;
+}
 
-    > th, td {
-        padding: 10px;
-        border: 1px solid black;
-    }
+table th,
+td {
+    padding: 10px;
+    border: 1px solid black;
+}
 
-    & td a:hover {
-        color: #d64646;
-    }
+table td a:hover {
+    color: #d64646;
+}
 
-    & tr:nth-child(odd){
-        background: #fcfcfc;
+& tr:nth-child(odd) {
+    background: #fcfcfc;
 
-        &:hover {
-            background: #f1f1f1;
-            cursor: pointer;
-        }
-    }
-
-    & tr:nth-child(even){
-        background: #e7e2e2;
-
-        &:hover {
-            background: #cec8c8;
-            cursor: pointer;
-        }
+    &:hover {
+        background: #f1f1f1;
+        cursor: pointer;
     }
 }
 
-#categories div {
-    margin: 20px 0;
+table tr:nth-child(even) {
+    background: #e7e2e2;
 
-    > div {
-        display: flex;
-        align-items: center;
-        margin: 10px 0;
 
-        > a {
-            margin-left: 10px;
-            border: 1px solid black;
-            padding: 5px;
-            border-radius: 5px;
-        }
-    }
-
-    & td:first-of-type {
-        width: 75%;
-    }
 }
+
+table tr:nth-child(even):hover {
+    background: #cec8c8;
+    cursor: pointer;
+}
+
+
 
 #managementIndexWrapper {
     display: flex;
@@ -440,12 +649,119 @@ table {
 }
 
 
-/********************************************   media queries ****************************/
+.manageUserActions {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+}
 
-@media screen and (max-width:700px){
+.manageUserWrapper {
+    background: #ffffff;
+    margin: auto;
+    max-width: 800px;
+    min-height: 500px;
+    padding: 10px;
+}
+
+.manageUserWrapper ul li {
+    margin: 20px;
+}
+
+.manageUserWrapper ul li div {
+    margin: 10px;
+}
+
+
+.manageCategoryWrapper {
+    background: #ffffff;
+    border: 3px solid black;
+    margin: auto;
+    min-height: 700px;
+    padding: 10px;
+    width: 800px;
+}
+
+.manageCategoryWrapper h2 {
+    margin-top: 30px;
+}
+
+.manageCategoryWrapper > div {
+    margin-top: 10px;
+}
+
+.manageCategoryWrapper > .edit,
+.manageCategoryWrapper > .delete {
+    padding: 10px;
+}
+
+/***************************************** MEDIA QUERIES ******************************************/
+
+@media screen and (max-width: 1000px) {
+
+    /** VIEW RECIPE PAGE **/
+    #recipeDisplayCategories span {
+        display: inline-block;
+    }
+
+    
+    #recipeDisplayIngredientsSteps {
+        display: block;
+    }
+
+    #recipeDisplayIngredientsSteps div {
+        width: 100%;
+    }
+
+    /** ADMIN AREA **/
+    .adminTableUserFullName,
+    .adminTableUserJoinDate {
+        display: none;
+    }
+}
+
+@media screen and (max-width: 750px) {
+
+    
+
+    /** ADMIN AREA**/
+    .adminTableUserEmail {
+        display: none;
+    }
+}
+
+@media screen and (max-width:700px) {
     .dietKey {
         display: flex;
         flex-direction: column;
         align-items: center;
+    }
+}
+
+@media screen and (max-width: 600px) {
+
+    /** VIEW RECIPE PAGE **/
+    #recipeDisplayprepCook {
+        display: block;
+    }
+
+    #recipeDisplayprepCook p:first-of-type {
+        border: none;
+    }
+
+    #videoContainer {
+        position: relative;
+        width: 100%;
+        padding-bottom: 56.25%; /* 16:9 aspect ratio */
+        height: 0;
+        overflow: hidden;
+    }
+
+    #videoContainer iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;   
     }
 }

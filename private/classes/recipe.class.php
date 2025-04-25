@@ -29,11 +29,11 @@ class Recipe extends DatabaseObject
         $this->recipe_name = $args['recipe_name'] ?? '';
         $this->recipe_description = $args['recipe_description'] ?? '';
         $this->recipe_total_servings = $args['recipe_total_servings'] ?? '';
-        $this->recipe_post_date = $args['recipe_post_date'] ?? date('Y-m-d h:m:s');
+        $this->recipe_post_date = $args['recipe_post_date'] ?? date('Y-m-d');
         $this->recipe_prep_time_seconds = $args['recipe_prep_time_seconds'] ?? NULL;
         $this->recipe_cook_time_seconds = $args['recipe_cook_time_seconds'] ?? NULL;
-        $this->recipe_difficulty = $args['recipe_difficulty'] ?? '';
-        $this->user_id = $args['user_id'] ?? '';
+        $this->recipe_difficulty = $args['recipe_difficulty'] ?? 'beginner';
+        $this->user_id = $args['user_id'] ?? 1;
     }
 
 /**
@@ -46,31 +46,19 @@ public static function get_user_recipes($user_id) {
       return Recipe::find_by_sql($sql); // 
   }
 
-  protected function validate()
-  {
+  protected function validate(){
     $this->errors = [];
 
-    if (is_blank($this->recipe_name)) {
+    if(is_blank($this->recipe_name)){
       $this->errors[] = "Recipe name cannot be blank.";
     }
-
+    
     if(is_blank($this->recipe_description)){
       $this->errors[] = "Recipe description cannot be blank.";
     }
-    if(has_length($this->recipe_description, ['min' => 2, 'max' => 255])){
-      $this->errors[] = "Recipe description must be between 2 and 255 characters.";
-    }
-    if(is_blank($this->recipe_prep_time_seconds) && is_blank($this->recipe_cook_time_seconds)){
-      $this->errors[] = "Recipe prep time and cook time cannot be blank.";
-    } elseif(!is_numeric($this->recipe_prep_time_seconds) || !is_numeric($this->recipe_cook_time_seconds)){
-      $this->errors[] = "Recipe prep time and cook time must be numeric values.";
-    } elseif($this->recipe_prep_time_seconds < 0 || $this->recipe_cook_time_seconds < 0){
-      $this->errors[] = "Recipe prep time and cook time must be greater than or equal to 0.";
-    }
+    
+    
 
-    if(is_blank($this->recipe_total_servings)){
-      $this->errors[] = "Recipe total servings cannot be blank.";
-    }
 
     return $this->errors;
   }
@@ -96,6 +84,21 @@ public static function get_diet_icons($recipe_id) {
         }
         
         return $diet_icons;
+    }
+
+public static function get_diet_names($recipe_id) {
+    $recipe_diets = RecipeDiet::find_by_recipe_id($recipe_id);
+    $diet_names = [];
+
+    if ($recipe_diets) {
+        foreach ($recipe_diets as $recipe_diet) {
+            $diet = Diet::find_by_id($recipe_diet->diet_id);
+            if ($diet) {
+                $diet_names[] = $diet->diet_name;
+            }
+        }
+    }
+    return $diet_names;
     }
 
 /**
@@ -136,7 +139,7 @@ public static function get_style_names($recipe_id) {
         }
     }
     return $style_names;
-    }
+}
 
 /**
  * * Takes the recipe id and finds the username of the user who created the recipe

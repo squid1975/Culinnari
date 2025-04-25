@@ -14,6 +14,11 @@ class Session {
     $this->check_stored_login();
   }
 
+  /**
+   * Login the user by setting session variables
+   * @param mixed $user  The user object to log in
+   * @return bool True on success, false on failure
+   */
   public function login($user) {
     if($user) {
       // prevent session fixation attacks
@@ -26,10 +31,18 @@ class Session {
     return true;
   }
 
+  /**
+   * Checks if a user is logged in by checking set session variables and login age
+   * @return bool True if logged in, false otherwise
+   */
   public function is_logged_in() {
     return isset($this->user_id) && $this->last_login_is_recent();
   }
 
+  /**
+   * Checks if user is logged in and is a management user (admin or super admin)
+   * @return bool True if logged in and is a management user, false otherwise
+   */
   public function is_mgmt_logged_in() {
     return $this->is_logged_in() && in_array($this->user_role, ['a', 's']);
 }

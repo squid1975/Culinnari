@@ -1,6 +1,6 @@
-<?php require_once('../../../../private/initialize.php');?>
-<title>Create New Style | Culinnari</title>
-<?php include(SHARED_PATH . '/public_header.php');
+<?php require_once('../../../../private/initialize.php');
+$title = 'Manage Diet | Culinnari';
+include(SHARED_PATH . '/public_header.php');
 require_mgmt_login();
 
 if(is_post_request()){
@@ -13,7 +13,7 @@ if(is_post_request()){
         $_SESSION['message'] = 'The style was created successfully.';
         redirect_to(url_for('/admin/categories/styles/manage.php?style_id=' . $style->id));
     } else {
-
+        
     }
     
 }
@@ -28,7 +28,7 @@ else {
         <h2>Management Area : Style</h2>
     </div>
     <div id="wrapper">
-        <div class="manageCategoryCard">
+        <div class="manageCategoryWrapper">
             <div>
                 &laquo;<a href="<?php echo url_for('/admin/categories/index.php');?>">Back to Categories Index</a>
             </div>

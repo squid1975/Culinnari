@@ -28,7 +28,7 @@ else {
         <h2>Management Area : Meal Type</h2>
     </div>
     <div class="wrapper">
-        <div class="manageCategoryCard">
+        <div class="manageCategoryWrapper">
             <div>
                 &laquo;<a href="<?php echo url_for('/admin/categories/index.php');?>">Back to Categories Index</a>
             </div>

@@ -1,5 +1,5 @@
 <?php require_once('../../../../private/initialize.php');?>
-<title>Manage Diet</title>
+$title = 'Manage Diet | Culinnari';
 <?php include(SHARED_PATH . '/public_header.php');
 require_mgmt_login();
 
@@ -37,14 +37,15 @@ if(is_post_request()){
         <h2>Management Area : Diet</h2>
     </div>
     <div class="wrapper">
-        <div class="manageCategoryCard">
+        <div class="manageCategoryWrapper">
             <div>
                 &laquo;<a href="<?php echo url_for('/admin/index.php');?>">Back to Admin Management Index</a>
             </div>
+            <section>
             <h2>Manage Diet: <?php echo h($diet->diet_name); ?> </h2>
             <div class="edit">
                 <h3>Edit Diet</h3>
-                <form action="" method="post">
+                <form action="<?php echo (url_for('/admin/categories/diets/manage.php?diet_id=' . $dietId));?>" method="post">
                     <div>
                         <label for="meal_type_name">Diet Name:</label>
                         <input type="text" name="diet[diet_name]" value="<?php echo h($diet->diet_name); ?>" required>
@@ -54,19 +55,23 @@ if(is_post_request()){
                     </div>
                 </form>
             </div>
+            </section>
+            <section>
             <div class="delete">
-                <h3>Delete Diet</h3>
+                <h2>Delete Diet</h2>
                 <p>Are you sure you want to delete this diet?
                     <strong>This cannot be undone.</strong>
                 </p>
-                <form action="" method="post">
+                <form action="<?php echo(url_for('/admin/categories/diets/manage.php?diet_id=' . $dietId)); ?>" method="post">
                     <div>
                         <input type="hidden" name="diet[id]" value=<?php echo $diet->id; ?>>
                         <input type="submit" name="delete" value="Delete">
                     </div>
                 </form>
+                </div>
+            </section>
         </div>
-        </div>
+        
     </div>
 </main>
 

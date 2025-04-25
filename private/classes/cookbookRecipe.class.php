@@ -27,5 +27,15 @@ class CookbookRecipe extends DatabaseObject {
         return self::find_by_sql($sql);
     }
 
+    public static function recipe_exists_in_cookbook($cookbook_id, $recipe_id) {
+        $sql = "SELECT * FROM cookbook_recipe WHERE cookbook_id = '" . self::$database->escape_string($cookbook_id) . "' AND recipe_id = '" . self::$database->escape_string($recipe_id) . "' LIMIT 1";
+        $result = self::find_by_sql($sql);
+        if($result){
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 }
 

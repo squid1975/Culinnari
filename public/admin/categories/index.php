@@ -10,7 +10,7 @@ require_mgmt_login();
     </div>
 
     <div class="wrapper">
-        <a class="back-link" href="<?php echo url_for('/admin/index.php'); ?>">&laquo; Back to Management Home</a>
+        <a class="back-link" href="<?php echo url_for('/admin/index.php'); ?>">&laquo; Back to Management Index</a>
         <?php if(isset($_SESSION['message'])): ?>
             <div class="session-message">
                 <?php echo $_SESSION['message']; ?>

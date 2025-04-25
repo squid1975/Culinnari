@@ -1,12 +1,13 @@
-<title>Create Recipe | Culinnari</title>
-<?php 
-require_once('../../private/initialize.php'); 
-include(SHARED_PATH . '/public_header.php'); 
+<?php
+require_once('../../private/initialize.php');
+$title = 'Create Recipe | Culinnari';
+include(SHARED_PATH . '/public_header.php');
 require_login();
 $mealTypes = MealType::find_all();
 $styles = Style::find_all();
-$diets = Diet::find_all(); 
+$diets = Diet::find_all();
 $errors = [];
+
 $current_user_id = $session->user_id;
 
 if (is_post_request()) {
@@ -71,7 +72,7 @@ if (is_post_request()) {
     
             // Process image based on file type
             $image = false;
-    
+            // Check if the file is a JPEG, PNG, or WEBP 
             switch ($fileType) {
                 case 'image/jpeg':
                 case 'image/jpg':
@@ -126,15 +127,15 @@ if (is_post_request()) {
         $_POST['recipe_image'] = $imageURL;
             try {
                 $args = $_POST['recipe'];
-                $args += ["recipe_prep_time_seconds" => $recipe_prep_time_seconds];
-                $args += ["recipe_cook_time_seconds" => $recipe_cook_time_seconds];
-                $args += ["user_id" => $current_user_id];
-
+                $args += ['recipe_prep_time_seconds' => $recipe_prep_time_seconds];
+                $args += ['recipe_cook_time_seconds' => $recipe_cook_time_seconds];
+                $args += ['user_id' => (int)$current_user_id];
                 $recipe = new Recipe($args);
                 $result = $recipe->save();
 
                 if (!$result) { // If recipe insertion fails
-                    throw new Exception("Unable to insert recipe.");
+                    throw new Exception("Unable to insert recipe.".);
+                    
                 }
 
                 $recipe_id = $recipe->id;
@@ -254,7 +255,6 @@ else {
 
 
 ?>
-<script src="<?php echo url_for('/js/createRecipe.js'); ?>" defer></script>
 <main role="main" tabindex="-1">
     <div class="recipeFormWrapper">
         <div class="recipeFormHeading">
@@ -262,127 +262,152 @@ else {
             <p>Fill out the form below to create a new recipe.</p>
             <p>Fields marked with * required.</p>
             <?php echo display_errors($errors); ?>
+         
+            <?php if (isset($_SESSION['errors'])): ?>
+                <p class="error-message"><?php echo $_SESSION['errors'][0]; ?></p>
+                <?php unset($_SESSION['errors']); ?>
+                <?php endif; ?>
         </div>
-        <form action="create_recipe.php" method="POST" enctype="multipart/form-data" id="createRecipeForm">
-
+        <form action="create_recipe.php" method="POST" enctype="multipart/form-data" class="recipeForm">
+             <input type="hidden" name="recipe[user_id]" value="<?php echo h($current_user_id); ?>">
             <label for="recipeName" class="recipePartName">Recipe Name:*</label>
-            <input type="text" id="recipeName" name="recipe[recipe_name]" maxlength="100" required>
+            <input type="text" id="recipeName" name="recipe[recipe_name]" maxlength="100" required
+                value="<?php echo h($_POST['recipe']['recipe_name'] ?? ''); ?>">
 
             <label for="recipeDescription" class="recipePartName">Description:*</label>
-            <span>Description must be no more than 255 characters.</span>
-            <textarea id="recipeDescription" name="recipe[recipe_description]" maxlength="255" rows="4" cols="50" required></textarea>
+            <span>Limit 255 characters.</span>
+            <textarea id="recipeDescription" name="recipe[recipe_description]" maxlength="255" rows="4" cols="50"
+                required><?php echo h($_POST['recipe']['recipe_description'] ?? ''); ?></textarea>
 
             <fieldset>
                 <legend>Difficulty</legend>
                 <div class="radio-group">
                     <div class="formField">
-                        <input type="radio" id="beginner" name="recipe[recipe_difficulty]" value="beginner" checked>
+                        <input type="radio" id="beginner" name="recipe[recipe_difficulty]" value="beginner" checked
+                            <?php if (isset($_POST['recipe']['recipe_difficulty'])) {
+                                echo $_POST['recipe']['recipe_difficulty'] === 'beginner' ? 'checked' : '';
+                            } ?>>
                         <label for="beginner">Beginner</label>
                     </div>
 
                     <div class="formField">
-                        <input type="radio" id="intermediate" name="recipe[recipe_difficulty]" value="intermediate">
+                        <input type="radio" id="intermediate" name="recipe[recipe_difficulty]" value="intermediate"
+                            <?php if (isset($_POST['recipe']['recipe_difficulty'])) {
+                                echo $_POST['recipe']['recipe_difficulty'] === 'intermediate' ? 'checked' : '';
+                            } ?>>
                         <label for="intermediate">Intermediate</label>
                     </div>
 
                     <div class="formField">
-                        <input type="radio" id="advanced" name="recipe[recipe_difficulty]" value="advanced">
+                        <input type="radio" id="advanced" name="recipe[recipe_difficulty]" value="advanced" <?php if (isset($_POST['recipe']['recipe_difficulty'])) {
+                            echo $_POST['recipe']['recipe_difficulty'] === 'advanced' ? 'checked' : '';
+                        } ?>>
                         <label for="advanced">Advanced</label>
                     </div>
                 </div>
             </fieldset>
             <div id="timeInput">
-            <?php if (!empty($errors['time'])): ?>
-                <p class="error-message"><?php echo $errors['time']; ?></p>
+                <?php if (!empty($errors['time'])): ?>
+                    <p class="error-message"><?php echo $errors['time']; ?></p>
                 <?php endif; ?>
-                    <fieldset>
-                        <legend>Prep Time</legend>
-                        <div class="timeContainer">
-                            <label for="prepTimeHours">Hours:
-                                <input type="number" id="prepTimeHours" name="prep_hours" min="0" max="99" step="1" placeholder="Hrs" maxlength="2"></label>
-                            <label for="prepTimeMinutes">Minutes:
-                                <input type="number" id="prepTimeMinutes" name="prep_minutes" min="0" max="59" step="1" placeholder="Min" maxlength="2"></label>
-                        </div>
-                    </fieldset>
+                <fieldset>
+                    <legend>Prep Time</legend>
+                    <div class="timeContainer">
+                        <label for="prepTimeHours">Hours:
+                            <input type="number" id="prepTimeHours" name="prep_hours" min="0" max="99" step="1"
+                                placeholder="Hrs" value="<?php echo h($_POST['prep_hours'] ?? ''); ?>"></label>
+                        <label for="prepTimeMinutes">Minutes:
+                            <input type="number" id="prepTimeMinutes" name="prep_minutes" min="0" max="59" step="1"
+                                placeholder="Min" value="<?php echo h($_POST['prep_minutes'] ?? ''); ?>"></label>
+                    </div>
+                </fieldset>
 
-                
-                    <fieldset>
-                        <legend>Cook Time</legend>
-                        <div class="timeContainer">
-                            <label for="cookTimeHours">Hours:
-                            <input type="number" id="cookTimeHours" name="cook_hours" min="0" max="99" step="1" placeholder="Hrs" maxlength="2"></label>
-                            
-                            <label for="cookTimeMinutes">Minutes:<input type="number" id="cookTimeMinutes" name="cook_minutes" min="0" max="59" step="1" placeholder="Min" maxlength="2"></label>
-                        </div>
-                    </fieldset>    
+
+                <fieldset>
+                    <legend>Cook Time</legend>
+                    <div class="timeContainer">
+                        <label for="cookTimeHours">Hours:
+                            <input type="number" id="cookTimeHours" name="cook_hours" min="0" max="99" step="1"
+                                placeholder="Hrs" value="<?php echo h($_POST['cook_hours'] ?? ''); ?>"></label>
+
+                        <label for="cookTimeMinutes">Minutes:
+                            <input type="number" id="cookTimeMinutes" name="cook_minutes" min="0" max="59" step="1"
+                                placeholder="Min" value="<?php echo h($_POST['cook_minutes'] ?? ''); ?>"></label>
+                    </div>
+                </fieldset>
             </div>
 
             <div id="totalServingsContainer">
                 <label for="totalServings" class="recipePartName">Total Servings:*</label>
-                <input type="number" id="totalServings" name="recipe[recipe_total_servings]" min="1" max="99" step="1" required>
+                <input type="number" id="totalServings" name="recipe[recipe_total_servings]" min="1" max="99" step="1"
+                    value="<?php echo h($_POST['recipe']['recipe_total_servings'] ?? ''); ?>" required>
             </div>
 
             <fieldset id="ingredients">
                 <legend>Ingredients:*</legend>
-                <span id="ingredientDirections">Type the measurement amount and select a unit if applicable. Type the ingredient name with any special instructions in parentheses. Click 'plus' to add.</span>
+                <span id="ingredientDirections">Type the ingredient quantity and select a unit if applicable. Type the
+                    ingredient name and any special instructions. Example: ingredient name, instructions. Click 'plus' to add.</span>
                 <?php if (!empty($errors['ingredients'])): ?>
-                <p class="error-message"><?php echo $errors['ingredients']; ?></p>
+                    <p class="error-message"><?php echo $errors['ingredients']; ?></p>
                 <?php endif; ?>
                 <div id="ingredientInputs">
                     <label for="measurementAmount">Amount:*
-                        <input type="text" id="measurementAmount" placeholder="1,1/2,1 1/2" pattern="^\d{1,2}(\s\d{1,2}\/\d{1,2})?$|^\d{1,2}\/\d{1,2}$" maxlength="6"></label>
-                        <label for="ingredientUnit">Unit:
-                            <select id="ingredientUnit">
-                                <option value="n/a" selected></option>
-                                <option value="teaspoons">teaspoon(s)</option>
-                                <option value="tablespoon">tablespoon(s)</option>
-                                <option value="fluid ounce">fluid ounce(s)</option>
-                                <option value="cup">cup(s)</option>
-                                <option value="pint">pint(s)</option>
-                                <option value="quart">quart(s)</option>
-                                <option value="gallon">gallon(s)</option>
-                                <option value="milliliter">milliliter(s)</option>
-                                <option value="liter">liter(s)</option>
-                                <option value="ounce">ounce(s)</option>
-                                <option value="pound">pound(s)</option>
-                            </select></label>
-                        <label for="ingredientName">Name:*
-                        <input type="text" placeholder="Cookies (crushed)" id="ingredientName"></label>
-                        <button type="button" id="addIngredient">+ Add Ingredient</button>
+                        <input type="text" id="measurementAmount" placeholder="1,1/2,1 1/2"
+                            pattern="^\d{1,2}(\s\d{1,2}\/\d{1,2})?$|^\d{1,2}\/\d{1,2}$" maxlength="6"></label>
+                    <label for="ingredientUnit">Unit:
+                        <select id="ingredientUnit">
+                            <option value="n/a" selected>N/A</option>
+                            <option value="teaspoon">teaspoon</option>
+                            <option value="tablespoon">tablespoon</option>
+                            <option value="fluid ounce">fluid ounce</option>
+                            <option value="cup">cup</option>
+                            <option value="pint">pint</option>
+                            <option value="quart">quart</option>
+                            <option value="gallon">gallon</option>
+                            <option value="milliliter">milliliter</option>
+                            <option value="liter">liter</option>
+                            <option value="ounce">ounce</option>
+                            <option value="pound">pound</option>
+                        </select></label>
+                    <label for="ingredientName">Name:*
+                        <input type="text" placeholder="Cookies,crushed" id="ingredientName"></label>
+                    <button type="button" id="addIngredient">+ Add Ingredient</button>
                 </div>
                 <div id="enteredIngredients">
 
-                </div>    
+                </div>
             </fieldset>
 
             <fieldset id="steps">
                 <legend>Steps:*</legend>
                 <span id="stepDirections">Enter a step to make your recipe. Click the 'plus' to add a step.</span>
                 <?php if (!empty($errors['steps'])): ?>
-                <p class="error-message"><?php echo $errors['steps']; ?></p>
+                    <p class="error-message"><?php echo $errors['steps']; ?></p>
                 <?php endif; ?>
                 <label for="stepInput" class="visuallyHidden">Step:</label>
                 <div id="stepInputAndButton">
-                    <textarea  placeholder="Describe the step in one or two short sentences." id="stepInput" rows="2" cols="25" maxlength="255"></textarea>
-                    <button type="button" id="addStep" >+ Add Step</button>
+                    <textarea placeholder="Describe the step in one or two short sentences." id="stepInput" rows="2"
+                        cols="25" maxlength="255"></textarea>
+                    <button type="button" id="addStep">+ Add Step</button>
                 </div>
                 <div id="enteredSteps">
-                    
-                </div>  
+
+                </div>
             </fieldset>
 
             <h3 class="recipePartName">Categories</h3>
             <span>Select up to 3 options for each category.</span>
             <div id="checkboxes">
-                <fieldset>  
+                <fieldset>
+                    <legend class="recipePartName">Meal Type</legend>
                     <div class="checkboxContainer">
-                        <legend class="recipePartName">Meal Type</legend>
                         <?php if (!empty($errors['meal_types'])): ?>
                             <p class="error-message"><?php echo $errors['meal_types']; ?></p>
                         <?php endif; ?>
                         <?php foreach ($mealTypes as $mealType): ?>
                             <label>
-                                <input type="checkbox" name="meal_types[]" id="mealType - <?php echo $mealType->meal_type_name; ?>" value=<?php echo $mealType->id; ?>>
+                                <input type="checkbox" name="meal_types[]"
+                                    id="mealType-<?php echo str_replace(' ', '',$mealType->meal_type_name); ?>" value=<?php echo $mealType->id; ?>>
                                 <?php echo ucfirst($mealType->meal_type_name); ?>
                             </label>
                         <?php endforeach; ?>
@@ -390,14 +415,15 @@ else {
                 </fieldset>
 
                 <fieldset>
+                    <legend class="recipePartName">Style</legend>
                     <div class="checkboxContainer">
-                        <legend class="recipePartName">Style</legend>
                         <?php if (!empty($errors['styles'])): ?>
                             <p class="error-message"><?php echo $errors['styles']; ?></p>
                         <?php endif; ?>
                         <?php foreach ($styles as $style): ?>
                             <label>
-                                <input type="checkbox" name="styles[]" id="style - <?php echo $style->style_name; ?>" value="<?php echo $style->id; ?>">
+                                <input type="checkbox" name="styles[]" id="style-<?php echo str_replace(' ', '',$style->style_name); ?>"
+                                    value="<?php echo $style->id; ?>">
                                 <?php echo ucfirst($style->style_name); ?>
                             </label>
                         <?php endforeach; ?>
@@ -405,20 +431,21 @@ else {
                 </fieldset>
 
                 <fieldset>
+                    <legend class="recipePartName">Diet</legend>
                     <div class="checkboxContainer">
-                        <legend class="recipePartName">Diet</legend>
                         <?php if (!empty($errors['diets'])): ?>
                             <p class="error-message"><?php echo $errors['diets']; ?></p>
                         <?php endif; ?>
                         <?php foreach ($diets as $diet): ?>
                             <label>
-                                <input type="checkbox" name="diets[]" id="diet - <?php echo $diet->diet_name; ?>" value="<?php echo $diet->id; ?>">
+                                <input type="checkbox" name="diets[]" id="diet-<?php echo str_replace(' ', '', $diet->diet_name); ?>"
+                                    value="<?php echo $diet->id; ?>">
                                 <?php echo ucfirst($diet->diet_name); ?>
                             </label>
                         <?php endforeach; ?>
                     </div>
-                </div>
                 </fieldset>
+            </div>
 
             <label for="recipe_image" class="recipePartName">Image Upload</label>
             <span id="recipeAcceptedFileTypes">Accepted file types: JPG, PNG, WEBP</span>
@@ -427,14 +454,22 @@ else {
 
             <label for="youtube_link" class="recipePartName">YouTube Video Link:</label>
             <input type="url" id="youtube_link" name="recipe_video_url" placeholder="https://www.youtube.com/watch?v=...">
-            
+
             <div class="recipeSubmitReset">
                 <input type="submit" value="Create Recipe" id="createRecipeButton" class="createRecipeButton">
-                <input type="reset" value="Clear Form" id="clearRecipeFormButton">
+                <button type="reset" id="clearRecipeFormButton">Clear form</button>
+                <div class="modal" id="clearRecipeFormModal">
+                    <div class="modal-content">
+                        <h2>Reset recipe form</h2>
+                        <p>Are you sure you want to clear the form? <strong>All input will be lost.</strong></p>
+                        <button id="confirmFormReset">Reset form</button>
+                        <button id="cancelReset">Cancel</button>
+                    </div>
+                </div>
             </div>
         </form>
     </div>
 </main>
-
+<script src="<?php echo url_for('/js/createRecipe.js'); ?>" defer></script>
 
 <?php include(SHARED_PATH . '/public_footer.php'); ?>

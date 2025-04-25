@@ -76,44 +76,45 @@ class User extends DatabaseObject
      * Validates the user input for creating or updating a user
      * @return array $errors - Array of validation errors
      */
-    public function validate()
+    protected function validate()
     {
         $this->errors = [];
     
+         // Validate username
+         if (is_blank($this->username)) {
+            $this->errors['username'][] = "Username cannot be blank.";
+        } elseif (!has_length($this->username, ['min' => 5, 'max' => 25])) {
+            $this->errors['username'][] = "Username must be between 5 and 25 characters.";
+        } elseif (!preg_match('/^[A-Za-z][A-Za-z0-9_]{4,24}$/', $this->username)) {
+            $this->errors['username'][] = "Username must start with a letter and only contain letters, numbers, and underscores.";
+        } elseif (!has_unique_username($this->username, $this->id ?? 0)) {
+            $this->errors['username'][] = "Username not allowed. Try another.";
+        }
+
         // Validate first name
         if (is_blank($this->user_first_name)) {
             $this->errors['user_first_name'][] = "First name cannot be blank.";
-        }
-        if (!has_length($this->user_first_name, ['min' => 2, 'max' => 100])) {
-            $this->errors['user_first_name'][] = "First name must be between 2 and 100 characters.";
+        }elseif (!has_length($this->user_first_name, ['min' => 2, 'max' => 25])) {
+            $this->errors['user_first_name'][] = "First name must be between 2 and 25 characters.";
         }
     
         // Validate last name
         if (is_blank($this->user_last_name)) {
             $this->errors['user_last_name'][] = "Last name cannot be blank.";
-        }
-        if (!has_length($this->user_last_name, ['min' => 2, 'max' => 100])) {
-            $this->errors['user_last_name'][] = "Last name must be between 2 and 100 characters.";
+        } elseif (!has_length($this->user_last_name, ['min' => 2, 'max' => 25])) {
+            $this->errors['user_last_name'][] = "Last name must be between 2 and 25 characters.";
         }
     
         // Validate email address
         if (is_blank($this->user_email_address)) {
             $this->errors['user_email_address'][] = "Email cannot be blank.";
-        }
-        if (!has_valid_email_format($this->user_email_address)) {
+        } elseif (!has_valid_email_format($this->user_email_address)) {
             $this->errors['user_email_address'][] = "Email must be a valid format.";
+        } elseif (!has_unique_email($this->user_email_address, $this->id ?? 0)) {
+            $this->errors['user_email_address'][] = "Email address not allowed. Try another.";
         }
     
-        // Validate username
-        if (is_blank($this->username)) {
-            $this->errors['username'][] = "Username cannot be blank.";
-        }
-        if (!has_length($this->username, ['min' => 8, 'max' => 32])) {
-            $this->errors['username'][] = "Username must be between 8 and 32 characters.";
-        }
-        if (!has_unique_username($this->username, $this->id ?? 0)) {
-            $this->errors['username'][] = "Username not allowed. Try another.";
-        }
+       
     
         // Validate password (if required)
         if ($this->password_required) {
@@ -160,7 +161,16 @@ class User extends DatabaseObject
         }   
     }
 
+    public static function find_by_email($email) {
+        $sql = "SELECT * FROM " . static::$table_name . " ";
+        $sql .= "WHERE user_email_address='" . self::$database->escape_string($email) . "'";
+        $obj_array = static::find_by_sql($sql);
+        if(!empty($obj_array)) {
+            return array_shift($obj_array);
+        } else {
+            return false;
+        }   
+    }
     
-
 }
 ?>
