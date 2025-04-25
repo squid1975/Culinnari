@@ -13,9 +13,13 @@
         <div class="recipeCardIconsRating">
             <div class="recipeCardDietIcons">
                 <?php $diet_icons = Recipe::get_diet_icons($recipe->id); ?>
-                <?php if($diet_icons): ?>
-                    <?php foreach ($diet_icons as $diet_icon): ?>
-                        <img src="<?php echo url_for($diet_icon); ?>" alt="Diet Icon for <?php echo h($recipe->recipe_name);?>" title="Diet:<?php echo h($recipe->recipe_name);?>" width="20" height="20">
+                <?php $diet_icon_names = Recipe::get_diet_names($recipe->id); // Get diet icon names ?>
+                <?php if($diet_icons && $diet_icon_names): ?>
+                    <?php foreach ($diet_icons as $index => $diet_icon): ?>
+                        <img src="<?php echo url_for($diet_icon); ?>" 
+                            alt="<?php echo h($diet_icon_names[$index]) . ' diet icon for ' . $recipe->recipe_name; ?>" 
+                             
+                            width="20" height="20">
                     <?php endforeach; ?>
                 <?php endif; ?>
             </div>
