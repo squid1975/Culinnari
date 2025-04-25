@@ -5,9 +5,7 @@ $current_page = basename($_SERVER['SCRIPT_NAME']);
 <header role="banner">
     <div id="headerIcon">
         <h1 class="visuallyHidden">Culinnari | Recipe Sharing</h1>
-        <a href="<?php echo url_for('/index.php'); ?>">
-            <img src="<?php echo url_for('/images/logo.svg'); ?>" width="215" height="60" alt="Culinnari Logo" >
-        </a>
+        <img src="<?php echo url_for('/images/logo.svg'); ?>" width="215" height="60" alt="Culinnari Logo" >
     </div>
     <nav role="navigation" id="mainMenu">
         <input type="checkbox" id="menu-toggle">
@@ -29,16 +27,16 @@ $current_page = basename($_SERVER['SCRIPT_NAME']);
         </div>
     </nav>
     <div id="userHeader">
-    <?php
-    if(!$session->is_logged_in()) {
-        include(SHARED_PATH . '/gen_public_header.php');
-    }
-    if ($session->is_mgmt_logged_in()) {  
-        include(SHARED_PATH . '/admin_header.php');
-    }
-    elseif($session->is_logged_in()) {  
-        include(SHARED_PATH . '/member_header.php');
-    }
-    ?>
-</div>
+        <?php
+        if(!$session->is_logged_in()) {
+            include(SHARED_PATH . '/gen_public_header.php');
+        }
+        if ($session->is_mgmt_logged_in()) {  
+            include(SHARED_PATH . '/admin_header.php');
+        }
+        elseif($session->is_logged_in()) {  
+            include(SHARED_PATH . '/member_header.php');
+        }
+        ?>
+    </div>
 </header>
