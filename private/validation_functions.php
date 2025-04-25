@@ -94,7 +94,7 @@
   }
 
   // has_unique_username('johnqpublic')
-  // * Validates uniqueness of admins.username
+  // * Validates uniqueness of username
   // * For new records, provide only the username.
   // * For existing records, provide current ID as second argument
   //   has_unique_username('johnqpublic', 4)
@@ -108,6 +108,23 @@
       return false; 
     }
   }
+  
+  // has_unique_email('johnqpublic')
+  // * Validates uniqueness of user email address
+  // * For new records, provide only the username.
+  // * For existing records, provide current ID as second argument
+  //   has_unique_username('johnqpublic', 4)
+  function has_unique_email($email, $current_id="0") {
+    // Need to re-write for OOP
+    $user = User::find_by_email($email);
+    if($user === false || $user->id == $current_id) {
+      //is unique
+      return true;
+    } else {
+      return false; 
+    }
+  }
+
   /**
    * Check if there are any signup errors present
    * @return bool Determines if there are values in the signup value array
