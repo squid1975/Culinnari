@@ -133,7 +133,6 @@ function addIngredient() {
                 placeholder="1, 1/2, 1 1/2" 
                 maxlength="6" 
                 id="measurementAmount-${ingredientIndex}" 
-                class="ingredientQuantity"
                 value="${lastQuantity}">
             </label>
             <label for="ingredientUnit">Unit:
@@ -152,8 +151,8 @@ function addIngredient() {
                     <option value="pound" ${lastUnit === "pound" ? "selected" : ""}>pound</option>
                 </select>
             </label>
-            <label for="ingredientName">Name:
-                <input type="text" name="ingredient[${ingredientIndex}][ingredient_name]" placeholder="Cookies (crushed)" class="ingredientName" value="${lastName}">
+            <label for="ingredientName[${ingredientIndex}]">Name:
+                <input type="text" name="ingredient[${ingredientIndex}][ingredient_name]" placeholder="Cookies (crushed)" id="ingredientName[${ingredientIndex}]" value="${lastName}">
             </label>
             <button type="button" class="removeIngredient">X</button>
         </div>
@@ -186,8 +185,8 @@ function addStep(){
     newStep.classList.add("addedSteps");
     // Create and add the fields for the new ingredient
     newStep.innerHTML = `
-        <label for="stepInput" class="visuallyHidden">Step:</label>
-        <textarea name="step[${stepIndex}][step_description]"  id="stepInput" rows="2" cols="25" maxlength="255">${stepInputValue}</textarea>
+        <label for="stepInput[${stepIndex}]" class="visuallyHidden">Step:</label>
+        <textarea name="step[${stepIndex}][step_description]"  id="stepInput[${stepIndex}]" rows="2" cols="25" maxlength="255">${stepInputValue}</textarea>
         <button type="button" class="removeStep">X</button>                     
     `;
 
@@ -201,10 +200,8 @@ function addStep(){
 // Add event listener for the recipe image to preview the image
 recipeImageInput.addEventListener('change', function(event) {
     const file = event.target.files[0]; // Get the selected file
-    
     // Clear any previous error message
     error.textContent = '';
-
     // Check if a file is selected
     if (file) {
         const acceptedTypes = ['image/jpeg', 'image/png', 'image/webp']; // List of accepted file types
