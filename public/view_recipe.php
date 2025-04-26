@@ -4,11 +4,10 @@ $recipe = Recipe::find_by_id($id);
 if ($recipe == false) {
     redirect_to(url_for('/index.php'));
 }
-$title = 'View Recipe - ' . $recipe->recipe_name . ' | Culinnari';
+$title = 'View Recipe  | Culinnari';
 include(SHARED_PATH . '/public_header.php');
 $id = $_GET['recipe_id'] ?? '1';
 $recipe = Recipe::find_by_id($id);
-$diet_icons = Recipe::get_diet_icons($recipe->id);
 $meal_types = Recipe::get_meal_type_names($recipe->id);
 $styles = Recipe::get_style_names($recipe->id);
 $recipeUser = Recipe::get_recipe_username($recipe->id);
@@ -20,8 +19,13 @@ $recipe_video = RecipeVideo::find_by_recipe_id($id);
 if($session->is_logged_in()) {
     $user = User::find_by_id($session->user_id);
     $cookbooks = Cookbook::find_by_user_id($user->id);
-} 
-
+    $recipe_id = $recipe->id;
+    
+    // Check if recipe is in each cookbook
+    foreach ($cookbooks as $cookbook) {
+        $cookbook->already_contains_recipe = CookbookRecipe::recipe_exists_in_cookbook($cookbook->id, $recipe_id);
+    }
+}
 if (is_post_request()) {
     if (isset($_POST['rating'])) {
         $args = $_POST['rating'];
@@ -52,8 +56,6 @@ if (is_post_request()) {
             }
             $_SESSION['message'] = 'Rating added successfully.';
         }
-
-        $database->commit();
         redirect_to(url_for('/view_recipe.php?recipe_id=' . $recipe->id));
     }
 
@@ -154,11 +156,16 @@ if (is_post_request()) {
 
                 <div id="recipeDisplayDietIconsCategoriesDifficulty">
                     <div id="recipeDisplayDietIcons">
-                        <?php if ($diet_icons): ?>
-                            <?php foreach ($diet_icons as $diet_icon): ?>
-                                <img src="<?php echo $diet_icon; ?>" alt="" width="25" height="25">
-                            <?php endforeach; ?>
-                        <?php endif; ?>
+                    <?php $diet_icons = Recipe::get_diet_icons($recipe->id); ?>
+                    <?php $diet_icon_names = Recipe::get_diet_names($recipe->id); // Get diet icon names ?>
+                    <?php if($diet_icons && $diet_icon_names): ?>
+                        <?php foreach ($diet_icons as $index => $diet_icon): ?>
+                            <img src="<?php echo url_for($diet_icon); ?>" 
+                                alt="<?php echo h($diet_icon_names[$index]) . ' diet icon for ' . $recipe->recipe_name; ?>" 
+            
+                                width="20" height="20">
+                        <?php endforeach; ?>
+                    <?php endif; ?>
                     </div>
 
                     <div id="recipeDisplayCategories">
@@ -233,27 +240,32 @@ if (is_post_request()) {
                         <div id="recipeDisplayAddToCookbook">
                             <button id="addToCookbookButton">
                                 <img src=<?php echo url_for('/images/icon/addToCookbook.svg'); ?> width="20" height="20"
-                                    alt="Add to cookbook plus icon">Save</button>
+                                    alt="Add to cookbook plus icon">Save
+                            </button>
                             <div class="modal" id="addToCookbookModal">
                                 <div class="modal-content">
-                                    <h3>Save Recipe to Cookbook</h3>
+                                    <h3>Save to Cookbook</h3>
                                     <span class="close">&times;</span>
-                                    
-                                    <?php if ($cookbooks) { ?>
-                                        <form action="view_recipe.php" method="post">
-                                            <input type="hidden" name="cookbook_recipe[recipe_id]" value="<?php echo h($recipe->id); ?>">
-                                            <?php foreach ($cookbooks as $cookbook): ?>
-                                                <label for="cookbook_<?php echo h($cookbook->cookbook_name); ?>">
-                                                    <input type="checkbox" name="cookbooks[]" value="<?php echo ($cookbook->id); ?>"> <?php echo h($cookbook->cookbook_name); ?>
-                                                </label>
-
-                                            <?php endforeach; ?>
-                                            <input type="submit" value="Add to cookbook">
-                                        </form>
-                                    <?php } else { ?>
-                                        <a href="<?php echo url_for('/member/profile.php?id=' . h($user->id)); ?>">Create a
-                                            cookbook</a>
-                                    <?php } ?>
+                                    <?php if ($cookbooks){ ?>
+                                    <form action="<?php echo url_for('view_recipe.php?recipe_id=' . $recipe->id); ?>" method="post">
+                                        <input type="hidden" name="cookbook_recipe[recipe_id]" value="<?php echo h($recipe->id); ?>">
+                                        <?php foreach ($cookbooks as $cookbook): ?>
+                                        <label for="cookbook_<?php echo h($cookbook->id); ?>">
+                                            <?php if ($cookbook->already_contains_recipe): ?>
+                                                <input type="checkbox" name="cookbooks[]" value="<?php echo ($cookbook->id); ?>" disabled> 
+                                                <?php echo h($cookbook->cookbook_name); ?> <span class="recipe-saved">(Already saved)</span>
+                                            <?php else: ?>
+                                                <input type="checkbox" name="cookbooks[]" value="<?php echo ($cookbook->id); ?>"> 
+                                                <?php echo h($cookbook->cookbook_name); ?>
+                                            <?php endif; ?>
+                                        </label>
+                                        <?php endforeach; ?>
+                                        <input type="submit" value="Save to Cookbook" class="saveToCookbookButton">
+                                    </form>
+                                <?php } else { ?>
+                                    <p>You don't have any cookbooks yet! Create one to save this recipe.</p>
+                                    <a href="<?php echo url_for('/member/profile.php?id=' . $session->user_id); ?>" class="createCookbookLink">Create a Cookbook</a>
+                                <?php } ?>
                                 </div>
                             </div>
                         </div>

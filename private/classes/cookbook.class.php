@@ -10,6 +10,7 @@ class Cookbook extends DatabaseObject {
     public $id;
     public $cookbook_name;
     public $user_id;
+    public $already_contains_recipe = false;
     
     public function __construct($args=[]) {
         $this->cookbook_name = $args['cookbook_name'] ?? ($_SESSION['username'] . (str_ends_with($_SESSION['username'], 's') ? "' cookbook" : "'s cookbook"));
@@ -17,7 +18,7 @@ class Cookbook extends DatabaseObject {
     }
 
     protected function validate() {
-        $this->errors[];
+        $this->errors = [];
 
         if(is_blank($this->cookbook_name)) {
             $this->errors[] = "Cookbook name cannot be blank.";
