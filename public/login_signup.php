@@ -8,71 +8,128 @@ $signup_errors = [];
 $login_errors = [];
 
 $username = '';
+$recaptcha_secret = RECAPTCHA_SECRET_KEY;
 
 if (is_post_request()) {
 
-  if (isset($_POST['user'])) {
-    // Create record using post parameters
-    $args = $_POST['user'];
-    $user = new user($args);
-    $result = $user->save();
+      // If the form was submitted for user registration
+    if (isset($_POST['user'])) {
 
-    if ($result === true) {
-      $new_id = $user->id;
-      $session->login($user);
-      $_SESSION['message'] = 'You have been signed up successfully.';
-      redirect_to(url_for('/member/profile.php?id=' . $new_id));
+      // Check if reCAPTCHA response exists in the POST data
+      $recaptcha_response = $_POST['g-recaptcha-response'] ?? '';
+
+      if ($recaptcha_response) {
+        // Prepare the URL for reCAPTCHA verification
+        $recaptcha_url = 'https://www.google.com/recaptcha/api/siteverify';
+
+        // Send a POST request to verify reCAPTCHA
+        $verify_response = file_get_contents($recaptcha_url . '?secret=' . $recaptcha_secret . '&response=' . $recaptcha_response);
+        
+        // Decode the JSON response from Google
+        $response_data = json_decode($verify_response);
+
+        // If CAPTCHA validation fails, add an error message
+        if (!$response_data->success) {
+          $signup_errors[] = 'CAPTCHA validation failed. Please try again.';
+          
+        } else {
+          // If CAPTCHA is validated successfully, proceed with user registration
+
+          // Create record using post parameters
+          $args = $_POST['user'];
+          $user = new user($args);
+          $result = $user->save();
+
+          if ($result === true) {
+            // If user is saved successfully, log them in and redirect
+            $new_id = $user->id;
+            $session->login($user);
+            $_SESSION['message'] = 'You have been signed up successfully.';
+            redirect_to(url_for('/member/profile.php?id=' . $new_id));
+          } else {
+            // If there were errors saving the user, show them
+            $signup_errors = $user->errors;
+          }
+        }
+      } else {
+        // If no CAPTCHA response is provided, show an error
+        $signup_errors[] = 'Please complete the CAPTCHA.';
+        
+      }
     } else {
-      $signup_errors = $user->errors;
-      
+      // Display the form if no post data was received
+      $user = new user;
     }
 
+
+  // Handle login process
+if (isset($_POST['username']) && isset($_POST['password'])) {
+
+  $username = $_POST['username'] ?? '';
+  $password = $_POST['password'] ?? '';
+  
+  // Check if reCAPTCHA response exists in the POST data
+  $recaptcha_response = $_POST['g-recaptcha-response'] ?? '';
+
+  if ($recaptcha_response) {
+    // Prepare the URL for reCAPTCHA verification
+    $recaptcha_url = 'https://www.google.com/recaptcha/api/siteverify';
+
+    // Send a POST request to verify reCAPTCHA
+    $verify_response = file_get_contents($recaptcha_url . '?secret=' . $recaptcha_secret . '&response=' . $recaptcha_response);
+
+    // Decode the JSON response from Google
+    $response_data = json_decode($verify_response);
+
+    // If CAPTCHA validation fails, add an error message
+    if (!$response_data->success) {
+      $login_errors[] = 'CAPTCHA validation failed. Please try again.';
+    }
   } else {
-    // display the form
-    $user = new user;
+    // If no CAPTCHA response is provided, show an error
+    $login_errors[] = 'Please complete the CAPTCHA.';
   }
 
-  if (isset($_POST['username']) && isset($_POST['password'])) {
+  // Validations for username and password
+  if (is_blank($username)) {
+    $login_errors[] = "Username cannot be blank.";
+  }
+  if (is_blank($password)) {
+    $login_errors[] = "Password cannot be blank.";
+  }
 
-    $username = $_POST['username'] ?? '';
-    $password = $_POST['password'] ?? '';
+  // If there are no errors, attempt login
+  if (empty($login_errors)) {
+    $user = User::find_by_username($username);
+    if (!$user) {
+      $login_errors[] = "User not found.";
+    } elseif ($user->user_is_active == 0) {
+      $login_errors[] = "Your account is inactive. Please contact support.";
+    } else {
+      // Check if password is correct
+      if ($user->verify_password($password)) {
+        // Mark user as logged in
+        $session->login($user);
 
-    // Validations
-    if (is_blank($username)) {
-      $login_errors[] = "Username cannot be blank.";
-    }
-    if (is_blank($password)) {
-      $login_errors[] = "Password cannot be blank.";
-    }
-
-    // If there were no errors, try to login
-    if (empty($errors)) {
-      $user = User::find_by_username($username);
-      if (!$user) {
-        $login_errors[] = "User not found.";
-      } elseif ($user->user_is_active == 0) {
-        $login_errors[] = "Your account is inactive. Please contact support.";
-      } else {
-        // Test if user found and password is correct
-        if ($user->verify_password($password)) {
-          // Mark user as logged in
-          $session->login($user);
-
-          if ($session->is_mgmt_logged_in()) {
-            redirect_to(url_for('/admin/index.php')); // Admin page
-          } else {
-            redirect_to(url_for('/member/profile.php?id=' . h($user->id)));
-          }
+        // Redirect based on user role
+        if ($session->is_mgmt_logged_in()) {
+          redirect_to(url_for('/admin/index.php')); // Admin page
         } else {
-          // Username not found or password does not match
-          $login_errors[] = "Log in was unsuccessful. If issues persist, please contact support at hello@culinnari.com.";
+          redirect_to(url_for('/member/profile.php?id=' . h($user->id)));
         }
+      } else {
+        // Password doesn't match
+        $login_errors[] = "Log in was unsuccessful. If issues persist, please contact support at hello@culinnari.com.";
       }
     }
   }
 }
+
+}
 ?>
 <script src="<?php echo url_for('/js/loginSignup.js'); ?>" defer></script>
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
 <main role="main" tabindex="-1">
     <div class="wrapper">
 
@@ -91,6 +148,9 @@ if (is_post_request()) {
             <div class="formField">
               <label for="password">Password:</label>
               <input type="password" id="password" name="password" value="" required>
+            </div>
+            <div class="formField">
+              <div class="g-recaptcha" data-sitekey="<?php echo RECAPTCHA_SITE_KEY; ?>" data-action="LOGIN"></div>
             </div>
             <input type="submit" name="login" value="Log in" class="loginSignupButton">
           </form>
@@ -203,6 +263,10 @@ if (is_post_request()) {
                   <?php endforeach; ?>
                 </div>
               <?php endif; ?>
+            </div>
+
+            <div class="signupFormField">
+              <div class="g-recaptcha" data-sitekey="<?php echo RECAPTCHA_SITE_KEY; ?>" data-action="signup"></div>
             </div>
 
             <input type="submit" value="Create Account" class="loginSignupButton">
