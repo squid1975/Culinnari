@@ -1,767 +1,735 @@
 /*** 404 page ******/
 
 #error404 {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 100vh;
 }
 
 #error404 a {
-    margin: 10px;
-    padding: 10px;
-    border: 1px solid black;
-    border-radius: 5px;
-    background: #f5f2e4;
-
+  background: #f5f2e4;
+  border: 1px solid black;
+  border-radius: 5px;
+  margin: 10px;
+  padding: 10px;
 }
 
-
-/******************** HOMEPAGE ELEMENTS *********************/
+/******************** HOME PAGE *********************/
 
 #homePageWrapper {
-    width: 100%;
+  width: 100%;
 }
 
 #homeHero {
-    margin: 0 auto;
-    height: 300px;
-    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(255, 255, 255, 0.1)), url('../images/24674.jpg');
-    background-repeat: no-repeat;
-    background-position-y: 30%;
-    background-position-x: 90%;
-    background-size: cover;
+  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(255, 255, 255, 0.1)),
+    url("../images/24674.jpg") no-repeat 90% 30% / cover;
+  height: 300px;
+  margin: 0 auto;
 }
 
-#homeHero #mainHeroText {
-    text-align: center;
-    width: 100%;
-    height: 100%;
-    background: rgba(236, 236, 236, 0.5);
-    color: rgb(0, 0, 0);
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+#mainHeroText {
+  align-items: center;
+  background: rgba(236, 236, 236, 0.5);
+  color: rgb(0, 0, 0);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: center;
+  padding: 20px;
+  text-align: center;
+  width: 100%;
 }
 
 #homeHero h2 {
-    font-size: 44px;
-    margin: 0;
-    padding: 0;
+  font-size: 44px;
+  margin: 0;
+  padding: 0;
 }
 
 #homeHero p {
-    font-size: 18px;
+  font-size: 18px;
 }
 
 #mainHeroText a {
-    background: white;
-    border: 1px solid black;
-    padding: 10px;
-    border-radius: 10px;
-    
+  background: white;
+  border: 1px solid black;
+  border-radius: 10px;
+  box-shadow: 0 0 3px #333;
+  padding: 10px;
+  transition: 0.2s ease;
+}
+
+#mainHeroText a:hover {
+  background: #fffaf0;
 }
 
 /** Diet Key **/
 .dietKey {
-    display: flex;
-    justify-content: space-evenly;
-    max-width: 1000px;
-    margin: 0 auto;
+  display: flex;
+  justify-content: space-evenly;
+  margin: 0 auto;
+  max-width: 1000px;
 }
 
 .dietKey .dietIconWithName {
-    align-items: center;
-    display: flex;
+  align-items: center;
+  display: flex;
 }
 
 .dietKey .dietIconWithName p {
-    padding-left: 5px;
+  padding-left: 5px;
 }
 
+/** Become a Member CTA **/
+
 section#becomeMemberCTA {
-    background: #FFFAF0;
-    align-items: center;
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    margin: 30px auto;
-    padding: 20px;
+  align-items: center;
+  background: #fffaf0;
+  display: flex;
+  flex-direction: column;
+  margin: 30px auto;
+  padding: 20px;
+  width: 100%;
 }
 
 section#becomeMemberCTA > div {
-    margin: 10px 5px;
-    display: flex;
-    gap: 30px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px;
+  margin: 10px 5px;
 }
 
 section#becomeMemberCTA > div > div {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    width: fit-content;
-    padding: 10px;
-    flex: 1;
-    height: 200px;
+  align-items: center;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  max-width: 300px;
+
+  justify-content: center;
+  padding: 10px;
 }
 
 section#becomeMemberCTA > div > div > h3 {
-    text-align: center;
+  text-align: center;
 }
 
 section#becomeMemberCTA > div > div > p {
-    text-align: center;
-    margin: 0;
+  margin: 0;
+  text-align: center;
 }
 
+/** Recipe Suggestions Sections **/
+
 .suggestions {
-    margin-top: 20px;
-    margin-bottom: 10px;
-    padding: 10px;
+  margin-top: 20px;
+  margin-bottom: 10px;
+  padding: 10px;
 }
 
 .suggestions .suggestionsContent {
-    display: flex;
-    flex-wrap: wrap;
-    margin: 10px 0;
+  display: flex;
+  flex-wrap: wrap;
+  margin: 10px 0;
 }
 /**************************************** SEARCH (RECIPES) PAGE ******************************/
 #searchHero {
-    margin: 0;
-    padding: 10px;
-
+  margin: 0;
+  padding: 10px;
 }
 
 #searchHero #heroText {
-    flex-direction: column;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    padding: 20px 0;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 20px 0;
+  text-align: center;
 }
 
 #searchHero h2 {
-    color: #000000;
-    margin: 0;
-    padding: 0;
-    text-align: center;
+  color: #000000;
+  margin: 0;
+  padding: 0;
+  text-align: center;
 }
-
 #searchPageWrapper {
-    margin: auto 0;
-
+  margin: auto 0;
 }
 
 #searchPageResultsWrapper {
-    max-width: 1200px;
-    margin: auto;
-    background: #fff;
-    min-height: 100vh;
+  background: #fff;
+  margin: auto;
+  max-width: 1200px;
+  min-height: 100vh;
 }
 
 h3.searchMessage {
-    font-family: 'Poppins', sans-serif;
-    padding: 15px;
+  font-family: "Poppins", sans-serif;
+  padding: 15px;
 }
 
 #recipePagePosts {
-    display: flex;
-    flex-wrap: wrap;
+  display: flex;
+  flex-wrap: wrap;
 }
 
-/********************************   view recipe **************************/
+/********************************  VIEW RECIPE  **************************/
 #recipePageDisplayWrapper {
-    background: #ffffff;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
+  background: #ffffff;
+  margin: 0 auto;
+  max-width: 1200px;
+  padding: 20px;
 }
 
 #recipeDisplayUsernameOptions {
-    display: flex;
-    justify-content: space-between;
-    border-top: 1px solid #4b4b4b;
+  border-top: 1px solid #4b4b4b;
+  display: flex;
+  justify-content: space-between;
 }
 
-
-
 #recipeNameImageDesc {
-    align-items: center;
-    display: flex;
-    flex-direction: column;
-    border-bottom: 1px dotted #000000;
-    border-top: 1px solid #000000;
-    padding: 10px;
+  align-items: center;
+  border-bottom: 1px dotted #000000;
+  border-top: 1px solid #000000;
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
 }
 
 #recipeNameImageDesc .recipeImage {
-    border: 3px solid #333;
-    margin: 10px 0;
-    max-width: 100%;
-    height: auto;
+  border: 3px solid #333;
+  height: auto;
+  margin: 10px 0;
+  max-width: 100%;
 }
 
 #recipeDisplayrecipeDescription {
-    max-width: 500px;
-    text-align: center;
+  max-width: 500px;
+  text-align: center;
 }
 
 #recipeDisplayDietIconsCategoriesDifficulty {
-    align-items: center;
-    display: flex;
-    gap: 5px;
+  align-items: center;
+  display: flex;
+  gap: 5px;
 }
 
 .recipeDisplayMealTypes,
 .recipeDisplayStyles {
-    background: #FFFAF0;
-    padding: 5px;
-    border-radius: 5px;
-    border: 1px solid #ccccccac;
+  background: #fffaf0;
+  border: 1px solid #ccccccac;
+  border-radius: 5px;
+  padding: 5px;
 }
 
 /** Difficulty Colors **/
 div#recipeDisplayDifficulty p {
-    padding: 5px;
-    text-transform: uppercase;
-    width: fit-content;
-}
-
-div#recipeDisplayDifficulty p#recipeDisplayBeginner {
-    background: #82db58;
-}
-
-div#recipeDisplayDifficulty p#recipeDisplayIntermediate {
-    background: #fcbb31;
+  padding: 5px;
+  text-transform: uppercase;
+  width: fit-content;
 }
 
 div#recipeDisplayDifficulty p#recipeDisplayAdvanced {
-    background: #eb3434;
+  background: #eb3434;
+}
+
+div#recipeDisplayDifficulty p#recipeDisplayBeginner {
+  background: #82db58;
+}
+
+div#recipeDisplayDifficulty p#recipeDisplayIntermediate {
+  background: #fcbb31;
 }
 
 #recipeDisplayprepCook {
-    display: flex;
+  display: flex;
 }
 
 #recipeDisplayprepCook p {
-    margin-right: 10px;
-    padding-right: 5px;
+  margin-right: 10px;
+  padding-right: 5px;
 }
 
 #recipeDisplayOptions {
-    display: flex;
-    align-items: center;
+  align-items: center;
+  display: flex;
 }
 
 #recipeDisplayOptions button {
-    align-items: center;
-    border: none;
-    background: none;
-    display: flex;
-    font-size: 16px;
+  background: none;
+  border: none;
+  display: flex;
+  font-size: 16px;
+  align-items: center;
 }
 
 #recipeDisplayOptions button img {
-    margin-right: 3px;
+  margin-right: 3px;
 }
 
 #recipeDisplayOptions div#recipeDisplayPrint a {
-    display: flex;
-    align-items: center;
-    padding: 5px;
-    border-radius: 5px;
+  align-items: center;
+  border-radius: 5px;
+  display: flex;
+  padding: 5px;
 }
 
 #recipeDisplayOptions div#recipeDisplayPrint a img {
-    margin-right: 5px;
+  margin-right: 5px;
 }
 
 #recipeDisplayIngredientsSteps {
-    margin: 20px 10px;
-    display: flex;
-    min-height: 400px;
-
+  display: flex;
+  margin: 20px 10px;
+  min-height: 400px;
 }
 
 #recipeDisplayIngredientsSteps h3 {
-    font-size: 24px;
-    margin: 20px 0;
-    padding: 5px 0;
-    border-bottom: 1px solid gray;
-    width: fit-content;
+  border-bottom: 1px solid #808080;
+  font-size: 24px;
+  margin: 20px 0;
+  padding: 5px 0;
+  width: fit-content;
 }
 
 #recipeDisplayIngredients {
-    min-width: 500px;
+  min-width: 500px;
 }
 
-
 #recipeDisplayChangeServingAmt {
-    margin-left: 10px;
-    margin-top: 10px;
-    padding: 5px;
-    border-radius: 10px;
-    display: flex;
-    flex-wrap: nowrap;
+  display: flex;
+  flex-wrap: nowrap;
+  margin-left: 10px;
+  margin-top: 10px;
+  padding: 5px;
+  border-radius: 10px;
 }
 
 #recipeDisplayChangeServingAmt button {
-    text-align: center;
-    padding: 5px 10px;
-    border-radius: 10px;
-    margin-right: 5px;
+  margin-right: 5px;
+  padding: 5px 10px;
+  border-radius: 10px;
+  text-align: center;
 }
 
 #selected {
-    background: #D8A7A0;
+  background: #d8a7a0;
 }
 
 li.recipeIngredientListing {
-    list-style-type: circle;
-    margin: 15px 0;
+  list-style-type: circle;
+  margin: 15px 0;
 }
 
-
 #recipeDisplaySteps ol li {
-    list-style-type: decimal;
-    margin: 20px 0;
+  list-style-type: decimal;
+  margin: 20px 0;
 }
 
 #recipeDisplayAddRating {
-    border-top: 1px solid #333;
-    padding: 10px;
-}
-
-
-
-.star-widget {
-    padding: 5px;
+  border-top: 1px solid #333;
+  padding: 10px;
 }
 
 #stars {
-    display: flex;
-    width: fit-content;
-    flex-direction: row-reverse;
+  display: flex;
+  flex-direction: row-reverse;
+  width: fit-content;
+}
+
+.star-widget {
+  padding: 5px;
 }
 
 .stars i {
-    color: #e6e6e6;
-    font-size: 35px;
-    cursor: pointer;
-    transition: color 0.2s ease;
+  color: #e6e6e6;
+  cursor: pointer;
+  font-size: 35px;
+  transition: color 0.2s ease;
 }
 
 .stars i.active {
-    color: #ff9c1a;
+  color: #ff9c1a;
 }
 
 .star-widget form {
-    margin: 0;
+  margin: 0;
 }
 
 .star-widget input {
-    display: none;
+  display: none;
 }
 
 .star-widget label {
-    font-size: 20px;
-    color: #444;
-    padding: 10px;
-    transition: all 0.2s ease;
-    cursor: pointer;
+  color: #444;
+  cursor: pointer;
+  font-size: 20px;
+  padding: 10px;
+  transition: all 0.2s ease;
 }
 
-/* Hover and Selected Effects */
-.star-widget input:not(:checked)~label:hover,
-.star-widget input:not(:checked)~label:hover~label {
-    color: #fd4;
+.star-widget input:not(:checked) ~ label:hover,
+.star-widget input:not(:checked) ~ label:hover ~ label {
+  color: #fd4;
 }
 
-.star-widget input:checked~label {
-    color: #fd4;
+.star-widget input:checked ~ label {
+  color: #fd4;
 }
 
 /* Special Styling for 5-Star Rating */
-.star-widget input#rate-5:checked~label {
-    color: #fe7;
+.star-widget input#rate-5:checked ~ label {
+  color: #fe7;
 }
 
 /* Submit Button */
 .submitRatingButton {
-    border: 1px solid #444;
-    border-radius: 5px;
-    background: rgb(209, 209, 209);
-    cursor: pointer;
-    transition: all 0.3s ease;
+  background: #d1d1d1;
+  border: 1px solid #444;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease;
 }
 
 .submitRatingButton:hover {
-    background: #8dca63;
+  background: #8dca63;
 }
 
-
-
-/*************************************************** PRINT STYLING ************************************************/
+/***************************************************  RECIPE PRINT STYLING ************************************************/
 
 @media print {
-    #recipePageDisplayWrapper {
-        max-width: 100%;
-        padding: 0;
-    }
+  #recipePageDisplayWrapper {
+    max-width: 100%;
+    padding: 0;
+  }
 
-    #recipeDisplayrecipeDescription {
-        text-align: left;
-    }
+  #recipeDisplayrecipeDescription {
+    text-align: left;
+  }
 
-    #recipeDisplayprepCook p:first-of-type {
-        border: none;
-    }
+  #recipeDisplayprepCook p:first-of-type {
+    border: none;
+  }
 
-    #recipeNameImageDesc,
-    #recipeDisplayprepCook,
-    #recipeDisplayIngredientsSteps {
-        display: block;
-        width: 100%;
-    }
+  #recipeNameImageDesc,
+  #recipeDisplayprepCook,
+  #recipeDisplayIngredientsSteps {
+    display: block;
+    width: 100%;
+  }
 
-    #recipeDisplayIngredients,
-    #recipeDisplaySteps {
-        width: 100%;
-        max-width: 100%;
-        padding: 0;
-    }
+  #recipeDisplayIngredients,
+  #recipeDisplaySteps {
+    width: 100%;
+    max-width: 100%;
+    padding: 0;
+  }
 
-    /* Hide elements that are not needed in print */
-    header,
-    #recipeDisplayUsername p,
-    #recipeNameImageDesc img,
-    #recipeDisplayRatingStars,
-    .star-rating,
-    #iconsStars,
-    #recipeDisplayCategories,
-    #recipeDisplayDifficulty,
-    #recipeDisplayOptions,
-    #recipeDisplayChangeServingAmt,
-    #recipeDisplayVideo,
-    #recipeDisplayAddRating,
-    footer {
-        display: none;
-    }
-
+  /* Hide elements that are not needed in print */
+  header,
+  #recipeDisplayUsername p,
+  #recipeNameImageDesc img,
+  #recipeDisplayRatingStars,
+  .star-rating,
+  #recipeDisplayCategories,
+  #recipeDisplayDifficulty,
+  #recipeDisplayOptions,
+  #recipeDisplayChangeServingAmt,
+  #recipeDisplayVideo,
+  #recipeDisplayAddRating,
+  footer {
+    display: none;
+  }
 }
-
 
 /******************************* PROFILE **********************************************/
 #profileHeading {
-    border-top: 1px solid #333;
-    padding: 10px;
-    text-align: center;
+  border-top: 1px solid #333;
+  padding: 10px;
+  text-align: center;
 }
 
-#profileHeading+h3 {
-    text-align: center;
-    border-bottom: 1px solid #333;
-    padding: 10px 0;
+#profileHeading + h3 {
+  text-align: center;
+  border-bottom: 1px solid #333;
+  padding: 10px 0;
 }
 
 #profileWrapper {
-    background-color: #f5f2e4;
-    margin: 0 auto;
-    max-width: 1400px;
-    padding: 10px;
-    min-height: 100vh;
+  background-color: #f5f2e4;
+  margin: 0 auto;
+  max-width: 1400px;
+  padding: 10px;
+  min-height: 100vh;
 }
 
-
 .profileSectionHead {
-    align-items: center;
-    display: flex;
-    flex-wrap: nowrap;
+  align-items: center;
+  display: flex;
+  flex-wrap: nowrap;
 }
 
 .profileSectionHead h3 {
-    margin: 10px;
+  margin: 10px;
 }
 
-
 .createLink {
-    border: 1px solid black;
-    border-radius: 5px;
-    padding: 5px;
+  border: 1px solid black;
+  border-radius: 5px;
+  padding: 5px;
 }
 
 .createLink:hover::before {
-    content: '+';
+  content: "+";
 }
 
 .profileCards {
-    display: flex;
-    flex-wrap: wrap;
-    margin-bottom: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
 }
 
 .profileRecipeCard {
-    margin-right: 15px;
+  margin-right: 15px;
 }
 
 .userProfileRecipeActions {
-    display: flex;
-    justify-content: space-around;
+  display: flex;
+  justify-content: space-around;
 }
 
 .profileDeleteRecipe {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .deleteRecipeButton {
-    border: none;
-    background: none;
-    color: rgb(148, 17, 17);
-    padding: 0;
+  border: none;
+  background: none;
+  color: rgb(148, 17, 17);
+  padding: 0;
 }
 
 .deleteRecipeForm {
-    display: none;
+  display: none;
 }
 
 #cookbookNameFormField {
-    align-items: center;
-    display: flex;
-    flex-wrap: nowrap;
-    background: white;
-    box-shadow: 0 0 2px #333;
-    padding: 5px;
-
-    >label {
-        margin-right: 5px;
-    }
-
-    >input[type="text"] {
-        width: 50%;
-    }
-
-    >input[type="submit"] {
-        background: #3c2f2f;
-        color: white;
-        border: none;
-        padding: 5px 10px;
-        cursor: pointer;
-    }
-
+  align-items: center;
+  display: flex;
+  flex-wrap: nowrap;
+  background: white;
+  box-shadow: 0 0 2px #333;
+  padding: 5px;
 }
 
+#cookBookNameFormField label {
+    margin-right: 5px;
+}
 
+#cookBookNameFormField input[type="text"] {
+    width: 50%;
+}
+
+#cookBookNameFormField input[type="submit"] {
+    background: #3c2f2f;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+}
 
 /***************** ADMIN AREA ***************************/
 
-#adminHero {
-    background-color: #3c2F2f;
-    color: white;
-    padding: 20px;
-    text-align: center;
+.adminHero {
+  background-color: #3c2f2f;
+  color: white;
+  padding: 20px;
+  text-align: center;
 }
 
 .mgmtTableHeading {
-    align-items: center;
-    display: flex;
-    flex-wrap: nowrap;
-    padding: 5px;
-    margin: 10px;
-    justify-content: center;
+  align-items: center;
+  display: flex;
+  flex-wrap: nowrap;
+  padding: 5px;
+  margin: 10px;
+  justify-content: center;
 }
 
+.sectionHeader {
+  display: flex;
+}
 
 #adminLinks a {
-    font-size: 20px;
-    display: block;
+  font-size: 20px;
+  display: block;
 }
-
-
-h3 {
-    font-size: 24px;
-}
-
-h4 {
-    font-size: 20px;
-}
-
-
 
 .adminAddNew {
-    background: #D8A7A0;
-    color: #333;
-    padding: 5px;
-    border-radius: 5px;
-    margin-left: 10px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: 0.2s ease-in;
+  background: #d8a7a0;
+  color: #333;
+  padding: 5px;
+  border-radius: 5px;
+  margin-left: 10px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: 0.2s ease-in;
 }
 
 table {
-    border: 1px solid black;
-    border-collapse: collapse;
-    margin: 10px 20px;
+  border: 1px solid #000000;
+  border-collapse: collapse;
+  margin: 10px 20px;
 }
 
 table th,
 td {
-    padding: 10px;
-    border: 1px solid black;
+  padding: 10px;
+  border: 1px solid #000000;
 }
 
 table td a:hover {
-    color: #d64646;
+  color: #d64646;
 }
 
-& tr:nth-child(odd) {
-    background: #fcfcfc;
+table tr:nth-child(odd) {
+  background: #fcfcfc;
+}
 
-    &:hover {
-        background: #f1f1f1;
-        cursor: pointer;
-    }
+table tr:nth-child(odd):hover {
+  background: #f1f1f1;
+  cursor: pointer;
 }
 
 table tr:nth-child(even) {
-    background: #e7e2e2;
-
-
+  background: #e7e2e2;
 }
 
 table tr:nth-child(even):hover {
-    background: #cec8c8;
-    cursor: pointer;
+  background: #cec8c8;
+  cursor: pointer;
 }
-
-
-
-#managementIndexWrapper {
-    display: flex;
-    background: #fff;
-    margin: auto 0;
-}
-
 
 .manageUserActions {
-    align-items: center;
-    display: flex;
-    justify-content: space-between;
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
 }
 
 .manageUserWrapper {
-    background: #ffffff;
-    margin: auto;
-    max-width: 800px;
-    min-height: 500px;
-    padding: 10px;
+  background: #ffffff;
+  margin: auto;
+  max-width: 800px;
+  min-height: 500px;
+  padding: 10px;
 }
 
 .manageUserWrapper ul li {
-    margin: 20px;
+  margin: 20px;
 }
 
 .manageUserWrapper ul li div {
-    margin: 10px;
+  margin: 10px;
 }
 
-
 .manageCategoryWrapper {
-    background: #ffffff;
-    border: 3px solid black;
-    margin: auto;
-    min-height: 700px;
-    padding: 10px;
-    width: 800px;
+  background: #ffffff;
+  border: 3px solid black;
+  margin: auto;
+  min-height: 700px;
+  padding: 10px;
+  width: 800px;
 }
 
 .manageCategoryWrapper h2 {
-    margin-top: 30px;
+  margin-top: 30px;
 }
 
 .manageCategoryWrapper > div {
-    margin-top: 10px;
+  margin-top: 10px;
 }
 
-.manageCategoryWrapper > .edit,
-.manageCategoryWrapper > .delete {
-    padding: 10px;
+.edit, 
+.delete {
+    padding: 20px;
 }
 
 /***************************************** MEDIA QUERIES ******************************************/
 
 @media screen and (max-width: 1000px) {
+  /** VIEW RECIPE PAGE **/
+  #recipeDisplayCategories span {
+    display: inline-block;
+  }
 
-    /** VIEW RECIPE PAGE **/
-    #recipeDisplayCategories span {
-        display: inline-block;
-    }
+  #recipeDisplayIngredientsSteps {
+    display: block;
+  }
 
-    
-    #recipeDisplayIngredientsSteps {
-        display: block;
-    }
+  #recipeDisplayIngredientsSteps div {
+    width: 100%;
+  }
 
-    #recipeDisplayIngredientsSteps div {
-        width: 100%;
-    }
-
-    /** ADMIN AREA **/
-    .adminTableUserFullName,
-    .adminTableUserJoinDate {
-        display: none;
-    }
+  /** ADMIN AREA **/
+  .adminTableUserFullName,
+  .adminTableUserJoinDate {
+    display: none;
+  }
 }
 
 @media screen and (max-width: 750px) {
-
-    
-
-    /** ADMIN AREA**/
-    .adminTableUserEmail {
-        display: none;
-    }
+  /** ADMIN AREA**/
+  .adminTableUserEmail {
+    display: none;
+  }
 }
 
-@media screen and (max-width:700px) {
-    .dietKey {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
+@media screen and (max-width: 700px) {
+  /** HOME PAGE **/
+  section#becomeMemberCTA > div {
+    display: block;
+  }
+
+  .dietKey {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
 }
 
 @media screen and (max-width: 600px) {
+  /** VIEW RECIPE PAGE **/
+  #recipeDisplayprepCook {
+    display: block;
+  }
 
-    /** VIEW RECIPE PAGE **/
-    #recipeDisplayprepCook {
-        display: block;
-    }
+  #recipeDisplayprepCook p:first-of-type {
+    border: none;
+  }
 
-    #recipeDisplayprepCook p:first-of-type {
-        border: none;
-    }
+  #videoContainer {
+    position: relative;
+    width: 100%;
+    padding-bottom: 56.25%; /* 16:9 aspect ratio */
+    height: 0;
+    overflow: hidden;
+  }
 
-    #videoContainer {
-        position: relative;
-        width: 100%;
-        padding-bottom: 56.25%; /* 16:9 aspect ratio */
-        height: 0;
-        overflow: hidden;
-    }
+  #videoContainer iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+  }
 
-    #videoContainer iframe {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            border: 0;   
-    }
+  /** ADMIN AREA **/
+
+  .adminTableUserActive {
+    display: none;
+  }
 }

@@ -14,7 +14,7 @@ $diets = Diet::find_all();
                     value="<?php echo isset($_GET['recipeQuery']) ? h($_GET['recipeQuery']) : ''; ?>">
             </div>
             <button type="submit" class="mainSearchButton" aria-label="Search">
-                <img src="<?php echo url_for('/images/icon/search.svg'); ?>" alt="search icon" width="25" height="25">
+                <img src="<?php echo url_for('/images/icon/search.svg'); ?>" width="25" height="25" alt="search icon" >
             </button>
         </div>
         <h3 id="filterHeading">FILTER BY:</h3>
@@ -125,8 +125,6 @@ $diets = Diet::find_all();
                 <div class="dropdown">
                     <button type="button" id="sortByButton">Newest</button> 
                     <div class="dropdown-content">
-                        
-                        
                         <label><input type="radio" name="sortBy" value="recipe[recipe_post_date] DESC" 
                             <?php echo (!isset($_GET['sortBy']) || $_GET['sortBy'] == 'recipe[recipe_post_date] DESC') ? 'checked' : ''; ?>>Newest</label>
                         <label><input type="radio" name="sortBy" value="recipe[recipe_post_date] ASC" 
@@ -137,13 +135,11 @@ $diets = Diet::find_all();
                             <?php echo isset($_GET['sortBy']) && $_GET['sortBy'] == 'rating[rating_value] DESC' ? 'checked' : ''; ?>>Rating: High to Low</label>
                         <label><input type="radio" name="sortBy" value="rating[rating_value] ASC" 
                             <?php echo isset($_GET['sortBy']) && $_GET['sortBy'] == 'rating[rating_value] ASC' ? 'checked' : ''; ?>>Rating: Low to High</label>
-                         
                         </div>
-                </div>
+                    </div>
                 </fieldset>
             </div>
             <button type="reset" class="searchReset">Reset</button>
         </div>
     </form>
-    
 </div>

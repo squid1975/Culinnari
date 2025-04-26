@@ -1,177 +1,188 @@
-@import url('https://fonts.googleapis.com/css2?family=Lustria&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
-@import url('components/forms.css');
-@import url('components/headerfooter.css');
-@import url('components/cards.css');
-@import url('main.css');
+@import url("https://fonts.googleapis.com/css2?family=Lustria&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+@import url("components/forms.css");
+@import url("components/headerfooter.css");
+@import url("components/cards.css");
+@import url("main.css");
 
 /*** SITEWIDE STYLES *******/
 
 * {
-    box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 html {
-    font: 16px 'Poppins', sans-serif;
+  font: 16px/1.5 "Poppins", sans-serif;
 }
 
 body {
-    margin: 0;
-    padding: 0;
-    overflow-x: hidden;
-    
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
 }
 
 .wrapper {
-    background-color: #f5f5f5;
-    margin: auto;
-    max-width: 1300px;
-    padding: 20px;
-    min-height: 100vh;
+  background-color: #f5f5f5;
+  margin: auto;
+  max-width: 1300px;
+  padding: 20px;
+  min-height: 100vh;
 }
 
-
-h2 {
-    font-size: 28px;
-}
-
-h2, h3, h4 {
-    font-family: 'Lustria', serif;
+h2,
+h3,
+h4 {
+    font-family: "Lustria", serif;
     font-weight: 300;
     margin: 0;
 }
+h2 {
+  font-size: 28px;
+}
+
+h3 {
+  font-size: 24px;
+}
+
+h4 {
+  font-size: 20px;
+}
 
 a {
-    color: #333;
-    text-decoration: none;
-    cursor: pointer;
+  color: #333;
+  text-decoration: none;
+  cursor: pointer;
 }
 
 input[type="submit"],
 button {
-    cursor: pointer;
-    font: 17px "Poppins", sans-serif;
+  cursor: pointer;
+  font: 17px "Poppins", sans-serif;
+  display: block;
 }
 
 li {
-    list-style-type: none;
+  list-style-type: none;
 }
 
 main {
-    background-color: #a4b6a4;
+  background-color: #a4b6a4;
 }
 
-
 section {
-    margin: 0;
-    padding: 0;
+  margin: 0;
+  padding: 0;
 }
 
 .visuallyHidden:not(:focus):not(:active) {
-    clip: rect(0 0 0 0);
-    clip-path: inset(50%);
-    height: 1px;
-    overflow: hidden;
-    position: absolute;
-    white-space: nowrap;
-    width: 1px;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  height: 1px;
+  overflow: hidden;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
 }
 
 div.errors {
-    border: 1px solid #eb0f0f;
-    padding: 5px;
-    margin: 10px;
+  border: 1px solid #eb0f0f;
+  background: #ec9082;
+  padding: 5px;
+  margin: 10px;
 }
 
 .error {
-    color: #970000;
-    padding: 5px;
-    width: max-content;
-    font-style: italic;
-    
-    margin: 5px;
+  color: #970000;
+  padding: 5px;
+  width: max-content;
+  font-style: italic;
+  margin: 5px;
 }
 
 .primaryButton {
-    border: 1px solid #333;
-    box-shadow: 0 0 5px #333;
-    margin: 5px;
-    border-radius: 5px;
-    font-size: 18px;
-    padding: 10px;
-    background: #D8A7A0;
-    transition: 0.2s ease-in-out;
-    cursor: pointer;
+  border: 1px solid #333;
+  box-shadow: 0 0 5px #333;
+  margin: 5px;
+  border-radius: 5px;
+  font-size: 18px;
+  padding: 10px;
+  background: #d8a7a0;
+  transition: 0.2s ease-in-out;
+  cursor: pointer;
 }
 
 .primaryButton:hover {
-    background: #c0c7b3;
+  background: #c0c7b3;
 }
 
 .secondaryButton {
-    
-    padding: 5px;
-    background: #dadada;
-    border-radius: 5px;
+  padding: 5px;
+  background: #dadada;
+  border-radius: 5px;
 }
 
 .deleteButton {
-    background: #eb6767;
-    padding: 5px;
-    border-radius: 5px;
-   
+  background: #eb6767;
+  padding: 5px;
+  border-radius: 5px;
 }
 
 .session-message {
-    background: #D8A7A0;
-    border-radius: 5px;
-    width: fit-content;
-    padding: 10px;
-    margin: 10px 0;
+  background: #d8a7a0;
+  border-radius: 5px;
+  width: fit-content;
+  padding: 10px;
+  margin: 10px 0;
 }
 
 .pagination {
-    display: flex;
-    gap: 10px;
-    justify-content: center;
-    padding: 10px;
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  padding: 10px;
 }
 
 /*********** MODAL *************/
 /* The Modal (background) */
 .modal {
-    display: none; /* Hidden by default */
-    position: fixed; /* Stay in place */
-    z-index: 1; /* Sit on top */
-    left: 0;
-    top: 0;
-    width: 100%; /* Full width */
-    height: 100%; /* Full height */
-    overflow: auto; /* Enable scroll if needed */
-    background-color: #000000; /* Fallback color */
-    background-color: #00000066; /* Black w/ opacity */
-  }
-  
-  /* Modal Content/Box */
-  .modal-content {
-    background-color: #fefefe;
-    margin: 15% auto; /* 15% from the top and centered */
-    padding: 20px;
-    border: 1px solid #888888;
-    width: fit-content; /* Could be more or less, depending on screen size */
-    text-align: center;
-  }
-  
-  /* The Close Button */
-  .close {
-    color: #aaaaaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-  }
-  
-  .close:hover,
-  .close:focus {
-    color: black;
-    text-decoration: none;
-    cursor: pointer;
-  }
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: #000000; /* Fallback color */
+  background-color: #00000066; /* Black w/ opacity */
+}
+
+/* Modal Content/Box */
+.modal-content {
+  background-color: #fefefe;
+  margin: 15% auto; /* 15% from the top and centered */
+  padding: 20px;
+  border: 1px solid #888888;
+  max-width: 400px ; /* Could be more or less, depending on screen size */
+  text-align: center;
+}
+
+.modal-content input[type="submit"] {
+    display: block;
+    width: 100%;
+    margin: 10px 0;
+}
+
+/* The Close Button */
+.close {
+  color: #aaaaaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}

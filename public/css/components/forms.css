@@ -564,6 +564,13 @@ button.removeIngredient:hover {
     .addedIngredients .ingredientInputSet {
         align-items: flex-start;
         flex-direction: column;
+        position: relative;
+    }
+
+    .removeIngredient {
+        position: absolute;
+        right: 0;
+        top: 0;
     }
 
     .signupInput {
