@@ -6,7 +6,7 @@ require_mgmt_login();
 
 
 <main role="main" tabindex="-1">
-        <div id="adminHero">
+        <div class="adminHero">
             <h2>Management Area - Users</h2>
         </div>
         <div class="wrapper">

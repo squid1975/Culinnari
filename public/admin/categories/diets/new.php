@@ -24,7 +24,7 @@ else {
 ?>
 
 <main role="main"  tabindex="-1">
-    <div id="adminHero">
+    <div class="adminHero">
         <h2>Management Area : Diet</h2>
     </div>
     <div class="wrapper">
@@ -34,10 +34,10 @@ else {
             </div>
             <h2>Create New diet</h2>
             <div class="new">
-                <form action="" method="post">
+                <form action="<?php echo url_for('/admin/categories/diets/new.php'); ?>" method="post">
                     <div class="formField">
                         <label for="diet_name">Diet Name:</label>
-                        <input type="text" name="diet[diet_name]" value="<?php echo h($diet->diet_name); ?>">
+                        <input type="text" name="diet[diet_name]" value="<?php echo h($diet->diet_name); ?>" maxlength="50" required>
                     </div>
                     <div>
                         <input type="submit" name="create" value="Create new diet">

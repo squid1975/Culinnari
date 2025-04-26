@@ -8,6 +8,10 @@ if(!isset($_GET['id'])) {
 }
 $id = $_GET['id'];
 $user = User::find_by_id($id);
+if($user == false) {
+  $_SESSION['message'] = 'User not found.';
+  redirect_to(url_for('/admin/users/index.php'));
+}
 
 if(is_post_request()) {
 
@@ -21,6 +25,7 @@ if(is_post_request()) {
     redirect_to(url_for('/admin/users/show.php?id=' . $user->id));
   } else {
     // show errors
+    $signup_errors = $user->errors;
     
   }
 
@@ -33,14 +38,13 @@ if(is_post_request()) {
 <script src="<?php echo url_for('/js/script.js'); ?>" defer></script>
 
 <main role="main" tabindex="-1">
-    <div id="adminHero">
-        <h2>Management Area</h2>
+    <div class="adminHero">
+        <h2>Management Area - Edit User</h2>
     </div>
     <div class="wrapper">
       <a class="back-link" href="<?php echo url_for('/admin/users/index.php'); ?>">&laquo; Back to User Index</a>
       <div class="manageUserWrapper">
         <h2>Edit user</h2>
-        <?php echo display_errors($user->errors); ?>
         <form action="<?php echo url_for('/admin/users/edit.php?id=' . h(u($id))); ?>" method="post">
           <?php include('form_fields.php'); ?>
           <input type="submit" value="Update User">

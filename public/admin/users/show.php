@@ -7,7 +7,7 @@ $user = User::find_by_id($id);
 ?>
 
 <main role="main" tabindex="-1">
-  <div id="adminHero">
+  <div class="adminHero">
     <h2>Management Area : View User</h2>
   </div>
     <div class="wrapper">

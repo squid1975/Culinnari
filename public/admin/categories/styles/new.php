@@ -24,27 +24,28 @@ else {
 ?>
 
 <main role="main"  tabindex="-1">
-    <div id="adminHero">
+    <div class="adminHero">
         <h2>Management Area : Style</h2>
     </div>
-    <div id="wrapper">
+
+    <div class="wrapper">
         <div class="manageCategoryWrapper">
             <div>
                 &laquo;<a href="<?php echo url_for('/admin/categories/index.php');?>">Back to Categories Index</a>
             </div>
             <h2>Create New Style</h2>
             <div class="new">
-                <form action="" method="post">
+                <form action="<?php echo url_for('/admin/categories/styles/new.php'); ?>" method="post">
                     <div class="formField">
                         <label for="style_name">Style Name:</label>
-                        <input type="text" name="style[style_name]" value="<?php echo h($style->style_name); ?>" required>
+                        <input type="text" name="style[style_name]" value="<?php echo h($style->style_name); ?>" maxlength="50" id="style_name" required>
                     </div>
                     <div>
-                        <input type="submit" name="create" value="Create new style" class="primaryButton">
+                        <input type="submit" name="create" value="Create new style">
                     </div>
                 </form>
             </div>
-            
+          
         </div>
     </div>
 </main>
