@@ -12,6 +12,30 @@ $current_user_id = $session->user_id;
 
 if (is_post_request()) {
     // Get arrays of values 
+    $recipe_name  = $_POST['recipe']['recipe_name'] ?? '';
+    $recipe_description = $_POST['recipe']['recipe_description'] ?? '';
+    $recipe_total_servings = $_POST['recipe']['recipe_total_servings'] ?? 0;
+    if(empty($recipe_name)) {
+        $errors['recipe_name'] = "Recipe name is required.";
+    } elseif (strlen($recipe_name) > 40) {
+        $errors['recipe_name'] = "Recipe name must be less than 40 characters.";
+    } elseif (!preg_match("/^[A-Za-z \-']+$/", $recipe_name)) {
+        $errors['recipe_name'] = "Recipe name can only contain letters, spaces, hyphens, and apostrophes.";
+    }
+    if(empty($recipe_description)) {
+        $errors['recipe_description'] = "Recipe description is required.";
+    } elseif (strlen($recipe_description) > 255) {
+        $errors['recipe_description'] = "Recipe description must be less than 255 characters.";
+    } elseif (!preg_match("/^[A-Za-z0-9 \-.,'()]+$/", $recipe_description)) {
+        $errors['recipe_description'] = "Recipe description can only contain letters, numbers, spaces, hyphens, periods, commas, parentheses, and apostrophes.";
+    }
+
+    if(empty($recipe_total_servings) || $recipe_total_servings < 1 || $recipe_total_servings > 99) {
+        $errors['recipe_total_servings'] = "Total servings must be between 1 and 99.";
+    } elseif (!is_numeric($recipe_total_servings)) {
+        $errors['recipe_total_servings'] = "Total servings must be a number.";
+    }
+
     $steps = $_POST['step'] ?? [];
     if(empty($steps)){
         $errors['steps'] = "At least one step is required.";
@@ -62,11 +86,15 @@ if (is_post_request()) {
     
             // Ensure directory exists
             if (!is_dir($uploadDir)) {
-                mkdir($uploadDir, 0777, true);
+                mkdir($uploadDir, 0755, true);
             }
+
+            // Remove dangerous characters and whitespace from the original filename
+            $safeFileName = preg_replace("/[^A-Za-z0-9_\-]/", '', pathinfo($fileName, PATHINFO_FILENAME));
+            $newfileName = strtolower($safeFileName); // optional: normalize case      
     
             // Generate a unique filename
-            $uniqueName = uniqid() . '_' . pathinfo($fileName, PATHINFO_FILENAME);
+            $uniqueName = uniqid() . '_' . $newfileName;
             $webpFileName = $uniqueName . '.webp';
             $webpPath = $uploadDir . $webpFileName;
     
@@ -134,8 +162,7 @@ if (is_post_request()) {
                 $result = $recipe->save();
 
                 if (!$result) { // If recipe insertion fails
-                    throw new Exception("Unable to insert recipe.".);
-                    
+                    throw new Exception("Unable to insert recipe.");
                 }
 
                 $recipe_id = $recipe->id;
@@ -270,15 +297,21 @@ else {
         </div>
         <form action="create_recipe.php" method="POST" enctype="multipart/form-data" class="recipeForm">
              <input type="hidden" name="recipe[user_id]" value="<?php echo h($current_user_id); ?>">
+             <?php if (!empty($errors['recipe_name'])): ?>
+                    <p class="error-message"><?php echo $errors['recipe_name']; ?></p>
+                <?php endif; ?>
             <label for="recipeName" class="recipePartName">Recipe Name:*</label>
-            <input type="text" id="recipeName" name="recipe[recipe_name]" maxlength="100" required
+            <input type="text" id="recipeName" name="recipe[recipe_name]" maxlength="40" pattern="^[A-Za-z \-']+$"required
                 value="<?php echo h($_POST['recipe']['recipe_name'] ?? ''); ?>">
 
             <label for="recipeDescription" class="recipePartName">Description:*</label>
             <span>Limit 255 characters.</span>
             <textarea id="recipeDescription" name="recipe[recipe_description]" maxlength="255" rows="4" cols="50"
-                required><?php echo h($_POST['recipe']['recipe_description'] ?? ''); ?></textarea>
-
+                required><?php echo h($_POST['recipe']['recipe_description'] ?? ''); ?>
+            </textarea>
+            <?php if (!empty($errors['recipe_description'])): ?>
+                    <p class="error-message"><?php echo $errors['recipe_description']; ?></p>
+                <?php endif; ?>
             <fieldset>
                 <legend>Difficulty</legend>
                 <div class="radio-group">
@@ -346,7 +379,7 @@ else {
             <fieldset id="ingredients">
                 <legend>Ingredients:*</legend>
                 <span id="ingredientDirections">Type the ingredient quantity and select a unit if applicable. Type the
-                    ingredient name and any special instructions. Example: ingredient name, instructions. Click 'plus' to add.</span>
+                    ingredient name and any special instructions. Example: ingredient name, instructions.</span>
                 <?php if (!empty($errors['ingredients'])): ?>
                     <p class="error-message"><?php echo $errors['ingredients']; ?></p>
                 <?php endif; ?>
