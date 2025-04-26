@@ -14,5 +14,20 @@ class Diet extends DatabaseObject {
         $this->diet_name = $args['diet_name'] ?? '';
         $this->diet_icon_url = $args['diet_icon_url'] ?? '';
     }
+
+    protected function validate()
+    {
+        $this->errors = [];
+
+        if (is_blank($this->diet_name)) {
+            $this->errors[] = "Diet name cannot be blank.";
+        } elseif (!has_length($this->diet_name, ['min' => 2, 'max' => 50])) {
+            $this->errors[] = "Diet name must be between 2 and 50 characters.";
+        } elseif (!preg_match("/^[A-Za-z\-']+$/", $this->diet_name)) {
+            $this->errors[] = "Diet name can only contain letters, hyphens, and apostrophes.";
+        }
+
+        return $this->errors;
+    }
     
 }
