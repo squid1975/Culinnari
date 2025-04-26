@@ -27,6 +27,11 @@ class CookbookRecipe extends DatabaseObject {
         return self::find_by_sql($sql);
     }
 
+    /**
+     * Determines if a recipe already exists in a cookbook
+     * @param mixed $cookbook_id the id value of the cookbook
+     * @param mixed $recipe_id the id value of the recipe
+     */
     public static function recipe_exists_in_cookbook($cookbook_id, $recipe_id) {
         $sql = "SELECT * FROM cookbook_recipe WHERE cookbook_id = '" . self::$database->escape_string($cookbook_id) . "' AND recipe_id = '" . self::$database->escape_string($recipe_id) . "' LIMIT 1";
         $result = self::find_by_sql($sql);
