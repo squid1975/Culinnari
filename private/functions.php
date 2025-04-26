@@ -166,25 +166,38 @@ function decimal_to_fraction($decimal) {
 
   $whole = floor($decimal);
   $fraction = $decimal - $whole;
+
+  // Handle exact whole numbers
   if ($fraction == 0) return (string) $whole;
 
+  // Snap to common kitchen fractions if close enough
+  $common_fractions = [
+    '0.125' => '1/8',
+    '0.25'  => '1/4',
+    '0.333' => '1/3',
+    '0.5'   => '1/2',
+    '0.666' => '2/3',
+    '0.75'  => '3/4',
+    '0.875' => '7/8'
+  ];
+
+  foreach ($common_fractions as $dec => $frac) {
+    if (abs($fraction - (float)$dec) < 0.02) {
+      return $whole == 0 ? $frac : "$whole $frac";
+    }
+  }
+
+  // Fallback to actual GCD simplification
   $denominator = 100;
   $numerator = round($fraction * $denominator);
 
   $gcd = gcd($numerator, $denominator);
-  $numerator /= $gcd;
-  $denominator /= $gcd;
+  $numerator = (int)($numerator / $gcd);
+  $denominator = (int)($denominator / $gcd);
 
   return $whole == 0 ? "$numerator/$denominator" : "$whole $numerator/$denominator";
 }
 
-/**
- * Calculate the greatest common divisor.
- *
- * @param int $a The first number
- * @param int $b The second number
- * @return int The greatest common divisor of the first and second number
- */
 function gcd($a, $b) {
   while ($b != 0) {
     $temp = $b;
@@ -193,7 +206,6 @@ function gcd($a, $b) {
   }
   return $a;
 }
-
 /**
  * Extract the YouTube video ID from a given URL.
  *
