@@ -268,7 +268,9 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
             <div class="signupFormField">
               <div class="g-recaptcha" data-sitekey="<?php echo RECAPTCHA_SITE_KEY; ?>" data-action="signup"></div>
             </div>
-
+            <div>
+              <p>By creating an account, you acknowledge that you have read and agree to the <a href="<?php echo url_for('about.php?#termsOfUse');?>" target="_blank">Terms of Use</a> and <a href="<?php echo url_for('about.php?#privacyPolicy');?>" target="_blank">Privacy Policy</a>.</p>
+            </div>
             <input type="submit" value="Create Account" class="loginSignupButton">
           </form>
           <div class="signup">

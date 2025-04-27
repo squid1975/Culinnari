@@ -19,14 +19,15 @@
             <li><a href="<?php echo url_for('/member/create_recipe.php'); ?> ">Create Recipe</a></li>
             <?php } ?>
             <?php if($session->is_mgmt_logged_in()){ ?>
-            <li><a href="<?php echo url_for('/admin/index.php'); ?>">Management Area</a></li>
+            <li><a href="<?php echo url_for('/admin/index.php'); ?>">Management</a></li>
             <?php } ?>
         </ul>        
     </div>
     <div id="businessInfo">
         <ul>
             <li><img src="<?php echo url_for('/images/icon/email.svg'); ?>" width="30" height="30" alt="Email icon" title="Email culinnari"><a href="mailto:hello@culinnari.com">hello@culinnari.com</a></li>
-
+            <li><a href="<?php echo url_for('about.php?#privacyPolicy');?>">Privacy Policy</a></li>
+            <li><a href="<?php echo url_for('about.php?#termsOfUse');?>">Terms of Use</a></li>
         </ul>
     </div>
 </footer>
