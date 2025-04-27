@@ -7,7 +7,7 @@ const sortByButton = document.getElementById("sortByButton");
 const radioButtons = document.querySelectorAll("input[name='sortBy']");
 const searchReset = document.querySelector(".searchReset");
 
-// --- Handle Sort By Radio Buttons ---
+// Changes the dropdown button for the 'Sort By' radio buttons
 if (sortByButton && radioButtons.length > 0) {
   radioButtons.forEach((radio) => {
     radio.addEventListener("change", function () {
@@ -44,6 +44,7 @@ searchReset.addEventListener("click", function () {
   if (sortByButton) {
     sortByButton.textContent = "Newest";
   }
+  searchForm.reset();
 });
 
 /**
