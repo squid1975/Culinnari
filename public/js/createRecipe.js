@@ -6,6 +6,11 @@ const error = document.createElement('p');
 /***  CREATE RECIPE VARIABLES */
 const recipeFormHeading = document.querySelector(".recipeFormHeading");
 const recipeForm = document.querySelector(".recipeForm");
+const recipeName = document.querySelector("#recipeName");
+const recipeDescriptionDirections = document.querySelector("#recipeDescriptionDirections");
+const recipeDifficultyLabel  = document.querySelector("#recipeDifficultyLabel");
+const timeFieldset = document.querySelector("#timeDirections");
+
 
 /** Checkboxes */
 const checkboxes = document.querySelector("#checkboxes");
@@ -74,7 +79,7 @@ recipeForm.addEventListener('submit', function (event) {
     } else {
         window.scrollTo(0,0);
         errorsBox.innerHTML = ""; // Clear previous error messages
-        errorsBox.textContent = "Please fix the following errors!:";
+        errorsBox.textContent = "Please fix the errors below:";
         recipeFormHeading.appendChild(errorsBox);
 
     }
@@ -245,13 +250,36 @@ function validateRecipeForm() {
             field: 'recipeName',
             message: 'Please enter a recipe name.'
         });
+    } else if (recipeName.length < 2 || recipeName.length > 40) {
+        errors.push({
+            field: 'recipeName',
+            message: 'Recipe name must be between 2 and 40 characters.'
+        });
+    } else if (!/^[A-Za-z0-9\-'\s]+$/.test(recipeName)) {
+        errors.push({
+            field: 'recipeName',
+            message: "Recipe name can only contain letters, numbers, hyphens, apostrophes, and spaces."
+        });
     }
 
+    // Recipe description validation 
     const recipeDescription = document.getElementById('recipeDescription')?.value.trim();
     if (!recipeDescription) {
         errors.push({
-            field: 'recipeDescription',
+            field: 'recipeDescriptionDirections',
             message: 'Please enter a recipe description.'
+        });
+    } else if (!/^[A-Za-z0-9\-'\s]+$/.test(recipeDescription)) {
+        errors.push({
+            field: 'recipeDescriptionDirections',
+            message: "Recipe description can only contain letters, numbers, hyphens, apostrophes, and spaces."
+        });
+    
+    const difficultyRadio = document.querySelector('input[name="recipe[recipe_difficulty]"]:checked');
+    if (!difficultyRadio) {
+        errors.push({
+            field: 'recipeDifficultyLabel',
+            message: 'Please select a difficulty level.'
         });
     }
 
@@ -263,7 +291,7 @@ function validateRecipeForm() {
 
     if (prepHours === 0 && prepMinutes === 0 && cookHours === 0 && cookMinutes === 0) {
         errors.push({
-            field: 'prepTimeMinutes',
+            field: 'timeDirections',
             message: 'Please enter a value for the prep time and/or cook time.'
         });
     }
@@ -277,6 +305,41 @@ function validateRecipeForm() {
         });
     }
 
+    ingredientInputs.forEach((ingredient, index) => {  
+        const quantity = ingredient.querySelector(`input[name="ingredient[${index}][ingredient_quantity]"]`).value.trim();
+        const name = ingredient.querySelector(`input[name="ingredient[${index}][ingredient_name]"]`).value.trim();
+
+        if (!quantity) {
+            errors.push({
+                field: `ingredientDirections`,
+                message: 'Please enter a measurement amount.'
+            });
+        } else if (!/^\d{1,2}(?:\s\d{1,2}\/\d{1,2})?$|^\d{1,2}\/\d{1,2}$/.test(quantity)) {
+            errors.push({
+                field: `ingredientDirections`,
+                message: 'Please enter a valid measurement amount (e.g., 1, 1/2, 1 1/2, 12 3/4).'
+            });
+        }
+
+        if (!name) {
+            errors.push({
+                field: `ingredientDirections`,
+                message: 'Please enter an ingredient name.'
+            });
+        } else if (name.length < 2 || name.length > 40) {
+            errors.push({
+                field: `ingredientDirections`,
+                message: 'Ingredient name must be between 2 and 40 characters.'
+            });
+        } else if (!/^[A-Za-z0-9\-'\s]+$/.test(name)) {
+            errors.push({
+                field: `IngredientDirections`,
+                message: "Ingredient name can only contain letters, numbers, hyphens, apostrophes, and spaces."
+            });
+        }
+    });
+
+
     // Steps validation
     const stepInputs = document.querySelectorAll('.addedSteps');
     if (stepInputs.length === 0) {
@@ -284,7 +347,7 @@ function validateRecipeForm() {
             field: 'stepDirections',
             message: 'At least one step is required.'
         });
-    }
+    } 
 
     // YouTube validation (optional)
     const youtubeLink = document.getElementById('youtube_link')?.value.trim();
@@ -293,7 +356,7 @@ function validateRecipeForm() {
         if (!youtubeRegex.test(youtubeLink)) {
             errors.push({
                 field: 'youtube_link',
-                message: 'Please enter a valid YouTube URL.'
+                message: 'Please enter a valid YouTube share link URL.'
             });
         }
     }
@@ -314,6 +377,7 @@ function validateRecipeForm() {
     displayErrors(errors);
     return errors;
 }
+}
 
 /**
  * Display error messages for the corresponding input fields
@@ -323,11 +387,15 @@ function displayErrors(errors) {
     errors.forEach(error => {
         const inputField = document.getElementById(error.field);
         if (inputField) {
+            const existingError = inputField.parentNode.querySelector('.error-message');
+            if (existingError) {
+                existingError.remove();
+            }
             const errorMessage = document.createElement('span');
             errorMessage.classList.add('error-message');
             errorMessage.style.color = 'red';
             errorMessage.textContent = error.message;
-            inputField.parentNode.appendChild(errorMessage);
+            inputField.appendChild(errorMessage);
         }
     });
 }
