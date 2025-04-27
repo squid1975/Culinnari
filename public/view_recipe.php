@@ -70,11 +70,9 @@ if (is_post_request()) {
             ]);
             $result = $cookbook_recipe->save();
             if (!$result) {
-                $_SESSION['message'] = 'Cookbook recipe failed. Please try again later.';
-                throw new Exception("Unable to save cookbook recipe.");
+                $_SESSION['message'] = 'Recipe save failed. Please try again later.';
 
             } else {
-
                 $_SESSION['message'] = 'Recipe added to cookbook.';
             }
 
@@ -111,8 +109,7 @@ if (is_post_request()) {
                 if ($recipeImage) {  // If the recipe image exists, display it, else fallback to default image
                     ?>
                     <img class="recipeImage" src="<?php echo url_for($recipeImage->recipe_image); ?>" width="400"
-                        height="400" alt="A photo of <?php echo h($recipe->recipe_name); ?>"
-                        title="A photo of <?php echo h($recipe->recipe_name); ?>">
+                        height="400" alt="A photo of <?php echo h($recipe->recipe_name); ?>">
                 <?php } else { ?>
                     <img class="recipeImage" src="<?php echo url_for('/images/default_recipe_image.webp'); ?>" width="400"
                         height="400" alt="Recipe image not found, displaying default recipe image">
@@ -244,27 +241,27 @@ if (is_post_request()) {
                             </button>
                             <div class="modal" id="addToCookbookModal">
                                 <div class="modal-content">
-                                    <h3>Save to Cookbook</h3>
                                     <span class="close">&times;</span>
+                                    <h3>Save to Cookbook</h3>
                                     <?php if ($cookbooks){ ?>
                                     <form action="<?php echo url_for('view_recipe.php?recipe_id=' . $recipe->id); ?>" method="post">
                                         <input type="hidden" name="cookbook_recipe[recipe_id]" value="<?php echo h($recipe->id); ?>">
                                         <?php foreach ($cookbooks as $cookbook): ?>
                                         <label for="cookbook_<?php echo h($cookbook->id); ?>">
                                             <?php if ($cookbook->already_contains_recipe): ?>
-                                                <input type="checkbox" name="cookbooks[]" value="<?php echo ($cookbook->id); ?>" disabled> 
+                                                <input type="checkbox" name="cookbooks[]" id="cookbook_<?php echo h($cookbook->id); ?>" value="<?php echo ($cookbook->id); ?>" disabled> 
                                                 <?php echo h($cookbook->cookbook_name); ?> <span class="recipe-saved">(Already saved)</span>
                                             <?php else: ?>
-                                                <input type="checkbox" name="cookbooks[]" value="<?php echo ($cookbook->id); ?>"> 
+                                                <input type="checkbox" name="cookbooks[]" id="cookbook_<?php echo h($cookbook->id); ?>" value="<?php echo ($cookbook->id); ?>"> 
                                                 <?php echo h($cookbook->cookbook_name); ?>
                                             <?php endif; ?>
                                         </label>
                                         <?php endforeach; ?>
-                                        <input type="submit" value="Save to Cookbook" class="saveToCookbookButton">
+                                        <input type="submit" value="Save to Cookbook" class="createUpdateButton">
                                     </form>
                                 <?php } else { ?>
                                     <p>You don't have any cookbooks yet! Create one to save this recipe.</p>
-                                    <a href="<?php echo url_for('/member/profile.php?id=' . $session->user_id); ?>" class="createCookbookLink">Create a Cookbook</a>
+                                    <a href="<?php echo url_for('/member/profile.php?id=' . $session->user_id); ?>" class="createUpdateButton">Create a Cookbook</a>
                                 <?php } ?>
                                 </div>
                             </div>
