@@ -149,7 +149,11 @@ class User extends DatabaseObject
         return $this->errors;
     }
     
-
+    /**
+     * Finds a user by username
+     * @param string $username The username to search for
+     * @return User|false The user object if found, false otherwise
+     */
     public static function find_by_username($username) {
         $sql = "SELECT * FROM " . static::$table_name . " ";
         $sql .= "WHERE username='" . self::$database->escape_string($username) . "'";
@@ -161,6 +165,11 @@ class User extends DatabaseObject
         }   
     }
 
+    /** Finds a user by email address
+     * * @param string $email The email address to search for
+     * * @return User|false The user object if found, false otherwise
+     * 
+     */
     public static function find_by_email($email) {
         $sql = "SELECT * FROM " . static::$table_name . " ";
         $sql .= "WHERE user_email_address='" . self::$database->escape_string($email) . "'";
