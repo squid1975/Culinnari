@@ -44,10 +44,10 @@ else {
                 </div>
               <?php endif; ?>
             
-                <form action="<?php echo url_for('/admin/categories/meal_types/new.php'); ?>" method="post">
+                <form action="<?php echo url_for('/admin/categories/meal_types/new.php'); ?>" method="post" id="createMealTypeForm">
                     <div class="formField">
-                        <label for="meal_type_name">Meal Type Name:</label>
-                        <input type="text" name="meal_type[meal_type_name]" id="meal_type_name" value="<?php echo h($mealType->meal_type_name); ?>" pattern="^[A-Za-z\-']+( [A-Za-z\-']+)*$" maxlength="50" required>
+                        <label for="mealTypeName">Meal Type Name:</label>
+                        <input type="text" name="meal_type[meal_type_name]" id="mealTypeName" value="<?php echo h($mealType->meal_type_name); ?>" pattern="^[A-Za-z\-']+( [A-Za-z\-']+)*$" maxlength="50" required>
                     </div>
                     <div>
                         <input type="submit" name="create" value="Create" class="createUpdateButton">
@@ -58,5 +58,5 @@ else {
         </div>
     </div>
 </main>
-
+<script src="<?php echo url_for('/js/admin.js'); ?>" defer></script>
 <?php include(SHARED_PATH . '/public_footer.php'); ?>

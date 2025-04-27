@@ -20,11 +20,13 @@ class Diet extends DatabaseObject {
         $this->errors = [];
 
         if (is_blank($this->diet_name)) {
-            $this->errors[] = "Diet name cannot be blank.";
+            $this->errors['diet_name'][] = "Diet name cannot be blank.";
         } elseif (!has_length($this->diet_name, ['min' => 2, 'max' => 50])) {
-            $this->errors[] = "Diet name must be between 2 and 50 characters.";
-        } elseif (!preg_match("/^[A-Za-z\-']+$/", $this->diet_name)) {
-            $this->errors[] = "Diet name can only contain letters, hyphens, and apostrophes.";
+            $this->errors['diet_name'][] = "Diet name must be between 2 and 50 characters.";
+        } elseif (!preg_match("/^[A-Za-z\-']+( [A-Za-z\-']+)*$/", $this->diet_name)) {
+            $this->errors['diet_name'][] = "Diet name can only contain letters, single spaces, hyphens, and apostrophes.";
+        } elseif(!has_unique_name($this->diet_name, 'Diet', $this->id ?? 0,)) {
+            $this->errors['diet_name'][] = "Diet name already exists. Please choose another.";
         }
 
         return $this->errors;

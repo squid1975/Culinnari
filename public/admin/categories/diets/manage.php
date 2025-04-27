@@ -56,13 +56,13 @@ if(is_post_request()){
                 <?php unset($_SESSION['message']);?>
             <?php endif; ?>
             <section>
-                <h2>Manage Diet: <?php echo h($diet->diet_name); ?></h2>
+                <h2 class="dietHeading">Manage Diet: <?php echo h($diet->diet_name); ?></h2>
                 <div class="edit">
                     <h3>Edit Diet</h3>
-                    <form action="<?php echo (url_for('/admin/categories/diets/manage.php?diet_id=' . $diet->id));?>" method="post">
+                    <form action="<?php echo (url_for('/admin/categories/diets/manage.php?diet_id=' . $diet->id));?>" method="post" id="editDietForm">
                         <div class="formField">
-                            <label for="meal_type_name">Diet Name:</label>
-                            <input type="text" name="diet[diet_name]" value="<?php echo h($diet->diet_name); ?>" pattern="^[A-Za-z \-']+$" required>
+                            <label for="dietName">Diet Name:</label>
+                            <input type="text" name="diet[diet_name]" value="<?php echo h($diet->diet_name); ?>" pattern="^[A-Za-z\-']+( [A-Za-z\-']+)*$" id="dietName" required>
                         </div>
                         <div>
                             <input type="submit" name="update" value="Update" class="createUpdateButton">
@@ -89,5 +89,5 @@ if(is_post_request()){
         
     </div>
 </main>
-
+<script src="<?php echo url_for('/js/admin.js'); ?>" defer></script>
 <?php include(SHARED_PATH . '/public_footer.php'); ?>

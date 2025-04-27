@@ -44,10 +44,10 @@ else {
                     <?php endforeach; ?>
                     </div>
                 <?php endif; ?>
-                <form action="<?php echo url_for('/admin/categories/styles/new.php'); ?>" method="post">
+                <form action="<?php echo url_for('/admin/categories/styles/new.php'); ?>" method="post" id="createStyleForm">
                     <div class="formField">
-                        <label for="style_name">Style Name:</label>
-                        <input type="text" name="style[style_name]" value="<?php echo h($style->style_name); ?>" id="style_name" maxlength="50"  pattern="^[A-Za-z\-']+( [A-Za-z\-']+)*$" required>
+                        <label for="styleName">Style Name:</label>
+                        <input type="text" name="style[style_name]" value="<?php echo h($style->style_name); ?>" id="styleName" maxlength="50" pattern="^[A-Za-z\-']+( [A-Za-z\-']+)*$" required>
                     </div>
                     <div>
                         <input type="submit" name="create" value="Create" class="createUpdateButton">
@@ -58,5 +58,5 @@ else {
         </div>
     </div>
 </main>
-
+<script src="<?php echo url_for('/js/admin.js'); ?>" defer></script>
 <?php include(SHARED_PATH . '/public_footer.php'); ?>

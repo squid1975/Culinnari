@@ -32,7 +32,7 @@ else {
             <div>
                 &laquo;<a href="<?php echo url_for('/admin/categories/index.php');?>">Back to Categories Index</a>
             </div>
-            <h2>Create New diet</h2>
+            <h2 class="dietHeading">Create New diet</h2>
             <div class="new">
             <?php if (isset($diet_errors['diet_name'])): ?>
                 <div class="error-messages">
@@ -42,19 +42,18 @@ else {
                 </div>
               <?php endif; ?>
             
-                <form action="<?php echo url_for('/admin/categories/diets/new.php'); ?>" method="post">
+                <form action="<?php echo url_for('/admin/categories/diets/new.php'); ?>" method="post" id="createDietForm">
                     <div class="formField">
-                        <label for="diet_name">Diet Name:</label>
-                        <input type="text" name="diet[diet_name]" value="<?php echo h($diet->diet_name); ?>" maxlength="50" required>
+                        <label for="dietName">Diet Name:</label>
+                        <input type="text" name="diet[diet_name]" value="<?php echo h($diet->diet_name); ?>" pattern="^[A-Za-z\-']+( [A-Za-z\-']+)*$" maxlength="50" id="dietName" required>
                     </div>
                     <div>
                         <input type="submit" name="create" value="Create" class="createUpdateButton">
                     </div>
                 </form>
             </div>
-            
         </div>
     </div>
 </main>
-
+<script src="<?php echo url_for('/js/admin.js'); ?>" defer></script>
 <?php include(SHARED_PATH . '/public_footer.php'); ?>

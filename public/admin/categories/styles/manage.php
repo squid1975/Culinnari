@@ -73,10 +73,10 @@ if(is_post_request()){
                         <?php endforeach; ?>
                         </div>
                     <?php endif; ?>
-                    <form action="<?php echo url_for('/admin/categories/styles/manage.php?style_id=' . $style->id);?>" method="post">
+                    <form action="<?php echo url_for('/admin/categories/styles/manage.php?style_id=' . $style->id);?>" method="post" id="editStyleForm">
                         <div class="formField">
-                            <label for="style_name">Style Name</label>
-                            <input type="text" name="style[style_name]" value="<?php echo h($style->style_name); ?>" id="style_name" maxlength="50"  pattern="^[A-Za-z\-']+( [A-Za-z\-']+)*$" required>
+                            <label for="styleName">Style Name</label>
+                            <input type="text" name="style[style_name]" value="<?php echo h($style->style_name); ?>" id="styleName" maxlength="50"  pattern="^[A-Za-z\-']+( [A-Za-z\-']+)*$" required>
                         </div>
                         <div>
                             <input type="submit" name="update" value="Update Style" class="createUpdateButton">
@@ -100,5 +100,5 @@ if(is_post_request()){
         </div>
     </div>
 </main>
-
+<script src="<?php echo url_for('/js/admin.js'); ?>" defer></script>
 <?php include(SHARED_PATH . '/public_footer.php'); ?>

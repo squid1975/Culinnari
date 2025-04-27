@@ -72,10 +72,10 @@ if(is_post_request()){
             
             <div class="edit">
                 <h3>Edit Meal Type</h3>
-                <form action="<?php echo url_for('/admin/categories/meal_types/manage.php?meal_type_id=' . $meal_type->id);?>" method="post">
+                <form action="<?php echo url_for('/admin/categories/meal_types/manage.php?meal_type_id=' . $meal_type->id);?>" method="post" id="editMealTypeForm">
                     <div class="formField">
-                        <label for="meal_type_name">Meal Type Name:</label>
-                        <input type="text" name="meal_type[meal_type_name]" id="meal_type_name" pattern="/^[A-Za-z\-']+$/" value="<?php echo h($meal_type->meal_type_name); ?>" required maxlength="50">
+                        <label for="mealTypeName">Meal Type Name:</label>
+                        <input type="text" name="meal_type[meal_type_name]" id="mealTypeName" pattern="^[A-Za-z\-']+( [A-Za-z\-']+)*$" value="<?php echo h($meal_type->meal_type_name); ?>" required maxlength="50">
                     </div>
                     <div>
                         <input type="submit" name="update" value="Update" class="createUpdateButton">
@@ -100,5 +100,5 @@ if(is_post_request()){
         </div>
     </div>
 </main>
-
+<script src="<?php echo url_for('/js/admin.js'); ?>" defer></script>
 <?php include(SHARED_PATH . '/public_footer.php'); ?>

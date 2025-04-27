@@ -25,9 +25,9 @@ class MealType extends DatabaseObject {
             $this->errors['meal_type_name'][] = "Meal type name cannot be blank.";
         } elseif (!has_length($this->meal_type_name, ['min' => 2, 'max' => 50])) {
             $this->errors['meal_type_name'][] = "Meal type name must be between 2 and 50 characters.";
-        } elseif (!preg_match("/^[A-Za-z\-']+$/", $this->meal_type_name)) {
-            $this->errors['meal_type_name'][] = "Meal type name can only contain letters, hyphens, and apostrophes.";
-        } elseif (!has_unique_name($this->meal_type_name, 'MealType', $this->id ?? 0)) {
+        } elseif (!preg_match("/^[A-Za-z\-']+( [A-Za-z\-']+)*$/", $this->meal_type_name)) {
+            $this->errors['meal_type_name'][] = "Meal type name can only contain letters, single spaces, hyphens, and apostrophes.";
+        } elseif(!has_unique_name($this->meal_type_name, 'MealType', $this->id ?? 0,)) {
             $this->errors['meal_type_name'][] = "Meal type name already exists. Please choose another.";
         }
 
