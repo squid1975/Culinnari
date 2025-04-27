@@ -1,50 +1,116 @@
+
 <?php 
 require_once('../private/initialize.php');
 $title = 'Recipe Search | Culinnari';
 include(SHARED_PATH . '/public_header.php');
+
 // Setup
 $current_page = $_GET['page'] ?? 1;
 $per_page = 12;
 
-// Default values for search filters 
+// Default values
 $results = []; 
 $searchMessage = '';
-$searchQuery = [];
+$searchQuery = '';
 $mealTypes = [];
 $styles = [];
 $diets = [];
 $difficulties = [];
 $prepCookTimeTotals = [];
 
-// Determine if a search is being made
-if (!empty($_GET)) {
+// Check if user actually searched for something
+$hasSearch = isset($_GET['recipeQuery']) || 
+             isset($_GET['mealTypes']) || 
+             isset($_GET['styles']) || 
+             isset($_GET['diets']) || 
+             isset($_GET['prepCookTimeTotal']) || 
+             isset($_GET['difficulty']);
+
+if ($hasSearch) {
+    // Perform search
     $searchQuery = $_GET['recipeQuery'] ?? '';
-    $mealTypes = array_map('intval', $_GET['mealTypes'] ?? []);
-    $styles = array_map('intval', $_GET['styles'] ?? []);
-    $diets = array_map('intval', $_GET['diets'] ?? []);
+    $mealTypes = $_GET['mealTypes'] ?? [];
+    $styles = $_GET['styles'] ?? [];
+    $diets = $_GET['diets'] ?? [];
     $prepCookTimeTotals = $_GET['prepCookTimeTotal'] ?? [];
     $recipeDifficulty = $_GET['difficulty'] ?? [];
     $sortBy = $_GET['sortBy'] ?? 'recipe[recipe_post_date] DESC';
 
-    $results = Recipe::search_recipes($searchQuery, $prepCookTimeTotals, $recipeDifficulty, $mealTypes, $styles, $diets, $sortBy);
-    
+    // Convert parameters for SQL
+    $mealTypesInt = array_map('intval', $mealTypes);
+    $stylesInt = array_map('intval', $styles);
+    $dietsInt = array_map('intval', $diets);
+
+    $results = Recipe::search_recipes($searchQuery, $prepCookTimeTotals, $recipeDifficulty, $mealTypesInt, $stylesInt, $dietsInt, $sortBy);
+
     if (!empty($results)) {
         $searchMessage = 'Recipes (' . count($results) . ')';
+        $total_count = count($results);
+        $pagination = new Pagination($current_page, $per_page, $total_count);
+        $results = array_slice($results, $pagination->offset(), $per_page);
     } else {
         $searchMessage = 'No recipes found.';
     }
 } else {
-    // Default query (no search)
-    $sql = "SELECT * FROM recipe ";
+    // Default query - show all recipes
+    $sql = "SELECT * FROM recipe ORDER BY recipe_post_date DESC";
     $allRecipes = Recipe::find_by_sql($sql); 
     $results = $allRecipes;
-    $searchMessage = 'All Recipes' . ' (' . count($results) . ')';
+    $searchMessage = 'All Recipes (' . count($results) . ')';
+    // Setup pagination AFTER results are set
+    $total_count = count($results);
+    $pagination = new Pagination($current_page, $per_page, $total_count);
+    $results = array_slice($results, $pagination->offset(), $per_page);
 }
 
-// Set up pagination *after* $results is defined
-$total_count = count($results);
-$pagination = new Pagination($current_page, $per_page, $total_count);
-$results = array_slice($results, $pagination->offset(), $per_page);
+// Build the pagination URL with all search parameters
+$pagination_url = url_for('/recipes.php');
+$query_params = [];
+
+// Add all search parameters to the query string
+if (!empty($searchQuery)) {
+    $query_params[] = 'recipeQuery=' . urlencode($searchQuery);
+}
+
+if (!empty($mealTypes)) {
+    foreach ($mealTypes as $mealType) {
+        $query_params[] = 'mealTypes[]=' . urlencode($mealType);
+    }
+}
+
+if (!empty($styles)) {
+    foreach ($styles as $style) {
+        $query_params[] = 'styles[]=' . urlencode($style);
+    }
+}
+
+if (!empty($diets)) {
+    foreach ($diets as $diet) {
+        $query_params[] = 'diets[]=' . urlencode($diet);
+    }
+}
+
+if (!empty($prepCookTimeTotals)) {
+    foreach ($prepCookTimeTotals as $time) {
+        $query_params[] = 'prepCookTimeTotal[]=' . urlencode($time);
+    }
+}
+
+if (!empty($recipeDifficulty)) {
+    foreach ($recipeDifficulty as $diff) {
+        $query_params[] = 'difficulty[]=' . urlencode($diff);
+    }
+}
+
+if (!empty($sortBy)) {
+    $query_params[] = 'sortBy=' . urlencode($sortBy);
+}
+
+// Combine all query parameters
+if (!empty($query_params)) {
+    $pagination_url .= '?' . implode('&', $query_params);
+}
+
 ?>
 
 
@@ -104,9 +170,9 @@ $results = array_slice($results, $pagination->offset(), $per_page);
                         <?php include(SHARED_PATH . '/recipe_card.php'); ?>
                     <?php endforeach; ?>
                     </div>
-                    <?php if ($pagination->total_pages() > 1): ?>
-                        <div class="paginationContainer">
-                            <?php echo $pagination->page_links(url_for('/recipes.php')); ?>
+                    <?php if (isset($pagination) && $pagination->total_pages() > 1): ?>
+                        <div class="pagination">
+                        <?php echo $pagination->page_links($pagination_url); ?>
                         </div>
                     <?php endif; ?>
             </div>

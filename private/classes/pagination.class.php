@@ -1,7 +1,5 @@
 <?php
-
 class Pagination {
-
   public $current_page;
   public $per_page;
   public $total_count;
@@ -33,7 +31,9 @@ class Pagination {
   public function previous_link($url="") {
     $link = "";
     if($this->previous_page() != false) {
-      $link .= "<a href=\"{$url}?page={$this->previous_page()}\">";
+      // Check if URL already contains query parameters
+      $separator = (parse_url($url, PHP_URL_QUERY)) ? '&' : '?';
+      $link .= "<a href=\"{$url}{$separator}page={$this->previous_page()}\">";
       $link .= "&laquo; Previous</a>";
     }
     return $link;
@@ -42,7 +42,9 @@ class Pagination {
   public function next_link($url="") {
     $link = "";
     if($this->next_page() != false) {
-      $link .= "<a href=\"{$url}?page={$this->next_page()}\">";
+      // Check if URL already contains query parameters
+      $separator = (parse_url($url, PHP_URL_QUERY)) ? '&' : '?';
+      $link .= "<a href=\"{$url}{$separator}page={$this->next_page()}\">";
       $link .= "Next &raquo;</a>";
     }
     return $link;
@@ -51,10 +53,12 @@ class Pagination {
   public function number_links($url="") {
     $output = "";
     for($i=1; $i <= $this->total_pages(); $i++) {
+      // Check if URL already contains query parameters
+      $separator = (parse_url($url, PHP_URL_QUERY)) ? '&' : '?';
       if($i == $this->current_page) {
         $output .= "<span class=\"selected\">{$i}</span>";
       } else {
-        $output .= "<a href=\"{$url}?page={$i}\">{$i}</a>";
+        $output .= "<a href=\"{$url}{$separator}page={$i}\">{$i}</a>";
       }
     }
     return $output;
@@ -72,5 +76,4 @@ class Pagination {
     return $output;
   }
 }
-
 ?>
