@@ -1,9 +1,9 @@
 header {
     align-items: center;
-    display: flex;
-    padding: 10px;
-    justify-content: space-evenly;
     background: #FFFAF0;
+    display: flex;
+    justify-content: space-evenly;
+    padding: 10px;
 }
 
 h1 {
@@ -29,9 +29,9 @@ nav ul li {
 nav ul a {
     color: #333;
     font: 20px 'Lustria', serif;
+    margin: 30px 0;
     padding: 10px;
     transition: 0.2s ease-in;
-    margin: 30px 0;
 }
 
 nav ul a:hover {
@@ -42,15 +42,15 @@ nav ul a:hover {
     color: #6a756a;
 }
 
-/************* GEN  PUBLIC *********/
+/************* GENERAL  PUBLIC *********/
 #headerLoginSignup {
-    display: flex;
     align-items: center;
     background: #D8A7A0;
+    border-radius: 5px;
     box-shadow: 0 0 5px #333;
+    display: flex;
     padding: 5px 10px;
     transition: 0.2s ease-in;
-    border-radius: 5px;
 }
 
 #headerLoginSignup:hover {
@@ -63,8 +63,8 @@ nav ul a:hover {
 
 /***************** MEMBER ***********/
 #memberNav {
-    display: flex;
     align-items: center;
+    display: flex;
     gap: 5px;
 }
 
@@ -94,7 +94,7 @@ nav ul a:hover {
     box-shadow: 0 0 3px #868b7c;
 }
 
-/********************** Admin ********************/
+/********************** ADMIN ********************/
 #adminNav {
     align-items: center;
     display: flex;
@@ -121,9 +121,9 @@ nav ul a:hover {
 /******** FOOTER ************/
 footer {
     align-items: center;
+    background-color: #c3d3c3;
     display: flex;
     padding: 20px;
-    background-color: #c3d3c3;
 }
 
 footer div {
@@ -148,12 +148,12 @@ footer a {
     margin-right: 5px;
 }
 
-/**************************************************** MEDIA QUERIES *****************************************************/
+/***************************************************************** MEDIA QUERIES ******************************************************************/
 @media screen and (max-width: 800px) {
     header {
         display: grid;
-        grid-template-columns: repeat(3, 1fr);
         grid-auto-flow: column;
+        grid-template-columns: repeat(3, 1fr);
         justify-content: space-between;
     }
 
@@ -166,34 +166,43 @@ footer a {
     }
 
     .menuButton {
-        display: flex;
         align-items: center;
         cursor: pointer;
-        z-index: 100;
+        display: flex;
         position: relative;
+        z-index: 100;
     }
 
     #menuContent {
-        position: absolute;
-        left: -150px;
-        top: -80px;
-        width: 125px;
         background: white;
         box-shadow: 2px 2px 10px #0000001a;
         gap: 10px;
+        height: fit-content;
+        left: -150px;
+        position: absolute;
+        top: 80px;
         transition: left 0.3s ease;
         z-index: 100;
     }
 
+    #menuContent ul li {
+        display: block;
+        margin: 10px;
+    }
+
     #menu-toggle:checked ~ #menuContent {
-        top: 80px;
         left: 0;
+        top: 80px;
     }
 
     #headerLoginSignup {
-        width: fit-content;
         margin: 0 auto;
         padding: 5px;
+        width: fit-content;
+    }
+
+    #headerLoginSignup img {
+        display: none;
     }
 
     #headerLoginSignup a {
@@ -205,8 +214,8 @@ footer a {
     }
 
     #memberNav {
-        position: relative;
         display: inline-block;
+        position: relative;
     }
 
     #userMenuToggle {
@@ -214,17 +223,17 @@ footer a {
     }
 
     #userMenu {
-        display: none;
-        position: absolute;
-        top: 100%;
-        right: -10px;
         background: white;
-        box-shadow: 0 4px 8px #00000033;
-        padding: 10px;
         border-radius: 5px;
-        z-index: 10;
+        box-shadow: 0 4px 8px #00000033;
+        display: none;
         min-width: 200px;
+        padding: 10px;
+        position: absolute;
+        right: -10px;
         text-align-last: left;
+        top: 100%;
+        z-index: 10;
     }
 
     #userMenu a {
@@ -236,9 +245,9 @@ footer a {
     }
 
     #profileLink {
+        align-items: center;
         cursor: pointer;
         display: flex;
-        align-items: center;
         gap: 5px;
     }
 
@@ -249,21 +258,21 @@ footer a {
     }
 
     #adminNav {
-        position: relative;
         display: inline-block;
+        position: relative;
     }
 
     #adminMenu {
-        display: none;
-        position: absolute;
-        top: 100%;
-        right: 0;
         background: white;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        padding: 10px;
         border-radius: 5px;
-        z-index: 10;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        display: none;
+        padding: 10px;
+        position: absolute;
+        right: 0;
+        top: 100%;
         width: fit-content;
+        z-index: 10;
     }
 
     #adminMenu a {
@@ -291,8 +300,3 @@ footer a {
     }
 }
 
-@media screen and (max-width: 500px) {
-    #headerLoginSignup img {
-        display: none;
-    }
-}

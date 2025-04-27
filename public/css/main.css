@@ -10,7 +10,7 @@
 
 #error404 a {
   background: #f5f2e4;
-  border: 1px solid black;
+  border: 1px solid #000000;
   border-radius: 5px;
   margin: 10px;
   padding: 10px;
@@ -31,7 +31,7 @@
 
 #mainHeroText {
   align-items: center;
-  background: rgba(236, 236, 236, 0.5);
+  background: #ececec80;
   color: rgb(0, 0, 0);
   display: flex;
   flex-direction: column;
@@ -53,10 +53,10 @@
 }
 
 #mainHeroText a {
-  background: white;
-  border: 1px solid black;
+  background: #ffffff;
+  border: 1px solid #000000;
   border-radius: 10px;
-  box-shadow: 0 0 3px #333;
+  box-shadow: 0 0 3px #333333;
   padding: 10px;
   transition: 0.2s ease;
 }
@@ -106,9 +106,9 @@ section#becomeMemberCTA > div > div {
   display: flex;
   flex: 1;
   flex-direction: column;
-  max-width: 300px;
 
   justify-content: center;
+  max-width: 300px;
   padding: 10px;
 }
 
@@ -124,8 +124,8 @@ section#becomeMemberCTA > div > div > p {
 /** Recipe Suggestions Sections **/
 
 .suggestions {
-  margin-top: 20px;
   margin-bottom: 10px;
+  margin-top: 20px;
   padding: 10px;
 }
 
@@ -160,7 +160,7 @@ section#becomeMemberCTA > div > div > p {
 }
 
 #searchPageResultsWrapper {
-  background: #fff;
+  background: #ffffff;
   margin: auto;
   max-width: 1200px;
   min-height: 100vh;
@@ -200,7 +200,7 @@ h3.searchMessage {
 }
 
 #recipeNameImageDesc .recipeImage {
-  border: 3px solid #333;
+  border: 3px solid #333333;
   height: auto;
   margin: 10px 0;
   max-width: 100%;
@@ -259,11 +259,11 @@ div#recipeDisplayDifficulty p#recipeDisplayIntermediate {
 }
 
 #recipeDisplayOptions button {
+  align-items: center;
   background: none;
   border: none;
   display: flex;
   font-size: 16px;
-  align-items: center;
 }
 
 #recipeDisplayOptions button img {
@@ -300,18 +300,18 @@ div#recipeDisplayDifficulty p#recipeDisplayIntermediate {
 }
 
 #recipeDisplayChangeServingAmt {
+  border-radius: 10px;
   display: flex;
   flex-wrap: nowrap;
   margin-left: 10px;
   margin-top: 10px;
   padding: 5px;
-  border-radius: 10px;
 }
 
 #recipeDisplayChangeServingAmt button {
+  border-radius: 10px;
   margin-right: 5px;
   padding: 5px 10px;
-  border-radius: 10px;
   text-align: center;
 }
 
@@ -330,7 +330,7 @@ li.recipeIngredientListing {
 }
 
 #recipeDisplayAddRating {
-  border-top: 1px solid #333;
+  border-top: 1px solid #333333;
   padding: 10px;
 }
 
@@ -364,7 +364,7 @@ li.recipeIngredientListing {
 }
 
 .star-widget label {
-  color: #444;
+  color: #444444;
   cursor: pointer;
   font-size: 20px;
   padding: 10px;
@@ -373,22 +373,22 @@ li.recipeIngredientListing {
 
 .star-widget input:not(:checked) ~ label:hover,
 .star-widget input:not(:checked) ~ label:hover ~ label {
-  color: #fd4;
+  color: #ffdd44;
 }
 
 .star-widget input:checked ~ label {
-  color: #fd4;
+  color: #ffdd44;
 }
 
 /* Special Styling for 5-Star Rating */
 .star-widget input#rate-5:checked ~ label {
-  color: #fe7;
+  color: #ffee77;
 }
 
 /* Submit Button */
 .submitRatingButton {
   background: #d1d1d1;
-  border: 1px solid #444;
+  border: 1px solid #444444;
   border-radius: 5px;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -423,9 +423,9 @@ li.recipeIngredientListing {
 
   #recipeDisplayIngredients,
   #recipeDisplaySteps {
-    width: 100%;
     max-width: 100%;
     padding: 0;
+    width: 100%;
   }
 
   /* Hide elements that are not needed in print */
@@ -447,23 +447,23 @@ li.recipeIngredientListing {
 
 /******************************* PROFILE **********************************************/
 #profileHeading {
-  border-top: 1px solid #333;
+  border-top: 1px solid #333333;
   padding: 10px;
   text-align: center;
 }
 
 #profileHeading + h3 {
-  text-align: center;
-  border-bottom: 1px solid #333;
+  border-bottom: 1px solid #333333;
   padding: 10px 0;
+  text-align: center;
 }
 
 #profileWrapper {
   background-color: #f5f2e4;
   margin: 0 auto;
   max-width: 1400px;
-  padding: 10px;
   min-height: 100vh;
+  padding: 10px;
 }
 
 .profileSectionHead {
@@ -477,7 +477,7 @@ li.recipeIngredientListing {
 }
 
 .createLink {
-  border: 1px solid black;
+  border: 1px solid #000000;
   border-radius: 5px;
   padding: 5px;
 }
@@ -506,9 +506,9 @@ li.recipeIngredientListing {
 }
 
 .deleteRecipeButton {
-  border: none;
   background: none;
-  color: rgb(148, 17, 17);
+  border: none;
+  color: #941111;
   padding: 0;
 }
 
@@ -518,10 +518,10 @@ li.recipeIngredientListing {
 
 #cookbookNameFormField {
   align-items: center;
+  background: #ffffff;
+  box-shadow: 0 0 2px #333333;
   display: flex;
   flex-wrap: nowrap;
-  background: white;
-  box-shadow: 0 0 2px #333;
   padding: 5px;
 }
 
@@ -535,10 +535,10 @@ li.recipeIngredientListing {
 
 #cookBookNameFormField input[type="submit"] {
     background: #3c2f2f;
-    color: white;
     border: none;
-    padding: 5px 10px;
+    color: white;
     cursor: pointer;
+    padding: 5px 10px;
 }
 
 /***************** ADMIN AREA ***************************/
@@ -554,9 +554,13 @@ li.recipeIngredientListing {
   align-items: center;
   display: flex;
   flex-wrap: nowrap;
-  padding: 5px;
-  margin: 10px;
   justify-content: center;
+  margin: 10px;
+  padding: 5px;
+}
+
+.mgmtTableHeading h3 {
+  font-size: 28px;
 }
 
 .sectionHeader {
@@ -564,20 +568,32 @@ li.recipeIngredientListing {
 }
 
 #adminLinks a {
-  font-size: 20px;
   display: block;
+  font-size: 20px;
+}
+
+.categoriesTableSection {
+  border-bottom: 1px solid #9b9b9b;
+  margin: 20px 0 30px 0;
+  padding: 10px;
 }
 
 .adminAddNew {
-  background: #d8a7a0;
-  color: #333;
-  padding: 5px;
+  background: #a4b6a4;
   border-radius: 5px;
-  margin-left: 10px;
-  font-size: 16px;
+  color: #333333;
   cursor: pointer;
+  margin-left: 10px;
+  padding: 5px;
   transition: 0.2s ease-in;
 }
+
+.adminAddNew:hover {
+  background:  #acc4ac;
+  box-shadow: 0 0 3px #333333;
+}
+
+
 
 table {
   border: 1px solid #000000;
@@ -587,8 +603,8 @@ table {
 
 table th,
 td {
-  padding: 10px;
   border: 1px solid #000000;
+  padding: 10px;
 }
 
 table td a:hover {
@@ -637,13 +653,12 @@ table tr:nth-child(even):hover {
 
 .manageCategoryWrapper {
   background: #ffffff;
-  border: 3px solid black;
+  border: 1px solid #000000;
   margin: auto;
-  min-height: 700px;
+  max-width: 800px;
+  
   padding: 10px;
-  width: 800px;
 }
-
 .manageCategoryWrapper h2 {
   margin-top: 30px;
 }
@@ -657,10 +672,24 @@ table tr:nth-child(even):hover {
     padding: 20px;
 }
 
+.createUpdateButton {
+  background: #a4b6a4;
+  border: none;
+  border-radius: 5px;
+  padding: 5px 10px;
+}
+
+.createUpdateButton:hover {
+  background: #acc4ac;
+  box-shadow: 0 0 3px #333333;
+}
+
 /***************************************** MEDIA QUERIES ******************************************/
 
 @media screen and (max-width: 1000px) {
+
   /** VIEW RECIPE PAGE **/
+
   #recipeDisplayCategories span {
     display: inline-block;
   }
@@ -674,6 +703,7 @@ table tr:nth-child(even):hover {
   }
 
   /** ADMIN AREA **/
+
   .adminTableUserFullName,
   .adminTableUserJoinDate {
     display: none;
@@ -681,6 +711,7 @@ table tr:nth-child(even):hover {
 }
 
 @media screen and (max-width: 750px) {
+
   /** ADMIN AREA**/
   .adminTableUserEmail {
     display: none;
@@ -688,20 +719,32 @@ table tr:nth-child(even):hover {
 }
 
 @media screen and (max-width: 700px) {
+
   /** HOME PAGE **/
   section#becomeMemberCTA > div {
     display: block;
   }
 
   .dietKey {
+    align-items: center;
     display: flex;
     flex-direction: column;
-    align-items: center;
   }
 }
 
 @media screen and (max-width: 600px) {
+
   /** VIEW RECIPE PAGE **/
+
+  #recipeDisplayIngredients {
+    min-width: 100%;
+  }
+
+  #recipeDisplayCategories span {
+    display: block;
+    margin: 10px 0;
+  }
+
   #recipeDisplayprepCook {
     display: block;
   }
@@ -711,20 +754,20 @@ table tr:nth-child(even):hover {
   }
 
   #videoContainer {
-    position: relative;
-    width: 100%;
-    padding-bottom: 56.25%; /* 16:9 aspect ratio */
     height: 0;
     overflow: hidden;
+    padding-bottom: 56.25%; /* 16:9 aspect ratio */
+    position: relative;
+    width: 100%;
   }
 
   #videoContainer iframe {
+    border: 0;
+    height: 100%;
+    left: 0;
     position: absolute;
     top: 0;
-    left: 0;
     width: 100%;
-    height: 100%;
-    border: 0;
   }
 
   /** ADMIN AREA **/

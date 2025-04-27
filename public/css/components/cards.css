@@ -13,7 +13,6 @@
     height: 50px;
     margin: 10px 5px;
     max-width: 250px;
-    overflow: wrap;
 }
 
 .recipeCard:hover {

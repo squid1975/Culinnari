@@ -5,8 +5,8 @@
 }
 
 .formField label {
-    margin-right: 10px;
     font-size: 18px;
+    margin-right: 10px;
 }
 
 
@@ -173,7 +173,7 @@
 }
 
 .dropdown-content {
-    background-color: white;
+    background-color: #ffffff;
     box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
     display: none;
     min-width: 190px;
@@ -348,7 +348,7 @@ legend {
 }
 
 #steps {
-    border-top: 1px solid black;
+    border-top: 1px solid #000000;
     margin-top: 30px;
 }
 
@@ -370,7 +370,7 @@ legend {
 }
 
 .removeStep:hover {
-    background: rgb(238, 134, 134);
+    background: #ee8686;
 }
 
 #addStep {
@@ -431,7 +431,7 @@ button.removeIngredient:hover {
 .addedSteps textarea {
     background: none;
     border: none;
-    font: 15px 'Poppins', sans-serif;
+    font: 16px 'Poppins', sans-serif;
     overflow-y: visible;
     resize: none;
     width: 95%;
@@ -505,7 +505,7 @@ button.removeIngredient:hover {
 #clearRecipeFormButton:hover {
     background-color: #f18484;
 }
-/******* ADMIN AREA *********/
+/***************************************************************** ADMIN AREA ******************************************************************/
 
 .userFormInput {
     display: flex;

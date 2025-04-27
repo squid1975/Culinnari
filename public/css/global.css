@@ -17,15 +17,15 @@ html {
 body {
   margin: 0;
   padding: 0;
-  overflow-x: hidden;
+  width: 100%;
 }
 
 .wrapper {
   background-color: #f5f5f5;
   margin: auto;
   max-width: 1300px;
-  padding: 20px;
   min-height: 100vh;
+  padding: 20px;
 }
 
 h2,
@@ -48,16 +48,16 @@ h4 {
 }
 
 a {
-  color: #333;
-  text-decoration: none;
+  color: #333333;
   cursor: pointer;
+  text-decoration: none;
 }
 
 input[type="submit"],
 button {
   cursor: pointer;
-  font: 17px "Poppins", sans-serif;
   display: block;
+  font: 17px "Poppins", sans-serif;
 }
 
 li {
@@ -84,30 +84,30 @@ section {
 }
 
 div.errors {
-  border: 1px solid #eb0f0f;
   background: #ec9082;
-  padding: 5px;
+  border: 1px solid #eb0f0f;
   margin: 10px;
+  padding: 5px;
 }
 
 .error {
   color: #970000;
-  padding: 5px;
-  width: max-content;
   font-style: italic;
   margin: 5px;
+  padding: 5px;
+  width: max-content;
 }
 
 .primaryButton {
-  border: 1px solid #333;
-  box-shadow: 0 0 5px #333;
-  margin: 5px;
-  border-radius: 5px;
-  font-size: 18px;
-  padding: 10px;
   background: #d8a7a0;
-  transition: 0.2s ease-in-out;
+  border: 1px solid #333333;
+  border-radius: 5px;
+  box-shadow: 0 0 5px #333333;
   cursor: pointer;
+  font-size: 18px;
+  margin: 5px;
+  padding: 10px;
+  transition: 0.2s ease-in-out;
 }
 
 .primaryButton:hover {
@@ -115,23 +115,27 @@ div.errors {
 }
 
 .secondaryButton {
-  padding: 5px;
   background: #dadada;
   border-radius: 5px;
+  padding: 5px;
 }
 
 .deleteButton {
   background: #eb6767;
-  padding: 5px;
   border-radius: 5px;
+  padding: 5px;
+}
+
+.deleteButton:hover {
+  background: #ff8f8f;
 }
 
 .session-message {
   background: #d8a7a0;
   border-radius: 5px;
-  width: fit-content;
-  padding: 10px;
   margin: 10px 0;
+  padding: 10px;
+  width: fit-content;
 }
 
 .pagination {
@@ -144,32 +148,31 @@ div.errors {
 /*********** MODAL *************/
 /* The Modal (background) */
 .modal {
-  display: none; /* Hidden by default */
-  position: fixed; /* Stay in place */
-  z-index: 1; /* Sit on top */
-  left: 0;
-  top: 0;
-  width: 100%; /* Full width */
-  height: 100%; /* Full height */
-  overflow: auto; /* Enable scroll if needed */
   background-color: #000000; /* Fallback color */
   background-color: #00000066; /* Black w/ opacity */
+  display: none; /* Hidden by default */
+  height: 100%; /* Full height */
+  left: 0;
+  position: fixed; /* Stay in place */
+  top: 0;
+  width: 100%; /* Full width */
+  z-index: 1; /* Sit on top */
 }
 
 /* Modal Content/Box */
 .modal-content {
   background-color: #fefefe;
-  margin: 15% auto; /* 15% from the top and centered */
-  padding: 20px;
   border: 1px solid #888888;
+  margin: 15% auto; /* 15% from the top and centered */
   max-width: 400px ; /* Could be more or less, depending on screen size */
+  padding: 20px;
   text-align: center;
 }
 
 .modal-content input[type="submit"] {
     display: block;
-    width: 100%;
     margin: 10px 0;
+    width: 100%;
 }
 
 /* The Close Button */
@@ -182,7 +185,7 @@ div.errors {
 
 .close:hover,
 .close:focus {
-  color: black;
-  text-decoration: none;
+  color: #000000;
   cursor: pointer;
+  text-decoration: none;
 }
