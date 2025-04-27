@@ -1,13 +1,17 @@
 <?php
 require_once('../../private/initialize.php'); 
 require_login();
+$username = $session->username;
+$user = User::find_by_username($username);
 
 if (!isset($_GET['recipe_id'])) {
-    redirect_to(url_for('/index.php'));
+    redirect_to(url_for('/profile.php'));
 }
 
 $id = $_GET['recipe_id'];
 $recipe = Recipe::find_by_id($id);
+
+
 
 if ($recipe == false) {
     $_SESSION['message'] = 'Recipe not found.';

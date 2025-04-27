@@ -1,7 +1,7 @@
 <?php require_once('../../private/initialize.php'); 
 $title = 'My Profile | Culinnari';
 include(SHARED_PATH . '/public_header.php'); 
- require_login();
+require_login();
  
  $username = $session->username;
  $user = User::find_by_username($username);
@@ -22,6 +22,7 @@ include(SHARED_PATH . '/public_header.php');
     }
  }
  ?> 
+
 <script src="<?php echo url_for('js/profile.js'); ?>" defer></script>
 <main id="userProfile" role="main" tabindex="-1">
     <div id="profileWrapper">
@@ -67,7 +68,7 @@ include(SHARED_PATH . '/public_header.php');
                                                 <strong>Note: This action cannot be undone.</strong>
                                                 <form action="<?php echo url_for('/member/delete_recipe.php?recipe_id=' . $recipe->id); ?>" method="POST">
                                                     <input type="hidden" name="recipe['id']" value="<?php echo $recipe->id; ?>">
-                                                    <input type="submit" name="delete" value="Delete Recipe">
+                                                    <input type="submit" name="delete" value="Delete Recipe" class="deleteButton">
                                                 </form>
                                             </div>
                                         </div>
@@ -92,15 +93,13 @@ include(SHARED_PATH . '/public_header.php');
                                     <input type="text" id="cookbookName" name="cookbook[cookbook_name]" pattern="^[A-Za-z \-']+$" required>
                                 </label>
                                 </div>
-                                <input type="submit" value="Create cookbook">
+                                <input type="submit" value="Create cookbook" class="createUpdateButton">
                             </form>
                         </div>
                     </div>
                 <?php } else { ?>
                     <img src="<?php echo url_for('/images/icon/cookbook.svg'); ?>" alt="Cookbook Icon" width="30" height="30">
                     <h3><?php echo $cookbook[0]->cookbook_name; ?></h3>
-                    
-           
             </div>
             <div class="profileCards">
                 <?php  $cookbookRecipes = CookbookRecipe::get_cookbook_recipes_by_cookbook_id($cookbook[0]->id);
@@ -108,13 +107,12 @@ include(SHARED_PATH . '/public_header.php');
                            <?php $recipe = Recipe::find_by_id($recipe->recipe_id); ?>
                            <div class="profileRecipeCard">
                                <?php include(SHARED_PATH . '/recipe_card.php'); ?>
-                               
                             </div>
                         <?php endforeach; ?>
                         <?php } ?>
                 </div>
 
-               </div>    
+    </div>    
             
 </main>
 
