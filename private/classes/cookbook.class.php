@@ -21,11 +21,11 @@ class Cookbook extends DatabaseObject {
         $this->errors = [];
 
         if(is_blank($this->cookbook_name)) {
-            $this->errors[] = "Cookbook name cannot be blank.";
+            $this->errors['cookbook_name'][] = "Cookbook name cannot be blank.";
         } elseif (!has_length($this->cookbook_name, ['min' => 2, 'max' => 255])) {
-            $this->errors[] = "Cookbook name must be between 2 and 255 characters.";
+            $this->errors['cookbook_name'][] = "Cookbook name must be between 2 and 255 characters.";
         } elseif(!preg_match("^[A-Za-z \-']+$")){
-            $this->errors[] = "Cookbook name can only contain letters, spaces, hyphens, and apostrophes.";
+            $this->errors['cookbook_name'][] = "Cookbook name can only contain letters, spaces, hyphens, and apostrophes.";
         }
 
         return $this->errors; 

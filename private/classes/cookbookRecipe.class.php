@@ -15,6 +15,14 @@ class CookbookRecipe extends DatabaseObject {
         $this->cookbook_id = $args['cookbook_id'] ?? 1;
         $this->recipe_id = $args['recipe_id'] ?? 1;
     }
+
+    protected function validate() {
+        $this->errors = [];
+
+        if(recipe_exists_in_cookbook($this->cookbook_id, $this->recipe_id)){
+            $this->errors['recipe_id'][] = "Recipe already exists in this cookbook.";
+        }
+    }
     
 
     /**
