@@ -1,6 +1,6 @@
-<title>Edit Recipe | Culinnari</title>
 <?php 
 require_once('../../private/initialize.php'); 
+$title = 'Edit Recipe | Culinnari';
 include(SHARED_PATH . '/public_header.php'); 
 require_login();
 $recipe_id = $_GET['recipe_id'] ?? null; // Get the recipe ID from the URL
@@ -33,10 +33,10 @@ $existingImage = !empty($recipe_images) ? $recipe_images[0]->recipe_image : null
 $defaultImage = url_for('/images/default_recipe_image.webp'); 
 $recipe_video = RecipeVideo::find_by_recipe_id($recipe_id);
 
-/**
- * NEEDS LOGIC FOR EDITING 
- */
-
+if(is_post_request()) {
+    $_SESSION['message'] = "Recipe update functionality is not available yet.";
+    redirect_to(url_for('/member/profile.php?id=' . $_SESSION['user_id']));
+}
 ?>
 
 <script src="<?php echo url_for('/js/createRecipe.js'); ?>" defer></script>
@@ -86,9 +86,9 @@ $recipe_video = RecipeVideo::find_by_recipe_id($recipe_id);
                         <legend>Prep Time</legend>
                         <div class="timeContainer">
                             <label for="prepTimeHours">Hours:
-                                <input type="number" id="prepTimeHours" name="prep_hours" min="0" max="99" step="1" placeholder="Hrs" maxlength="2" value="<?php echo floor($recipe->recipe_prep_time_seconds / 3600); ?>"></label>
+                                <input type="number" id="prepTimeHours" name="prep_hours" min="0" max="99" step="1" placeholder="Hrs" value="<?php echo floor($recipe->recipe_prep_time_seconds / 3600); ?>"></label>
                             <label for="prepTimeMinutes">Minutes:
-                                <input type="number" id="prepTimeMinutes" name="prep_minutes" min="0" max="59" step="1" placeholder="Min" maxlength="2" value="<?php echo ($recipe->recipe_prep_time_seconds % 3600) / 60; ?>"></label>
+                                <input type="number" id="prepTimeMinutes" name="prep_minutes" min="0" max="59" step="1" placeholder="Min" value="<?php echo ($recipe->recipe_prep_time_seconds % 3600) / 60; ?>"></label>
                         </div>
                     </fieldset>
 
@@ -97,9 +97,9 @@ $recipe_video = RecipeVideo::find_by_recipe_id($recipe_id);
                         <legend>Cook Time</legend>
                         <div class="timeContainer">
                             <label for="cookTimeHours">Hours:
-                                <input type="number" id="cookTimeHours" name="cook_hours" min="0" max="99" step="1" placeholder="Hrs" maxlength="2" value="<?php echo floor($recipe->recipe_cook_time_seconds / 3600); ?>"></label>
+                                <input type="number" id="cookTimeHours" name="cook_hours" min="0" max="99" step="1" placeholder="Hrs" value="<?php echo floor($recipe->recipe_cook_time_seconds / 3600); ?>"></label>
                             
-                            <label for="cookTimeMinutes">Minutes:<input type="number" id="cookTimeMinutes" name="cook_minutes" min="0" max="59" step="1" placeholder="Min" maxlength="2" value="<?php echo ($recipe->recipe_cook_time_seconds % 3600) / 60; ?>"></label>
+                            <label for="cookTimeMinutes">Minutes:<input type="number" id="cookTimeMinutes" name="cook_minutes" min="0" max="59" step="1" placeholder="Min" value="<?php echo ($recipe->recipe_cook_time_seconds % 3600) / 60; ?>"></label>
                         </div>
                     </fieldset>    
             </div>
@@ -138,20 +138,20 @@ $recipe_video = RecipeVideo::find_by_recipe_id($recipe_id);
                         <button type="button" id="addIngredient">+ Add Ingredient</button>
                 </div>
                 <div id="enteredIngredients">
-                    <?php foreach($ingredients as $ingredient): ?>
+                    <?php foreach($ingredients as $index => $ingredient): ?>
                         <div class="addedIngredients">
                             <div class="ingredientInputSet">
-                                <label for="measurementAmount-<?php echo $ingredient->ingredient_quantity;?>">Amount:
+                                <label for="measurementAmount-<?php echo $index . $ingredient->ingredient_quantity; ?>">Amount:
                                     <input type="text" 
                                     name="ingredient[ingredient_quantity]" 
                                     pattern="^\d{1,2}(\s\d{1,2}\/\d{1,2})?$|^\d{1,2}\/\d{1,2}$"
                                     placeholder="1, 1/2, 1 1/2" 
                                     maxlength="6" 
-                                    id="measurementAmount-<?php echo $ingredient->ingredient_quantity;?>"
+                                    id="measurementAmount-<?php echo $index . $ingredient->ingredient_quantity; ?>"
                                     value="<?php echo decimal_to_fraction($ingredient->ingredient_quantity); ?>">
                                 </label>
-                                <label for="ingredientUnit">Unit:
-                                    <select name="ingredient[ingredient_measurement_name]" class="ingredientUnit">
+                                <label for="ingredientUnit-<?php echo $index. $ingredient->ingredient_measurement_name;?>">Unit:
+                                    <select name="ingredient[ingredient_measurement_name]" id="ingredientUnit-<?php echo $index. $ingredient->ingredient_measurement_name;?>">
                                         <option value="n/a" <?php echo $ingredient->ingredient_measurement_name === "n/a" ? "selected" : ""; ?>></option>
                                         <option value="teaspoon" <?php echo $ingredient->ingredient_measurement_name === "teaspoon" ? "selected" : ""; ?>>teaspoon</option>
                                         <option value="tablespoon" <?php echo $ingredient->ingredient_measurement_name === "tablespoon" ? "selected" : ""; ?>>tablespoon</option>
@@ -166,8 +166,8 @@ $recipe_video = RecipeVideo::find_by_recipe_id($recipe_id);
                                         <option value="pound" <?php echo $ingredient->ingredient_measurement_name === "pound" ? "selected" : ""; ?>>pound</option>
                                     </select>
                                 </label>
-                                <label for="ingredientName">Name:
-                                    <input type="text" name="ingredient[ingredient_name]" placeholder="Cookies (crushed)" class="ingredientName" value="<?php echo h($ingredient->ingredient_name); ?>">
+                                <label for="ingredientName-<?php echo h($ingredient->ingredient_name);?>">Name:
+                                    <input type="text" name="ingredient[ingredient_name]" placeholder="Cookies (crushed)" id="ingredientName-<?php echo h($ingredient->ingredient_name);?>" value="<?php echo h($ingredient->ingredient_name); ?>">
                                 </label>
                                 <button type="button" class="removeIngredient">X</button>
                             </div>
@@ -276,7 +276,7 @@ $recipe_video = RecipeVideo::find_by_recipe_id($recipe_id);
             <input type="url" id="youtube_link" name="recipe_video_url" placeholder="https://www.youtube.com/watch?v=..." value="<?php if($recipe_video): echo h(($recipe_video->recipe_video_url)); endif;?>">
             
             <div class="recipeSubmitReset">
-                <input type="submit" value="Update Recipe" class="createRecipeButton" disabled>
+                <span>Edit recipe feature not available yet.</span>
             </div>
         </form>
     </div>
