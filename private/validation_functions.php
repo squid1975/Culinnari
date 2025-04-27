@@ -134,4 +134,22 @@
     return !empty($signup_errors);
   }
 
+
+/**
+ * Checks if a name is unique in the database (e.g., style name, meal type name)
+ * * @param string $name The name to check for uniqueness
+ * * @param string $current_id The current ID of the record (if applicable)
+ * * @param string $object_class The class name of the object to check against
+ */
+  function has_unique_name($name, $object_class, $current_id="0") {
+    // Need to re-write for OOP
+    $record = $object_class::find_by_name($name);
+    if($record === false || $record->id == $current_id) {
+      //is unique
+      return true;
+    } else {
+      return false; 
+    }
+  }
+
 ?>

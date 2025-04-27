@@ -13,6 +13,16 @@ class RecipeVideo extends DatabaseObject {
         $this->recipe_id = $args['recipe_id'] ?? 1;
     }
 
+    protected function validate() {
+        $this->errors = [];
+
+       if (!preg_match("/^(https?:\/\/)?(www\.)?(youtube\.com\/(?:[^\/\n\s]+\/\S+|(?:v|e(?:mbed)?)\/(\S+))|youtu\.be\/\S+)$/", $this->recipe_video_url)) {
+            $this->errors['recipe_video_url'] = "Recipe video URL must be a valid YouTube URL share link.";
+        }
+
+        return $this->errors;
+    }
+
     /**
      * Finds the recipe video associated with a recipe
      * @param int|string $recipe_id the recipe_id (id in recipe table) of the recipe to look up 

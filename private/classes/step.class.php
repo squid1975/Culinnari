@@ -19,6 +19,18 @@ class Step extends DatabaseObject {
         $this->step_description = $args['step_description'] ??'';
 
     }
+
+    protected function validate() {
+        $this->errors = [];
+
+        if (is_blank($this->step_description)) {
+            $this->errors['step_description'] = "Step description cannot be blank.";
+        } elseif (!has_length($this->step_description, ['min' => 2, 'max' => 255])) {
+            $this->errors['step_description'] = "Step description must be between 2 and 255 characters.";
+        } 
+        
+        return $this->errors;
+    }
     
     /**
      * Finds all steps associated with a recipe

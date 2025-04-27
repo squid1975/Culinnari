@@ -29,5 +29,20 @@ class Diet extends DatabaseObject {
 
         return $this->errors;
     }
+
+     /**
+     * Validates the diet name (checking for uniqueness)
+     *  * @return array Array of records where the name already exists
+     */
+    public static function find_by_name($diet_name)
+    {
+        $sql = "SELECT * FROM " . static::$table_name . " WHERE diet_name = '" . self::$database->escape_string($diet_name) . "'";
+        $result_array = static::find_by_sql($sql);
+        if (!empty($result_array)) {
+            return array_shift($result_array);
+        } else {
+            return false;
+        }
+    }
     
 }
