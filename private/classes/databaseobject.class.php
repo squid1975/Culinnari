@@ -70,7 +70,9 @@ class DatabaseObject {
 
   protected function create() {
     $this->validate();
-    if(!empty($this->errors)) { return false; }
+    if(!empty($this->errors)) { 
+      return false; 
+    }
     
 
     $attributes = $this->sanitized_attributes();
@@ -88,7 +90,9 @@ class DatabaseObject {
 
   protected function update() {
     $this->validate();
-    if(!empty($this->errors)) { return false; }
+    if(!empty($this->errors)){ 
+      return false; 
+    }
 
     $attributes = $this->sanitized_attributes();
     $attribute_pairs = [];
@@ -153,17 +157,17 @@ class DatabaseObject {
     return $result;
   }
   
-public static function begin_transaction() {
-    return self::$database->begin_transaction();
-}
+  public static function begin_transaction() {
+      return self::$database->begin_transaction();
+  }
 
 
-public function commit() {
-  return self::$database->commit();
-}
+  public function commit() {
+    return self::$database->commit();
+  }
 
-public function rollback() {
-  return self::$database->rollback();
-}
+  public function rollback() {
+    return self::$database->rollback();
+  }
 }
 
