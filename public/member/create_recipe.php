@@ -12,30 +12,7 @@ $current_user_id = $session->user_id;
 
 if (is_post_request()) {
     // Get arrays of values 
-    $recipe_name  = $_POST['recipe']['recipe_name'] ?? '';
-    $recipe_description = $_POST['recipe']['recipe_description'] ?? '';
-    $recipe_total_servings = $_POST['recipe']['recipe_total_servings'] ?? 0;
-    if(empty($recipe_name)) {
-        $errors['recipe_name'] = "Recipe name is required.";
-    } elseif (strlen($recipe_name) > 40) {
-        $errors['recipe_name'] = "Recipe name must be less than 40 characters.";
-    } elseif (!preg_match("/^[A-Za-z \-']+$/", $recipe_name)) {
-        $errors['recipe_name'] = "Recipe name can only contain letters, spaces, hyphens, and apostrophes.";
-    }
-    if(empty($recipe_description)) {
-        $errors['recipe_description'] = "Recipe description is required.";
-    } elseif (strlen($recipe_description) > 255) {
-        $errors['recipe_description'] = "Recipe description must be less than 255 characters.";
-    } elseif (!preg_match("/^[A-Za-z0-9 \-.,'()]+$/", $recipe_description)) {
-        $errors['recipe_description'] = "Recipe description can only contain letters, numbers, spaces, hyphens, periods, commas, parentheses, and apostrophes.";
-    }
-
-    if(empty($recipe_total_servings) || $recipe_total_servings < 1 || $recipe_total_servings > 99) {
-        $errors['recipe_total_servings'] = "Total servings must be between 1 and 99.";
-    } elseif (!is_numeric($recipe_total_servings)) {
-        $errors['recipe_total_servings'] = "Total servings must be a number.";
-    }
-
+    
     $steps = $_POST['step'] ?? [];
     if(empty($steps)){
         $errors['steps'] = "At least one step is required.";
@@ -117,11 +94,11 @@ if (is_post_request()) {
                         $imageURL = '/images/uploads/recipe_image/' . $webpFileName;
                         return;
                     } else {
-                        $errors[] = "Error moving the uploaded WebP file.";
+                        $errors['image'] = "Error moving the uploaded WebP file.";
                     }
                     break;
                 default:
-                    $errors[] = "Unsupported file type.";
+                    $errors['image'] = "Unsupported file type.";
             }
     
             // Convert and save as WebP
@@ -131,13 +108,13 @@ if (is_post_request()) {
                     $imageURL = '/images/uploads/recipe_image/' . $webpFileName;
                     unlink($fileTmpPath); // Optional: delete original file
                 } else {
-                    $errors[] = "Failed to convert image to WebP.";
+                    $errors['image'] = "Failed to convert image to WebP.";
                 }
             } else {
-                $errors[] = "Image processing failed.";
+                $errors['image'] = "Image processing failed.";
             }
         } else {
-            $errors[] = "Invalid file type. Only JPEG, PNG, and WEBP are allowed.";
+            $errors['image'] = "Invalid file type. Only JPEG, PNG, and WEBP are allowed.";
         }
     } else {
         // Default image if no file uploaded
@@ -163,6 +140,7 @@ if (is_post_request()) {
 
                 if (!$result) { // If recipe insertion fails
                     throw new Exception("Unable to insert recipe.");
+                    $recipe_errors = $recipe->errors;
                 }
 
                 $recipe_id = $recipe->id;
@@ -178,6 +156,7 @@ if (is_post_request()) {
                     $result = $ingredient->save();
 
                     if (!$result) { // If any ingredient insertion fails
+                        $ingredient_errors = $ingredient->errors;
                         throw new Exception("Unable to insert ingredient at index $index.");
                     }
                 }
@@ -191,6 +170,7 @@ if (is_post_request()) {
                     $result = $step->save();
                 
                     if(!$result) {
+                        $step_errors = $step->errors;
                         throw new Exception("Unable to save step at index {$index}.");
                     }
                 }
@@ -260,6 +240,7 @@ if (is_post_request()) {
                     $recipeVideo = new RecipeVideo(args:$recVid);
                     $result = $recipeVideo->save();
                     if(!$result){
+                        $recipe_video_errors = $recipeVideo->errors;
                         throw new Exception(message: "Unable to insert recipe video link.");
                     }
                 }
@@ -297,23 +278,38 @@ else {
         </div>
         <form action="create_recipe.php" method="POST" enctype="multipart/form-data" class="recipeForm">
              <input type="hidden" name="recipe[user_id]" value="<?php echo h($current_user_id); ?>">
-             <?php if (!empty($errors['recipe_name'])): ?>
-                    <p class="error-message"><?php echo $errors['recipe_name']; ?></p>
-                <?php endif; ?>
+             <?php if (isset($recipe_errors['recipe_name'])): ?>
+                    <div class="error-messages">
+                    <?php foreach ($recipe_errors['recipe_name'] as $error): ?>
+                        <p class="error"><?php echo h($error); ?></p>
+                        <?php endforeach; ?>
+                    </div>
+            <?php endif; ?>
             <label for="recipeName" class="recipePartName">Recipe Name:*</label>
-            <input type="text" id="recipeName" name="recipe[recipe_name]" maxlength="40" pattern="^[A-Za-z \-']+$"required
-                value="<?php echo h($_POST['recipe']['recipe_name'] ?? ''); ?>">
+            <input type="text" id="recipeName" name="recipe[recipe_name]" maxlength="40" pattern="^[A-Za-z \-']+$"required value="<?php echo h($_POST['recipe']['recipe_name'] ?? ''); ?>">
 
             <label for="recipeDescription" class="recipePartName">Description:*</label>
-            <span>Limit 255 characters.</span>
-            <textarea id="recipeDescription" name="recipe[recipe_description]" maxlength="255" rows="4" cols="50"
-                required><?php echo h($_POST['recipe']['recipe_description'] ?? ''); ?>
-            </textarea>
-            <?php if (!empty($errors['recipe_description'])): ?>
-                    <p class="error-message"><?php echo $errors['recipe_description']; ?></p>
-                <?php endif; ?>
+            <span id="recipeDescriptionDirections">Limit 255 characters.</span>
+            <?php if (isset($recipe_errors['recipe_description'])): ?>
+                    <div class="error-messages">
+                    <?php foreach ($recipe_errors['recipe_description'] as $error): ?>
+                        <p class="error"><?php echo h($error); ?></p>
+                        <?php endforeach; ?>
+                    </div>
+            <?php endif; ?>
+            <textarea id="recipeDescription" name="recipe[recipe_description]" maxlength="255" rows="4" cols="50" required><?php echo h($_POST['recipe']['recipe_description'] ?? ''); ?></textarea>
+
+            
+
             <fieldset>
-                <legend>Difficulty</legend>
+                <legend id="recipeDifficultyLabel">Difficulty</legend>
+                <?php if (isset($recipe_errors['recipe_difficulty'])): ?>
+                    <div class="error-messages">
+                    <?php foreach ($recipe_errors['recipe_difficulty'] as $error): ?>
+                        <p class="error"><?php echo h($error); ?></p>
+                        <?php endforeach; ?>
+                    </div>
+                <?php endif; ?>
                 <div class="radio-group">
                     <div class="formField">
                         <input type="radio" id="beginner" name="recipe[recipe_difficulty]" value="beginner" checked
@@ -339,19 +335,19 @@ else {
                     </div>
                 </div>
             </fieldset>
+
             <div id="timeInput">
                 <?php if (!empty($errors['time'])): ?>
                     <p class="error-message"><?php echo $errors['time']; ?></p>
                 <?php endif; ?>
                 <fieldset>
+                    <span id="timeDirections">A value is required for either the prep or cook time.*</span>
                     <legend>Prep Time</legend>
                     <div class="timeContainer">
                         <label for="prepTimeHours">Hours:
-                            <input type="number" id="prepTimeHours" name="prep_hours" min="0" max="99" step="1"
-                                placeholder="Hrs" value="<?php echo h($_POST['prep_hours'] ?? ''); ?>"></label>
+                            <input type="number" id="prepTimeHours" name="prep_hours" min="0" max="99" step="1" placeholder="Hrs" value="<?php echo h($_POST['prep_hours'] ?? ''); ?>"></label>
                         <label for="prepTimeMinutes">Minutes:
-                            <input type="number" id="prepTimeMinutes" name="prep_minutes" min="0" max="59" step="1"
-                                placeholder="Min" value="<?php echo h($_POST['prep_minutes'] ?? ''); ?>"></label>
+                            <input type="number" id="prepTimeMinutes" name="prep_minutes" min="0" max="59" step="1" placeholder="Min" value="<?php echo h($_POST['prep_minutes'] ?? ''); ?>"></label>
                     </div>
                 </fieldset>
 
@@ -361,16 +357,25 @@ else {
                     <div class="timeContainer">
                         <label for="cookTimeHours">Hours:
                             <input type="number" id="cookTimeHours" name="cook_hours" min="0" max="99" step="1"
-                                placeholder="Hrs" value="<?php echo h($_POST['cook_hours'] ?? ''); ?>"></label>
+                                placeholder="Hrs" value="<?php echo h($_POST['cook_hours'] ?? ''); ?>">
+                        </label>
 
                         <label for="cookTimeMinutes">Minutes:
                             <input type="number" id="cookTimeMinutes" name="cook_minutes" min="0" max="59" step="1"
-                                placeholder="Min" value="<?php echo h($_POST['cook_minutes'] ?? ''); ?>"></label>
+                                placeholder="Min" value="<?php echo h($_POST['cook_minutes'] ?? ''); ?>">
+                        </label>
                     </div>
                 </fieldset>
             </div>
 
             <div id="totalServingsContainer">
+                <?php if (isset($recipe_errors['recipe_total_servings'])): ?>
+                        <div class="error-messages">
+                        <?php foreach ($recipe_errors['recipe_total_servings'] as $error): ?>
+                            <p class="error"><?php echo h($error); ?></p>
+                            <?php endforeach; ?>
+                        </div>
+                <?php endif; ?>
                 <label for="totalServings" class="recipePartName">Total Servings:*</label>
                 <input type="number" id="totalServings" name="recipe[recipe_total_servings]" min="1" max="99" step="1"
                     value="<?php echo h($_POST['recipe']['recipe_total_servings'] ?? ''); ?>" required>
@@ -380,6 +385,28 @@ else {
                 <legend>Ingredients:*</legend>
                 <span id="ingredientDirections">Type the ingredient quantity and select a unit if applicable. Type the
                     ingredient name and any special instructions. Example: ingredient name, instructions.</span>
+                <?php if (isset($ingredient_errors['ingredient_name'])): ?>
+                        <div class="error-messages">
+                        <?php foreach ($ingredient_errors['ingredient_name'] as $error): ?>
+                            <p class="error"><?php echo h($error); ?></p>
+                            <?php endforeach; ?>
+                        </div>
+                <?php endif; ?>
+                <?php if (isset($ingredient_errors['ingredient_quantity'])): ?>
+                        <div class="error-messages">
+                        <?php foreach ($ingredient_errors['ingredient_quantity'] as $error): ?>
+                            <p class="error"><?php echo h($error); ?></p>
+                            <?php endforeach; ?>
+                        </div>
+                <?php endif; ?>
+                <?php if (isset($ingredient_errors['ingredient_measurement_name'])): ?>
+                        <div class="error-messages">
+                        <?php foreach ($ingredient_errors['ingredient_measurement_name'] as $error): ?>
+                            <p class="error"><?php echo h($error); ?></p>
+                            <?php endforeach; ?>
+                        </div>
+                <?php endif; ?>
+                
                 <?php if (!empty($errors['ingredients'])): ?>
                     <p class="error-message"><?php echo $errors['ingredients']; ?></p>
                 <?php endif; ?>
@@ -403,7 +430,8 @@ else {
                             <option value="pound">pound</option>
                         </select></label>
                     <label for="ingredientName">Name:*
-                        <input type="text" placeholder="Cookies,crushed" id="ingredientName"></label>
+                        <input type="text" placeholder="Cookies,crushed" id="ingredientName">
+                    </label>
                     <button type="button" id="addIngredient">+ Add Ingredient</button>
                 </div>
                 <div id="enteredIngredients">
@@ -414,6 +442,13 @@ else {
             <fieldset id="steps">
                 <legend>Steps:*</legend>
                 <span id="stepDirections">Enter a step to make your recipe. Click the 'plus' to add a step.</span>
+                <?php if (isset($step_errors['step_description'])): ?>
+                        <div class="error-messages">
+                        <?php foreach ($step_errors['step_description'] as $error): ?>
+                            <p class="error"><?php echo h($error); ?></p>
+                            <?php endforeach; ?>
+                        </div>
+                <?php endif; ?>
                 <?php if (!empty($errors['steps'])): ?>
                     <p class="error-message"><?php echo $errors['steps']; ?></p>
                 <?php endif; ?>
@@ -479,7 +514,10 @@ else {
                     </div>
                 </fieldset>
             </div>
-
+            
+            <?php if (!empty($errors['image'])): ?>
+                    <p class="error-message"><?php echo $errors['image']; ?></p>
+                <?php endif; ?>
             <label for="recipe_image" class="recipePartName">Image Upload</label>
             <span id="recipeAcceptedFileTypes">Accepted file types: JPG, PNG, WEBP</span>
             <input type="file" id="recipe_image" name="recipe_image">
@@ -494,8 +532,8 @@ else {
                 <div class="modal" id="clearRecipeFormModal">
                     <div class="modal-content">
                         <h2>Reset recipe form</h2>
-                        <p>Are you sure you want to clear the form? <strong>All input will be lost.</strong></p>
-                        <button id="confirmFormReset">Reset form</button>
+                        <p>Are you sure you want to clear the form?</p>
+                        <button id="confirmFormReset" class="deleteButton">Reset form</button>
                         <button id="cancelReset">Cancel</button>
                     </div>
                 </div>
