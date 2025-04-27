@@ -130,31 +130,31 @@ if (!empty($query_params)) {
     <h2 class="visuallyHidden">Diet Key</h2>
     <div class="dietKey">
         <div class="dietIconWithName">
-                <img src="images/icon/dietIcons/glutenFree.svg" width="20" height="20" alt="gluten free icon"
+                <img src="images/icon/dietIcons/glutenFree.svg" width="20" height="20" alt="gluten free icon">
                 <p>Gluten-Free</p>
         </div>
         <div class="dietIconWithName">
-                <img src="images/icon/dietIcons/keto.svg" width="20" height="20" alt="keto icon"
+                <img src="images/icon/dietIcons/keto.svg" width="20" height="20" alt="keto icon">
                 <p>Keto</p>
         </div>
         <div class="dietIconWithName">
-                <img src="images/icon/dietIcons/lowCarb.svg" width="20" height="20" alt="Low carb icon"   
+                <img src="images/icon/dietIcons/lowCarb.svg" width="20" height="20" alt="Low carb icon">   
                 <p>Low Carb</p>
         </div>
         <div class="dietIconWithName">
-                <img src="images/icon/dietIcons/sugarFree.svg" width="20" height="20" alt="Sugar free icon" 
+                <img src="images/icon/dietIcons/sugarFree.svg" width="20" height="20" alt="Sugar free icon">
                 <p>Sugar-Free</p>
         </div>
         <div class="dietIconWithName">
-                <img src="images/icon/dietIcons/paleo.svg" width="20" height="20" alt="Paleo icon"
+                <img src="images/icon/dietIcons/paleo.svg" width="20" height="20" alt="Paleo icon">
                 <p>Paleo</p>
         </div>
         <div class="dietIconWithName">
-                <img src="images/icon/dietIcons/vegan.svg" width="20" height="20" alt="Vegan icon"                      
+                <img src="images/icon/dietIcons/vegan.svg" width="20" height="20" alt="Vegan icon">                      
                 <p>Vegan</p>
         </div>
         <div class="dietIconWithName">
-                <img src="images/icon/dietIcons/vegetarian.svg" width="20" height="20" alt="Vegetarian icon"
+                <img src="images/icon/dietIcons/vegetarian.svg" width="20" height="20" alt="Vegetarian icon">
                 <p>Vegetarian</p>
         </div>
     </div>
