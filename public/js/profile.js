@@ -6,6 +6,7 @@ const deleteRecipeButtons = document.querySelectorAll(".deleteRecipeButton");
 const removeRecipeButtons = document.querySelectorAll(".removeRecipeButton");
 const createCookbookButton = document.querySelector("#createCookbookButton");
 
+// If the user has not created a cookbook, this will show the create cookbook modal
 if(createCookbookButton) {
 createCookbookButton.addEventListener("click", () => {
   const createCookbookModal = document.querySelector("#createCookbookModal");
@@ -18,7 +19,7 @@ createCookbookButton.addEventListener("click", () => {
 });
 }
 
-
+// Create a modal for each delete recipe button and add event listeners
 deleteRecipeButtons.forEach(button => {
   
   const container = button.closest(".profileDeleteRecipe");
