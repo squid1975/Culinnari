@@ -25,7 +25,7 @@
 #homeHero {
   background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(255, 255, 255, 0.1)),
     url("../images/24674.jpg") no-repeat 90% 30% / cover;
-  height: 300px;
+  height: 400px;
   margin: 0 auto;
 }
 
@@ -176,6 +176,22 @@ h3.searchMessage {
   flex-wrap: wrap;
 }
 
+/********************************  ABOUT US  **************************/
+
+#aboutPageHeading {
+  font-size: 30px;
+  text-align: center;
+}
+
+.aboutSection {
+  border-bottom: 1px solid #333;
+  padding: 20px;
+}
+
+.aboutSection ul li {
+  list-style-type: circle;
+}
+
 /********************************  VIEW RECIPE  **************************/
 #recipePageDisplayWrapper {
   background: #ffffff;
@@ -256,6 +272,23 @@ div#recipeDisplayDifficulty p#recipeDisplayIntermediate {
 #recipeDisplayOptions {
   align-items: center;
   display: flex;
+  gap: 20px;
+}
+
+#recipeDisplayOptions a {
+  border-radius: 5px;
+  display: flex;
+  font-size: 17px;
+  padding: 5px;
+}
+
+#recipeDisplayOptions a img {
+  margin-right: 5px;
+}
+
+#recipeDisplayOptions a:hover,
+#recipeDisplayOptions button:hover {
+  color: #879787;
 }
 
 #recipeDisplayOptions button {
@@ -263,22 +296,11 @@ div#recipeDisplayDifficulty p#recipeDisplayIntermediate {
   background: none;
   border: none;
   display: flex;
-  font-size: 16px;
+  font-size: 17px;
 }
 
 #recipeDisplayOptions button img {
   margin-right: 3px;
-}
-
-#recipeDisplayOptions div#recipeDisplayPrint a {
-  align-items: center;
-  border-radius: 5px;
-  display: flex;
-  padding: 5px;
-}
-
-#recipeDisplayOptions div#recipeDisplayPrint a img {
-  margin-right: 5px;
 }
 
 #recipeDisplayIngredientsSteps {
@@ -342,17 +364,7 @@ li.recipeIngredientListing {
 
 .star-widget {
   padding: 5px;
-}
-
-.stars i {
-  color: #e6e6e6;
-  cursor: pointer;
-  font-size: 35px;
-  transition: color 0.2s ease;
-}
-
-.stars i.active {
-  color: #ff9c1a;
+  width: fit-content;
 }
 
 .star-widget form {
@@ -366,7 +378,7 @@ li.recipeIngredientListing {
 .star-widget label {
   color: #444444;
   cursor: pointer;
-  font-size: 20px;
+  font-size: 25px;
   padding: 10px;
   transition: all 0.2s ease;
 }
@@ -380,14 +392,20 @@ li.recipeIngredientListing {
   color: #ffdd44;
 }
 
-/* Special Styling for 5-Star Rating */
-.star-widget input#rate-5:checked ~ label {
-  color: #ffee77;
+.stars i {
+  color: #e6e6e6;
+  cursor: pointer;
+  font-size: 35px;
+  transition: color 0.2s ease;
+}
+
+.stars i.active {
+  color: #ff9c1a;
 }
 
 /* Submit Button */
 .submitRatingButton {
-  background: #d1d1d1;
+  background: #fff385;
   border: 1px solid #444444;
   border-radius: 5px;
   cursor: pointer;

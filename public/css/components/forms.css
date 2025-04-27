@@ -57,11 +57,11 @@
 }
 
 .form input:focus {
-    box-shadow: 0 1px 0 rgba(0,0,0,0.2);
+    box-shadow: 0 1px 0 #00000033;
 }
 
 .form a {
-    color: #009579;
+    color: #10443b;
     font-size: 16px;
     text-decoration: none;
 }
@@ -92,6 +92,10 @@
 
 .signup label:hover {
     text-decoration: underline;
+}
+
+.loginSignupButton:hover {
+    box-shadow: 0 0 2px #333333;
 }
 
 /*********************************** SEARCH BAR ********************/
