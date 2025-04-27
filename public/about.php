@@ -16,10 +16,10 @@ include SHARED_PATH . '/public_header.php';
                 <h3>Our Values</h3>
                 <p>At Culinnari, we are committed to the following values:</p>
                 <ul>
-                    <li><strong>Inclusivity:</strong> We welcome cooks of all backgrounds and skill levels. Everyone was a beginner at one point.</li>
-                    <li><strong>Simplicity:</strong> Our recipes are designed to be straightforward and easy to follow.</li>
-                    <li><strong>Creativity:</strong> We encourage experimentation and creativity in the kitchen.</li>
-                    <li><strong>Community:</strong> We believe in the power of sharing knowledge and experiences.</li>
+                    <li>Inclusivity: We welcome cooks of all backgrounds and skill levels. Everyone was a beginner at one point.</li>
+                    <li>Simplicity: Our recipes are designed to be straightforward and easy to follow.</li>
+                    <li>Creativity: We encourage experimentation and creativity in the kitchen.</li>
+                    <li>Community: We believe in the power of sharing knowledge and experiences.</li>
                 </ul>
             </section>
     </div>

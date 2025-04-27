@@ -8,7 +8,7 @@
 
     <div id="adminMenu">         
         <a href="<?php echo url_for('/member/profile.php?id=' . $session->user_id); ?>">
-            <img src="<?php echo url_for('/images/icon/profileIcon.svg'); ?>" width="20" height="20" alt="Profile Icon" title="View culinnari profile">
+            <img src="<?php echo url_for('/images/icon/profileicon.svg'); ?>" width="20" height="20" alt="Profile Icon" title="View culinnari profile">
             My Profile
         </a>     
         <a href="<?php echo url_for('/admin/index.php'); ?>">

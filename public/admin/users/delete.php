@@ -38,7 +38,7 @@ if(is_post_request()) {
                 <p>Are you sure you want to delete this user? <strong>This cannot be undone.</strong></p>
                 <form action="<?php echo url_for('/admin/users/delete.php?' . $user->id);?>" method="post">
                     <div>
-                        <input type="submit" name="delete" value="Delete User">
+                        <input type="submit" name="delete" value="Delete User" class="deleteButton">
                     </div>
                 </form>
             </div>

@@ -32,6 +32,7 @@ require_mgmt_login();
                         <th class="adminTableUserJoinDate">Join Date</th>
                         <th class="adminTableUserRole">Role</th>
                         <th class="adminTableUserActive">Active</th>
+                        <th class="adminTableUserManage">Manage</th>
                     </tr>
                     <?php
                     $users = User::find_all();

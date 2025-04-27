@@ -14,7 +14,7 @@ $current_page = basename($_SERVER['SCRIPT_NAME']);
         </label>
         <div id="menuContent">
             <ul>
-                <li class="<?php echo ($current_page == 'public/index.php') ? 'active' : ''; ?>">
+                <li class="<?php echo ($current_page == 'index.php') ? 'active' : ''; ?>">
                     <a href="<?php echo url_for('index.php'); ?>">Home</a>
                 </li>
                 <li class="<?php echo ($current_page == 'recipes.php') ? 'active' : ''; ?>">

@@ -45,9 +45,9 @@ if(is_post_request()) {
       <a class="back-link" href="<?php echo url_for('/admin/users/index.php'); ?>">&laquo; Back to User Index</a>
       <div class="manageUserWrapper">
         <h2>Edit user</h2>
-        <form action="<?php echo url_for('/admin/users/edit.php?id=' . h(u($id))); ?>" method="post">
+        <form action="<?php echo url_for('/admin/users/edit.php?id=' . h(u($user->id))); ?>" method="post">
           <?php include('form_fields.php'); ?>
-          <input type="submit" value="Update User">
+          <input type="submit" value="Update User" class="createUpdateButton">
         </form>
       </div>
     </div>

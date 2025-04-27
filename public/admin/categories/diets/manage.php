@@ -45,31 +45,32 @@ if(is_post_request()){
         <h2>Management Area : Diet</h2>
     </div>
     <div class="wrapper">
+        <div>
+            &laquo;<a href="<?php echo url_for('/admin/categories/index.php');?>">Back to Categories Index</a>
+        </div>
         <div class="manageCategoryWrapper">
-            <div>
-                &laquo;<a href="<?php echo url_for('/admin/index.php');?>">Back to Admin Management Index</a>
-            </div>
             <?php if(isset($_SESSION['message'])): ?>
                 <div class="session-message">
                     <?php echo $_SESSION['message']; ?>
                 </div>
-                <?php unset($_SESSION['message']); // Clear message after displaying ?>
+                <?php unset($_SESSION['message']);?>
             <?php endif; ?>
             <section>
-            <h2>Manage Diet: <?php echo h($diet->diet_name); ?> </h2>
-            <div class="edit">
-                <h3>Edit Diet</h3>
-                <form action="<?php echo (url_for('/admin/categories/diets/manage.php?diet_id=' . $diet->id));?>" method="post">
-                    <div>
-                        <label for="meal_type_name">Diet Name:</label>
-                        <input type="text" name="diet[diet_name]" value="<?php echo h($diet->diet_name); ?>" pattern="^[A-Za-z \-']+$" required>
-                    </div>
-                    <div>
-                        <input type="submit" name="update" value="Update">
-                    </div>
-                </form>
-            </div>
+                <h2>Manage Diet: <?php echo h($diet->diet_name); ?></h2>
+                <div class="edit">
+                    <h3>Edit Diet</h3>
+                    <form action="<?php echo (url_for('/admin/categories/diets/manage.php?diet_id=' . $diet->id));?>" method="post">
+                        <div class="formField">
+                            <label for="meal_type_name">Diet Name:</label>
+                            <input type="text" name="diet[diet_name]" value="<?php echo h($diet->diet_name); ?>" pattern="^[A-Za-z \-']+$" required>
+                        </div>
+                        <div>
+                            <input type="submit" name="update" value="Update" class="createUpdateButton">
+                        </div>
+                    </form>
+                </div>
             </section>
+
             <section>
             <div class="delete">
                 <h2>Delete Diet</h2>
@@ -79,7 +80,7 @@ if(is_post_request()){
                 <form action="<?php echo(url_for('/admin/categories/diets/manage.php?diet_id=' . $diet->id)); ?>" method="post">
                     <div>
                         <input type="hidden" name="diet[id]" value=<?php echo $diet->id; ?>>
-                        <input type="submit" name="delete" value="Delete">
+                        <input type="submit" name="delete" value="Delete" class="deleteButton">
                     </div>
                 </form>
                 </div>

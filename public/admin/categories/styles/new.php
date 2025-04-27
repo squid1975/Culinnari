@@ -13,6 +13,8 @@ if(is_post_request()){
         $_SESSION['message'] = 'The style was created successfully.';
         redirect_to(url_for('/admin/categories/styles/manage.php?style_id=' . $style->id));
     } else {
+        // Handle errors
+        $style_errors = $style->errors;
         
     }
     
@@ -29,19 +31,26 @@ else {
     </div>
 
     <div class="wrapper">
+        <div>
+            &laquo;<a href="<?php echo url_for('/admin/categories/index.php');?>">Back to Categories Index</a>
+        </div>
         <div class="manageCategoryWrapper">
-            <div>
-                &laquo;<a href="<?php echo url_for('/admin/categories/index.php');?>">Back to Categories Index</a>
-            </div>
             <h2>Create New Style</h2>
             <div class="new">
+                <?php if (isset($style_errors['style_name'])): ?>
+                    <div class="error-messages">
+                    <?php foreach ($style_errors['style_name'] as $error): ?>
+                        <p class="error"><?php echo h($error); ?></p>
+                    <?php endforeach; ?>
+                    </div>
+                <?php endif; ?>
                 <form action="<?php echo url_for('/admin/categories/styles/new.php'); ?>" method="post">
                     <div class="formField">
                         <label for="style_name">Style Name:</label>
-                        <input type="text" name="style[style_name]" value="<?php echo h($style->style_name); ?>" maxlength="50" id="style_name" required>
+                        <input type="text" name="style[style_name]" value="<?php echo h($style->style_name); ?>" id="style_name" maxlength="50"  pattern="^[A-Za-z\-']+( [A-Za-z\-']+)*$" required>
                     </div>
                     <div>
-                        <input type="submit" name="create" value="Create new style">
+                        <input type="submit" name="create" value="Create" class="createUpdateButton">
                     </div>
                 </form>
             </div>

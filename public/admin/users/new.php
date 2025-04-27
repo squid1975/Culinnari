@@ -47,7 +47,7 @@ if(is_post_request()) {
 
             <?php include('form_fields.php'); ?>
 
-            <input type="submit" value="Create User">
+            <input type="submit" value="Create User" class="createUpdateButton">
         </form>
         </div>
 </div>

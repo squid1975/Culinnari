@@ -1,6 +1,6 @@
-<?php require_once('../../../../private/initialize.php');?>
-<title>Create New Diet | Culinnari</title>
-<?php include(SHARED_PATH . '/public_header.php');
+<?php require_once('../../../../private/initialize.php');
+$title = 'Create Diet | Culinnari';
+include(SHARED_PATH . '/public_header.php');
 require_mgmt_login();
 
 if(is_post_request()){
@@ -34,13 +34,21 @@ else {
             </div>
             <h2>Create New diet</h2>
             <div class="new">
+            <?php if (isset($diet_errors['diet_name'])): ?>
+                <div class="error-messages">
+                  <?php foreach ($diet_errors['diet_name'] as $error): ?>
+                    <p class="error"><?php echo h($error); ?></p>
+                  <?php endforeach; ?>
+                </div>
+              <?php endif; ?>
+            
                 <form action="<?php echo url_for('/admin/categories/diets/new.php'); ?>" method="post">
                     <div class="formField">
                         <label for="diet_name">Diet Name:</label>
                         <input type="text" name="diet[diet_name]" value="<?php echo h($diet->diet_name); ?>" maxlength="50" required>
                     </div>
                     <div>
-                        <input type="submit" name="create" value="Create new diet">
+                        <input type="submit" name="create" value="Create" class="createUpdateButton">
                     </div>
                 </form>
             </div>

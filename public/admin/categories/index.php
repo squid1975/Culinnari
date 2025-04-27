@@ -22,7 +22,7 @@ require_mgmt_login();
             <img src="<?php echo url_for('/images/icon/categories.svg');?>" width="32" height="36" alt="Categories icon">
             <h3>Categories</h3>
         </div>
-        <section>
+        <section class="categoriesTableSection">
             <div class="sectionHeader">
                 <h4>Meal Types</h4>
                 <a class="adminAddNew" href="<?php echo url_for('/admin/categories/meal_types/new.php');?>">Add New Meal Type</a>
@@ -42,7 +42,8 @@ require_mgmt_login();
                     <?php } ?>
             </table>
         </section>
-        <section>
+
+        <section class="categoriesTableSection">
             <div class="sectionHeader">
                 <h4>Styles</h4>
                 <a class="adminAddNew" href="<?php echo url_for('/admin/categories/styles/new.php');?>">Add New Style</a>
@@ -62,7 +63,8 @@ require_mgmt_login();
                     <?php } ?>
                 </table>
             </section>
-            <section>           
+
+            <section class="categoriesTableSection">           
                 <div class="sectionHeader">
                     <h4>Diets</h4>
                     <a class="adminAddNew" href="<?php echo url_for('/admin/categories/diets/new.php');?>">Add New Diet</a>

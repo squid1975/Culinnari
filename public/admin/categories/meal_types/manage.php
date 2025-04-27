@@ -1,37 +1,43 @@
-<?php require_once('../../../../private/initialize.php');?>
-<title>Manage Meal Type</title>
-<?php include(SHARED_PATH . '/public_header.php');
+<?php require_once('../../../../private/initialize.php');
+$title = 'Manage Meal Type | Culinnari';
+include(SHARED_PATH . '/public_header.php');
 require_mgmt_login();
 
-$mealTypeId = $_GET['meal_type_id'] ?? '1';
-$mealType = MealType::find_by_id($mealTypeId);
-if($mealType === false){
-    $_SESSION['message'] = 'Meal type not found.';
+$id = $_GET['meal_type_id'] ?? '1';
+$meal_type = MealType::find_by_id($id);
+if($meal_type === false){
+    $_SESSION['message'] = 'Meal Type not found.';
     redirect_to(url_for('/admin/categories/index.php'));
 }
 
+$meal_type_errors = [];
 if(is_post_request()){
     if(isset($_POST['update'])){
-        $args = $_POST['mealType'];
-        $mealType->merge_attributes($args);
-        $result = $mealType->save();
+        $args = $_POST['meal_type'];
+        $meal_type->merge_attributes($args);
+        $result = $meal_type->save();
         if($result === true){
             $_SESSION['message'] = 'The meal type was updated successfully.';
-            redirect_to(url_for('/admin/categories/meal_types/manage.php?meal_type_id=' . $mealTypeId));
+            redirect_to(url_for('/admin/categories/meal_types/manage.php?meal_type_id=' . $meal_type->id));
         } else {
             // show errors
-            $meal_type_errors = $mealType->errors;
+            $meal_type_errors = $meal_type->errors;
         }
     }
+
     if(isset($_POST['delete'])){
-        $result = $mealType->delete();
+        $result = $meal_type->delete();
         if($result === true){
             $_SESSION['message'] = 'The meal type was deleted successfully.';
             redirect_to(url_for('/admin/categories/index.php'));
         }
-       
+        else {
+            // Handle error
+            $_SESSION['message'] = 'Error deleting meal type';
+            redirect_to(url_for('/admin/categories/styles/manage.php?meal_type_id=' . $meal_type->id));
+        }
     }
-
+       
 } else {
     // Display the form
     // No action needed here as we are already fetching the meal type details above
@@ -55,25 +61,24 @@ if(is_post_request()){
             <?php unset($_SESSION['message']); // Clear message after displaying ?>
         <?php endif; ?>
         <section>
-            <h2>Manage Meal Type: <?php echo h($mealType->meal_type_name); ?> </h2>
-            <?php if(!empty($meal_type_errors)): ?>
-            <div class="error-message">
-                <ul>
-                    <?php foreach($meal_type_errors as $error): ?>
-                        <li><?php echo h($error); ?></li>
-                    <?php endforeach; ?>
-                </ul>
-            </div>
-            <?php endif; ?>
+            <h2>Manage Meal Type: <?php echo h($meal_type->meal_type_name); ?> </h2>
+            <?php if (isset($meal_type_errors['meal_type_name'])): ?>
+                <div class="error-messages">
+                  <?php foreach ($meal_type_errors['meal_type_name'] as $error): ?>
+                    <p class="error"><?php echo h($error); ?></p>
+                  <?php endforeach; ?>
+                </div>
+              <?php endif; ?>
+            
             <div class="edit">
                 <h3>Edit Meal Type</h3>
-                <form action=""<?php echo url_for('/admin/categories/meal_types/manage.php?meal_type_id=' . $mealType->id);?>"" method="post">
+                <form action="<?php echo url_for('/admin/categories/meal_types/manage.php?meal_type_id=' . $meal_type->id);?>" method="post">
                     <div class="formField">
                         <label for="meal_type_name">Meal Type Name:</label>
-                        <input type="text" name="mealType[meal_type_name]" id="meal_type_name" pattern="/^[A-Za-z\-']+$/" value="<?php echo h($mealType->meal_type_name); ?>" required maxlength="50">
+                        <input type="text" name="meal_type[meal_type_name]" id="meal_type_name" pattern="/^[A-Za-z\-']+$/" value="<?php echo h($meal_type->meal_type_name); ?>" required maxlength="50">
                     </div>
                     <div>
-                        <input type="submit" name="update" value="Update">
+                        <input type="submit" name="update" value="Update" class="createUpdateButton">
                     </div>
                 </form>
             </div>
@@ -84,10 +89,10 @@ if(is_post_request()){
                 <p>Are you sure you want to delete this Meal Type?
                     <strong>This cannot be undone.</strong>
                 </p>
-                <form action="<?php echo url_for('/admin/categories/meal_types/manage.php?meal_type_id' . $mealType->id); ?>" method="post">
+                <form action="<?php echo url_for('/admin/categories/meal_types/manage.php?meal_type_id=' . $meal_type->id);?>" method="post">
+                    <input type="hidden" name="meal_type[id]" value="<?php echo $meal_type->id; ?>">
                     <div>
-                        <input type="hidden" name="mealType[id]" value=<?php echo $mealType->id; ?>>
-                        <input type="submit" name="delete" value="Delete">
+                        <input type="submit" name="delete" value="Delete" class="deleteButton">
                     </div>
                 </form>
         </section>        

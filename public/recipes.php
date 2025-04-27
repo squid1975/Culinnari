@@ -38,7 +38,7 @@ if (!empty($_GET)) {
     $sql = "SELECT * FROM recipe ";
     $allRecipes = Recipe::find_by_sql($sql); 
     $results = $allRecipes;
-    $searchMessage = 'All Recipes';
+    $searchMessage = 'All Recipes' . ' (' . count($results) . ')';
 }
 
 // Set up pagination *after* $results is defined
@@ -103,13 +103,12 @@ $results = array_slice($results, $pagination->offset(), $per_page);
                         <?php $recipe = $result; ?>
                         <?php include(SHARED_PATH . '/recipe_card.php'); ?>
                     <?php endforeach; ?>
-
+                    </div>
                     <?php if ($pagination->total_pages() > 1): ?>
-                        <div class="pagination">
+                        <div class="paginationContainer">
                             <?php echo $pagination->page_links(url_for('/recipes.php')); ?>
                         </div>
                     <?php endif; ?>
-                </div>
             </div>
         </section>
     </div>

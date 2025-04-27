@@ -1,6 +1,6 @@
-<title>Error | Culinnari</title>
 <?php
- require_once('../private/initialize.php'); 
+require_once('../private/initialize.php');
+$title = '404 Not Found'; 
 include SHARED_PATH . '/public_header.php'; 
 http_response_code(404);
 

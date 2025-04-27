@@ -36,13 +36,21 @@ else {
         <div class="manageCategoryWrapper">
             <h2>Create New Meal Type</h2>
             <div class="new">
+            <?php if (isset($meal_type_errors['meal_type_name'])): ?>
+                <div class="error-messages">
+                  <?php foreach ($meal_type_errors['meal_type_name'] as $error): ?>
+                    <p class="error"><?php echo h($error); ?></p>
+                  <?php endforeach; ?>
+                </div>
+              <?php endif; ?>
+            
                 <form action="<?php echo url_for('/admin/categories/meal_types/new.php'); ?>" method="post">
                     <div class="formField">
                         <label for="meal_type_name">Meal Type Name:</label>
-                        <input type="text" name="meal_type[meal_type_name]" value="<?php echo h($mealType->meal_type_name); ?>" pattern="/^[A-Za-z\-']+$/" maxlength="50" required>
+                        <input type="text" name="meal_type[meal_type_name]" id="meal_type_name" value="<?php echo h($mealType->meal_type_name); ?>" pattern="^[A-Za-z\-']+( [A-Za-z\-']+)*$" maxlength="50" required>
                     </div>
                     <div>
-                        <input type="submit" name="create" value="Create">
+                        <input type="submit" name="create" value="Create" class="createUpdateButton">
                     </div>
                 </form>
             </div>
