@@ -16,7 +16,7 @@ if (sortByButton && radioButtons.length > 0) {
   });
 }
 
-// --- Handle Checkboxes inside Dropdowns ---
+// Changes text of dropdown button based on selected checkboxes in the search menu
 if (dropdowns.length > 0) {
   dropdowns.forEach((dropdown) => {
     const button = dropdown.querySelector(".dropdown-button");
