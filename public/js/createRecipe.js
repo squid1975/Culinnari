@@ -274,6 +274,7 @@ function validateRecipeForm() {
             field: 'recipeDescriptionDirections',
             message: "Recipe description can only contain letters, numbers, hyphens, apostrophes, and spaces."
         });
+    }
     
     const difficultyRadio = document.querySelector('input[name="recipe[recipe_difficulty]"]:checked');
     if (!difficultyRadio) {
@@ -304,40 +305,6 @@ function validateRecipeForm() {
             message: 'At least one ingredient is required.'
         });
     }
-
-    ingredientInputs.forEach((ingredient, index) => {  
-        const quantity = ingredient.querySelector(`input[name="ingredient[${index}][ingredient_quantity]"]`).value.trim();
-        const name = ingredient.querySelector(`input[name="ingredient[${index}][ingredient_name]"]`).value.trim();
-
-        if (!quantity) {
-            errors.push({
-                field: `ingredientDirections`,
-                message: 'Please enter a measurement amount.'
-            });
-        } else if (!/^\d{1,2}(?:\s\d{1,2}\/\d{1,2})?$|^\d{1,2}\/\d{1,2}$/.test(quantity)) {
-            errors.push({
-                field: `ingredientDirections`,
-                message: 'Please enter a valid measurement amount (e.g., 1, 1/2, 1 1/2, 12 3/4).'
-            });
-        }
-
-        if (!name) {
-            errors.push({
-                field: `ingredientDirections`,
-                message: 'Please enter an ingredient name.'
-            });
-        } else if (name.length < 2 || name.length > 40) {
-            errors.push({
-                field: `ingredientDirections`,
-                message: 'Ingredient name must be between 2 and 40 characters.'
-            });
-        } else if (!/^[A-Za-z0-9\-'\s]+$/.test(name)) {
-            errors.push({
-                field: `IngredientDirections`,
-                message: "Ingredient name can only contain letters, numbers, hyphens, apostrophes, and spaces."
-            });
-        }
-    });
 
 
     // Steps validation
@@ -377,7 +344,7 @@ function validateRecipeForm() {
     displayErrors(errors);
     return errors;
 }
-}
+
 
 /**
  * Display error messages for the corresponding input fields
