@@ -132,42 +132,52 @@ function convertToDecimal(fraction) {
  * @returns {string} - A string representing a mixed fraction (e.g., "1 1/2").
  */
 function decimalToMixedFraction(decimal) {
-    const whole = Math.floor(decimal);
-    const fractionPart = decimal - whole;
+  const whole = Math.floor(decimal);
+  let fractionPart = decimal - whole;
 
-    if (fractionPart === 0) {
-        return whole.toString(); // if no fraction part, just return the whole number
+  if (fractionPart < 0.0001) { // practically zero
+    return whole.toString();
+  }
+
+  // Try to approximate the fraction
+  const tolerance = 1.0E-6;
+  let numerator = 1;
+  let denominator = 1;
+  let fraction = numerator / denominator;
+
+  while (Math.abs(fraction - fractionPart) > tolerance && denominator <= 1000) {
+    if (fraction < fractionPart) {
+      numerator++;
+    } else {
+      denominator++;
+      numerator = Math.round(fractionPart * denominator);
     }
+    fraction = numerator / denominator;
+  }
 
-    let denominator = 1000; // Start with a larger denominator for precision
-    let numerator = Math.round(fractionPart * denominator);
-
-    // Simplify the fraction
-    const gcd = (a, b) => {
-        while (b !== 0) {
-            let temp = b;
-            b = a % b;
-            a = temp;
-        }
-        return a;
-    };
-    const commonDivisor = gcd(numerator, denominator);
-    numerator /= commonDivisor;
-    denominator /= commonDivisor;
-
-    // If the numerator is greater than the denominator, we need to adjust the whole number part
-    if (numerator >= denominator) {
-        return `${whole + Math.floor(numerator / denominator)} ${numerator % denominator}/${denominator}`;
+  // Simplify the fraction
+  const gcd = (a, b) => {
+    while (b !== 0) {
+      let temp = b;
+      b = a % b;
+      a = temp;
     }
+    return a;
+  };
+  const commonDivisor = gcd(numerator, denominator);
+  numerator /= commonDivisor;
+  denominator /= commonDivisor;
 
-    // Return the fraction part if the whole part is zero
-    if (whole === 0) {
-        return `${numerator}/${denominator}`;
-    }
+  if (numerator === denominator) {
+    return (whole + 1).toString();
+  }
 
+  if (whole === 0) {
+    return `${numerator}/${denominator}`;
+  } else {
     return `${whole} ${numerator}/${denominator}`;
+  }
 }
-
 
 /**
  * Opens browser dialog to print recipe
