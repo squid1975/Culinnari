@@ -39,7 +39,7 @@ class Rating extends DatabaseObject {
 
     /**
      * Finds the average rating for a recipe
-     * @param mixed $recipe_id the recipe_id(id in the recipe table) of the recipe to calculate the average rating for
+     * @param mixed $recipe_id - the recipe_id(id in the recipe table) of the recipe to calculate the average rating for
      * @return float the average rating for the recipe or 0 if no ratings exist
      */
     public static function get_average_rating($recipe_id) {
@@ -48,19 +48,38 @@ class Rating extends DatabaseObject {
     
         $result = self::$database->query($sql);
     
-        if (!$result) {
-            die("Database query failed: " . self::$database->error);
+        if($result) {
+            $row = $result->fetch_assoc();
+            return $row['avg_rating'] ?? 0;
+        } else {
+            return 0;
         }
-    
-        $row = $result->fetch_assoc();
-        return $row['avg_rating'] ?? 0; // Return the average rating or 0 if null
+    }
+
+    /**
+     * Counts the total number of ratings for a recipe.
+     *
+     * @param mixed $recipe_id The ID of the recipe to count ratings for.
+     * @return int The total number of ratings for the recipe, or 0 if none exist.
+     */
+    public static function count_ratings($recipe_id) {
+        $sql = "SELECT COUNT(*) AS rating_count FROM rating ";
+        $sql .= "WHERE recipe_id=' " . self::$database->escape_string($recipe_id) . "'";
+        $result = self::$database->query($sql);
+        
+        if ($result) {
+            $row = $result->fetch_assoc();
+            return $row['rating_count'] ?? 0;
+        } else {
+            return 0;
+        }
     }
 
     /**
      * Finds the rating for a specific user and recipe
-     * @param mixed $user_id the user_id (id in the user table) of the user to look up
-     * @param mixed $recipe_id the recipe_id (id in the recipe table) of the recipe to look up
-     * @return bool|DatabaseObject The Rating object found if a match is found, false otherwise
+     * @param mixed $user_id - the user_id (id in the user table) of the user to look up
+     * @param mixed $recipe_id - the recipe_id (id in the recipe table) of the recipe to look up
+     * @return bool|DatabaseObject - The Rating object found if a match is found, false otherwise
      */
     public static function find_by_user_and_recipe( $user_id, $recipe_id ) {
         $sql = "SELECT * FROM " . static::$table_name . " ";
