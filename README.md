@@ -64,7 +64,7 @@ Images uploaded by users are stored in the images/uploads/recipe_image/ director
 Interested in contributing or offering suggestions? Open an issue or submit a pull request. For questions, email sydneyrfarrington@gmail.com.
 
 ## License
-MIT License - See LICENSE.md 
+MIT License - See LICENSE 
 
 ## Inspiration 
 Culinnari was created as part of my Capstone project for AB Tech to complete my Associates in Web & Software Development. This project was intended to blend my interest in baking/food with web development. 
