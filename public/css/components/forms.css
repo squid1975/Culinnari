@@ -9,7 +9,7 @@
     margin-right: 10px;
 }
 
-/************************************ LOGIN/REGISTRATION PAGE ********************/
+/***************************************************************** LOGIN / REGISTRATION PAGE ******************************************************************/
 .container {
     background: #fff;
     border-radius: 7px;
@@ -97,7 +97,8 @@
     box-shadow: 0 0 2px #333333;
 }
 
-/*********************************** SEARCH BAR ********************/
+/***************************************************************** SEARCH BAR ******************************************************************/
+
 #searchWithFilters {
     background-color: #fdfcfc;
     box-shadow: 0 0 5px #3C2F2F;
@@ -208,8 +209,7 @@
     text-decoration: underline;
 }
 
-/*********************************** CREATE/EDIT RECIPE PAGES ********************/
-
+/***************************************************************** CREATE / EDIT RECIPE FORM ******************************************************************/
 
 .recipeFormWrapper {
     background: #fdfbf4;
@@ -520,6 +520,7 @@ button.removeIngredient:hover {
 #clearRecipeFormButton:hover {
     background-color: #f18484;
 }
+
 /***************************************************************** ADMIN AREA ******************************************************************/
 
 .userFormInput {
@@ -544,6 +545,8 @@ button.removeIngredient:hover {
 /***************************************************************** MEDIA QUERIES ******************************************************************/
 
 @media screen and (max-width: 1050px) {
+
+    /** SEARCH BAR **/
 
     .filters {
         display: none;
@@ -572,6 +575,8 @@ button.removeIngredient:hover {
 }
 
 @media screen and (max-width: 800px) {
+
+    /** CREATE / EDIT RECIPE PAGES **/
 
     #ingredientInputs {
         display: block;
@@ -610,9 +615,14 @@ button.removeIngredient:hover {
 }
 
 @media screen and (max-width: 650px) {
+
+    /** SEARCH BAR **/ 
+
     #checkboxes {
         display: block;
     }
+
+    /** CREATE / EDIT RECIPE PAGES **/ 
 
     #ingredientInputSet {
         display: block;

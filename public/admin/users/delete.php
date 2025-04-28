@@ -30,20 +30,20 @@ if(is_post_request()) {
                 &laquo;<a href="<?php echo url_for('/admin/users/show.php?id=' . h(u($user->id)));
                     ?>">Back to User Info</a>
             </div>
-        <div class="manageUserWrapper">
-            <section>
-            <h2>Delete User: <?php echo h($user->username); ?> </h2>
-            <div class="delete">
-                <p>This action will delete the users account and all recipes created by this user. To temporarily change user's active account status, go to Manage > Edit > Active Level. </p>
-                <p>Are you sure you want to delete this user? <strong>This cannot be undone.</strong></p>
-                <form action="<?php echo url_for('/admin/users/delete.php?' . $user->id);?>" method="post">
-                    <div>
-                        <input type="submit" name="delete" value="Delete User" class="deleteButton">
-                    </div>
-                </form>
+            <div class="manageUserWrapper">
+                <section>
+                <h2>Delete User: <?php echo h($user->username); ?> </h2>
+                <div class="delete">
+                    <p>This action will delete the users account and all recipes created by this user. To temporarily change user's active account status, go to Manage > Edit > Active Level. </p>
+                    <p>Are you sure you want to delete this user? <strong>This cannot be undone.</strong></p>
+                    <form action="<?php echo url_for('/admin/users/delete.php?' . $user->id);?>" method="post">
+                        <div>
+                            <input type="submit" name="delete" value="Delete User" class="deleteButton">
+                        </div>
+                    </form>
+                </div>
+                </section>
             </div>
-            </section>
-        </div>
         </div>
     </div>
 </main>

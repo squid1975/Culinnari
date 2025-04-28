@@ -36,7 +36,6 @@ if(is_post_request()) {
 }
 ?>
 <script src="<?php echo url_for('/js/script.js'); ?>" defer></script>
-
 <main role="main" tabindex="-1">
     <div class="adminHero">
         <h2>Management Area - Edit User</h2>

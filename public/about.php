@@ -107,8 +107,8 @@ include SHARED_PATH . '/public_header.php';
                 <p>We may update this Privacy Policy from time to time. Changes will be posted on this page with the updated effective date.</p>
 
                 <h4>Contact Us</h4>
-                <p>If you have any questions about this Privacy Policy, please contact us at hello@culinnari.com</a>.</p>
+                <p>If you have any questions about this Privacy Policy, please contact us at hello@culinnari.com.</p>
             </section>
     </div>
-<?php
-include SHARED_PATH . '/public_footer.php'; ?>
+</main>
+<?php include SHARED_PATH . '/public_footer.php'; ?>

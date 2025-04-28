@@ -10,19 +10,19 @@ require_mgmt_login();
     </div>
     
     <div class="wrapper">
-        
-        <h3>Welcome <?php echo h($session->username); ?></h3>
+        <h3>Welcome, <?php echo h($session->username); ?></h3>
             <section id="adminLinks">
-                    <a href="<?php echo url_for('/admin/users/index.php');?>">
-                        <img src="<?php echo url_for('/images/icon/users.svg');?>" width="32" height="36" alt="Users icon">
-                        Users
-                    </a>
-            
-                    <a href="<?php echo url_for('/admin/categories/index.php');?>">
-                        <img src="<?php echo url_for('/images/icon/categories.svg');?>" width="32" height="36" alt="Categories icon">
-                        Categories
-                    </a>
-            <section>
-    </div>
-</main>
+            <h4 class="visuallyHidden">Area Links</h4>
+                <a href="<?php echo url_for('/admin/users/index.php');?>">
+                    <img src="<?php echo url_for('/images/icon/users.svg');?>" width="32" height="36" alt="Users icon">
+                    Users
+                </a>
+                <a href="<?php echo url_for('/admin/categories/index.php');?>">
+                    <img src="<?php echo url_for('/images/icon/categories.svg');?>" width="32" height="36" alt="Categories icon">
+                    Categories
+                </a>
+            </section>
+        </div>
+    </main>
 <?php include(SHARED_PATH . '/public_footer.php'); ?>
+            

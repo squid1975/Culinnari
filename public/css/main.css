@@ -1,4 +1,4 @@
-/*** 404 page ******/
+/***************************************************************** 404 PAGE ******************************************************************/
 
 #error404 {
   align-items: center;
@@ -16,7 +16,7 @@
   padding: 10px;
 }
 
-/******************** HOME PAGE *********************/
+/***************************************************************** HOME PAGE ******************************************************************/
 
 #homePageWrapper {
   width: 100%;
@@ -134,7 +134,9 @@ section#becomeMemberCTA > div > div > p {
   flex-wrap: wrap;
   margin: 10px 0;
 }
-/**************************************** SEARCH (RECIPES) PAGE ******************************/
+
+/***************************************************************** HOME PAGE ******************************************************************/
+
 #searchHero {
   margin: 0;
   padding: 10px;
@@ -176,7 +178,7 @@ h3.searchMessage {
   flex-wrap: wrap;
 }
 
-/********************************  ABOUT US  **************************/
+/***************************************************************** ABOUT US PAGE ******************************************************************/
 
 #aboutPageHeading {
   font-size: 30px;
@@ -192,7 +194,8 @@ h3.searchMessage {
   list-style-type: circle;
 }
 
-/********************************  VIEW RECIPE  **************************/
+/***************************************************************** VIEW RECIPE PAGE ******************************************************************/
+
 #recipePageDisplayWrapper {
   background: #ffffff;
   margin: 0 auto;
@@ -225,6 +228,11 @@ h3.searchMessage {
 #recipeDisplayrecipeDescription {
   max-width: 500px;
   text-align: center;
+}
+
+.starsRatingValue span#totalRatings {
+  color: #555555;
+  font-size: 20px;
 }
 
 #recipeDisplayDietIconsCategoriesDifficulty {
@@ -362,20 +370,20 @@ li.recipeIngredientListing {
   width: fit-content;
 }
 
-.star-widget {
+.starWidget {
   padding: 5px;
   width: fit-content;
 }
 
-.star-widget form {
+.starWidget form {
   margin: 0;
 }
 
-.star-widget input {
+.starWidget input {
   display: none;
 }
 
-.star-widget label {
+.starWidget label {
   color: #444444;
   cursor: pointer;
   font-size: 25px;
@@ -383,12 +391,12 @@ li.recipeIngredientListing {
   transition: all 0.2s ease;
 }
 
-.star-widget input:not(:checked) ~ label:hover,
-.star-widget input:not(:checked) ~ label:hover ~ label {
+.starWidget input:not(:checked) ~ label:hover,
+.starWidget input:not(:checked) ~ label:hover ~ label {
   color: #ffdd44;
 }
 
-.star-widget input:checked ~ label {
+.starWidget input:checked ~ label {
   color: #ffdd44;
 }
 
@@ -416,7 +424,7 @@ li.recipeIngredientListing {
   background: #8dca63;
 }
 
-/***************************************************  RECIPE PRINT STYLING ************************************************/
+/***************************************************************** RECIPE PRINT STYLING ******************************************************************/
 
 @media print {
   #recipePageDisplayWrapper {
@@ -451,7 +459,7 @@ li.recipeIngredientListing {
   #recipeDisplayUsername p,
   #recipeNameImageDesc img,
   #recipeDisplayRatingStars,
-  .star-rating,
+  .starRating,
   #recipeDisplayCategories,
   #recipeDisplayDifficulty,
   #recipeDisplayOptions,
@@ -463,7 +471,8 @@ li.recipeIngredientListing {
   }
 }
 
-/******************************* PROFILE **********************************************/
+/***************************************************************** PROFILE PAGE ******************************************************************/
+
 #profileHeading {
   border-top: 1px solid #333333;
   padding: 10px;
@@ -559,7 +568,7 @@ li.recipeIngredientListing {
     padding: 5px 10px;
 }
 
-/***************** ADMIN AREA ***************************/
+/***************************************************************** ADMIN AREA ******************************************************************/
 
 .adminHero {
   background-color: #3c2f2f;
@@ -610,8 +619,6 @@ li.recipeIngredientListing {
   background:  #acc4ac;
   box-shadow: 0 0 3px #333333;
 }
-
-
 
 table {
   border: 1px solid #000000;
@@ -702,7 +709,7 @@ table tr:nth-child(even):hover {
   box-shadow: 0 0 3px #333333;
 }
 
-/***************************************** MEDIA QUERIES ******************************************/
+/***************************************************************** MEDIA QUERIES ******************************************************************/
 
 @media screen and (max-width: 1000px) {
 
@@ -747,6 +754,14 @@ table tr:nth-child(even):hover {
     align-items: center;
     display: flex;
     flex-direction: column;
+  }
+
+  /** VIEW RECIPE PAGE **/
+
+  #recipeDisplayDietIconsCategoriesDifficulty {
+    flex-direction: column;
+    margin-top: 10px;
+    text-align: center;
   }
 }
 
