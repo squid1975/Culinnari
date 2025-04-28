@@ -239,3 +239,95 @@ function embedToShareLink($embedUrl) {
   }
   return $embedUrl;
 }
+
+/**
+ * Sanitize and assign values from the search parameters in the query string.
+ *
+ * This function retrieves various search-related parameters from the URL's query string, sanitizes them to prevent security vulnerabilities (such as XSS or SQL injection), 
+ * and returns them in a structured format. It ensures that array-type parameters (like `mealTypes[]`, `styles[]`, etc.) are properly sanitized and integers where necessary. 
+ * The function also validates the `sortBy` parameter against a predefined list of valid sorting options.
+ *
+ * @return array An associative array containing the sanitized search parameters:
+ * - 'searchQuery' (string): The sanitized recipe search query.
+ * - 'mealTypes' (array of integers): The sanitized array of selected meal types.
+ * - 'styles' (array of integers): The sanitized array of selected styles.
+ * - 'diets' (array of integers): The sanitized array of selected diets.
+ * - 'prepCookTimeTotals' (array of integers): The sanitized array of selected prep and cook time totals.
+ * - 'recipeDifficulty' (array of strings): The sanitized array of selected difficulty levels.
+ * - 'sortBy' (string): The sanitized and validated sort option.
+ *
+ * @example
+ * $params = sanitize_search_params();
+ * // Returns sanitized and validated parameters for search functionality
+ */
+function sanitize_search_params() {
+  $searchQuery = isset($_GET['recipeQuery']) ? h($_GET['recipeQuery']) : '';
+  $mealTypes = isset($_GET['mealTypes']) ? array_map('intval', $_GET['mealTypes']) : [];
+  $styles = isset($_GET['styles']) ? array_map('intval', $_GET['styles']) : [];
+  $diets = isset($_GET['diets']) ? array_map('intval', $_GET['diets']) : [];
+  $prepCookTimeTotals = isset($_GET['prepCookTimeTotal']) ? array_map('intval', $_GET['prepCookTimeTotal']) : [];
+  $recipeDifficulty = isset($_GET['difficulty']) ? array_map('htmlspecialchars', $_GET['difficulty']) : [];
+
+  $validSortOptions = [
+      'recipe[recipe_post_date] DESC',
+      'recipe[recipe_post_date] ASC',
+      'recipe[recipe_name] ASC',
+      'rating[rating_value] DESC',
+      'rating[rating_value] ASC',
+  ];
+  $sortBy = (isset($_GET['sortBy']) && in_array($_GET['sortBy'], $validSortOptions)) ? $_GET['sortBy'] : 'recipe[recipe_post_date] DESC';
+
+  return compact('searchQuery', 'mealTypes', 'styles', 'diets', 'prepCookTimeTotals', 'recipeDifficulty', 'sortBy');
+}
+
+/**
+ * Build a query string from an associative array of parameters.
+ *
+ * This function takes an associative array of parameters, sanitizes and encodes the values, 
+ * and builds a query string that can be appended to a URL for use in a GET request.
+ * It handles multiple array-type parameters (such as `mealTypes[]`), sanitizing each value 
+ * to prevent XSS and URL-encoding them properly.
+ * 
+ * @param array $params The associative array containing the parameters to include in the query string.
+ * The array can include:
+ * - 'searchQuery' (string): The search query to filter recipes.
+ * - 'mealTypes' (array of integers): An array of selected meal types.
+ * - 'styles' (array of integers): An array of selected styles.
+ * - 'diets' (array of integers): An array of selected diets.
+ * - 'prepCookTimeTotals' (array of integers): An array of selected prep and cook time ranges.
+ * - 'recipeDifficulty' (array of strings): An array of selected recipe difficulty levels.
+ * - 'sortBy' (string): The sorting option for the query.
+ * 
+ * @return string A query string with properly encoded parameters, ready to be appended to a URL.
+ * 
+ * @example
+ * $params = [
+ *     'searchQuery' => 'chicken',
+ *     'mealTypes' => [3, 4],
+ *     'sortBy' => 'recipe[recipe_post_date] DESC'
+ * ];
+ * $query_string = build_query_string($params);
+ * // Output: "recipeQuery=chicken&mealTypes[]=3&mealTypes[]=4&sortBy=recipe%5Brecipe_post_date%5D+DESC"
+ */
+function build_query_string($params) {
+  $query_parts = [];
+
+  if (!empty($params['searchQuery'])) {
+      $query_parts[] = 'recipeQuery=' . h(u($params['searchQuery']));
+  }
+
+  foreach (['mealTypes', 'styles', 'diets', 'prepCookTimeTotals', 'recipeDifficulty'] as $arrayParam) {
+      if (!empty($params[$arrayParam])) {
+          foreach ($params[$arrayParam] as $value) {
+              $paramName = $arrayParam === 'prepCookTimeTotals' ? 'prepCookTimeTotal' : $arrayParam;
+              $query_parts[] = $paramName . '[]=' . h(u($value));
+          }
+      }
+  }
+
+  if (!empty($params['sortBy'])) {
+      $query_parts[] = 'sortBy=' . h(u($params['sortBy']));
+  }
+
+  return implode('&', $query_parts);
+}
