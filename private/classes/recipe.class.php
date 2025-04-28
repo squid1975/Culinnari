@@ -49,7 +49,7 @@ class Recipe extends DatabaseObject
     
             if (is_blank($this->recipe_description)) {
                 $this->errors['recipe_description'][] = "Recipe description cannot be blank.";
-            } elseif (!has_length($this->recipe_description, ['min' => 2, 'max' => 255])) {
+            } elseif (!has_length($this->recipe_description, ['min' => 10, 'max' => 255])) {
                 $this->errors['recipe_description'][] = "Recipe description must be between 10 and 255 characters.";
             }
     
