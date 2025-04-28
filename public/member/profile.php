@@ -5,6 +5,9 @@ require_login();
  
  $username = $session->username;
  $user = User::find_by_username($username);
+ if($user === false){
+    error_404();
+ }
  $current_user_id = $user->id;
  $cookbook = Cookbook::find_by_user_id($session->user_id);
  $userRecipes = Recipe::get_user_recipes($session->user_id); 

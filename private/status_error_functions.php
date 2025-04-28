@@ -8,11 +8,16 @@ function require_login (){
 
 function require_mgmt_login() {
   global $session;
-  if(!$session->is_mgmt_logged_in()) {
-    redirect_to(url_for('/404.php'));
-  } else {
-    // Do nothing, allow access
+  if (!$session->is_logged_in()) {
+    // Not logged in at all
+    redirect_to(url_for('/login_signup.php')); // Or your normal login
+    exit();
+  } elseif (!$session->is_mgmt_logged_in()) {
+    // Logged in, but not management-level
+    redirect_to(url_for('/index.php')); // Or wherever you want non-admins to go
+    exit();
   }
+  // Otherwise, allow access
 }
 
 function require_super_admin_login() {

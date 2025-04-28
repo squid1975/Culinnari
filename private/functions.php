@@ -50,6 +50,7 @@ function h($string="") {
  */
 function error_404() {
   header($_SERVER["SERVER_PROTOCOL"] . " 404 Not Found");
+  redirect_to(url_for('/404.php'));
   exit();
 }
 

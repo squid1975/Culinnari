@@ -1,8 +1,11 @@
 <?php require_once('../private/initialize.php');
 $id = $_GET['recipe_id'] ?? '1';
+if(!isset($id)){
+    error_404();
+}
 $recipe = Recipe::find_by_id($id);
 if ($recipe == false) {
-    redirect_to(url_for('/index.php'));
+    error_404();
 }
 $title = 'View Recipe  | Culinnari';
 include(SHARED_PATH . '/public_header.php');

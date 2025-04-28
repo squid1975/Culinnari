@@ -5,13 +5,14 @@ include(SHARED_PATH . '/public_header.php');
 require_login();
 $username = $session->username;
 $user = User::find_by_username($username);
-$recipe_id = $_GET['recipe_id'] ?? null; // Get the recipe ID from the URL
-$recipe = Recipe::find_by_id($recipe_id);
-if(!$recipe || $recipe->user_id != $user->id) {
-    $_SESSION['message'] = "There was an error retrieving the recipe.";
-    redirect_to(url_for('/member/profile.php?id=' . $user->id));
+if($user == false) {
+    error_404();
 }
-
+$recipe_id = $_GET['recipe_id'] ?? 1; // Get the recipe ID from the URL
+$recipe = Recipe::find_by_id($recipe_id);
+if($recipe == false) {
+    error_404();
+}
 
 $errors = [];   
 $mealTypes = MealType::find_all();
