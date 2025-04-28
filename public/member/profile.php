@@ -5,25 +5,27 @@ require_login();
  
  $username = $session->username;
  $user = User::find_by_username($username);
- $current_user_id = $session->user_id;
+ $current_user_id = $user->id;
  $cookbook = Cookbook::find_by_user_id($session->user_id);
  $userRecipes = Recipe::get_user_recipes($session->user_id); 
  
  if(is_post_request()){
 
     if(isset($_POST['cookbook'])){
-    $args = $_POST['cookbook'];
-    $args += ["user_id" => $current_user_id];
-    $cookbook = new Cookbook($args);
-    $result = $cookbook->save();
-    if($result){
-        redirect_to(url_for('/member/profile.php?id=' . h($user->id)));
-    }
+        $args = $_POST['cookbook'];
+        $args += ["user_id" => $current_user_id];
+        $cookbook = new Cookbook($args);
+        $result = $cookbook->save();
+        if($result){
+            redirect_to(url_for('/member/profile.php?id=' . h($user->id)));
+        } else {
+            $cookbookErrors = $cookbook->errors; 
+        }
     }
  }
  ?> 
 
-<script src="<?php echo url_for('js/profile.js'); ?>" defer></script>
+
 <main id="userProfile" role="main" tabindex="-1">
     <div id="profileWrapper">
         <h2 id="profileHeading">My Culinnari Profile</h2>
@@ -34,86 +36,108 @@ require_login();
             </div>
             <?php unset($_SESSION['message']); // Clear message after displaying ?>
         <?php endif; ?>
-            <div class="profileInfo">
-                <h3>My Account</h3>
-                     <p>Full Name :  <?php  echo h($user->full_name()); ?> </p>
-                     <p>Email Address :  <?php  echo h($user->user_email_address); ?></p>
-                     <p>Joined :  <?php  echo formatDate(h($user->user_create_account_date)); ?> </p>
-            </div>        
-            <div class="profileSectionHead">
-                <h3>My Recipes (<?php echo count($userRecipes); ?>)</h3>
-                <a href="create_recipe.php" class="createLink">
-                    Create recipe</a>
-            </div>
-            <div class="profileCards">
-                <?php  
-                if (empty($userRecipes)) { ?>
-                    <p>It's pretty empty here..Let's write some recipes!</p>
-                    <?php } else { ?>
-                        <?php foreach ($userRecipes as $recipe): ?>
-                            <div class="profileRecipeCard">
-                            <?php include(SHARED_PATH . '/recipe_card.php'); ?>
+            <section>
+                <div class="profileInfo">
+                    <h3>My Account</h3>
+                        <p>Full Name :  <?php  echo h($user->full_name()); ?> </p>
+                        <p>Email Address :  <?php  echo h($user->user_email_address); ?></p>
+                        <p>Joined :  <?php  echo formatDate(h($user->user_create_account_date)); ?> </p>
+                </div>
+            </section>
+            <section>        
+                <div class="profileSectionHead">
+                    <h3>My Recipes (<?php echo count($userRecipes); ?>)</h3>
+                    <a href="create_recipe.php" class="createLink">
+                        Create recipe</a>
+                </div>
+                <div class="profileCards">
+                    <?php  
+                    if (empty($userRecipes)) { ?>
+                        <p>It's pretty empty here..Let's write some recipes!</p>
+                        <?php } else { ?>
+                            <?php foreach ($userRecipes as $recipe): ?>
+                                <div class="profileRecipeCard">
+                                <?php include(SHARED_PATH . '/recipe_card.php'); ?>
 
-                            <div class="userProfileRecipeActions">
-                                <div class="profileEditRecipe">
-                                    <a href="<?php echo url_for('/member/edit_recipe.php?recipe_id=' . $recipe->id); ?>">Edit</a>
-                                </div>
-                                <div class="profileDeleteRecipe">
-                                    <button class="deleteRecipeButton">Delete</button>
-                                        <div class="modal" id="deleteRecipeModal<?php echo $recipe->id; ?>">
-                                            <div class="modal-content">
-                                                <span class="close">&times;</span>
-                                                <h2>Delete Recipe</h2>
-                                                <p>Are you sure you want to delete <?php echo h($recipe->recipe_name);?>?</p>
-                                                <strong>Note: This action cannot be undone.</strong>
-                                                <form action="<?php echo url_for('/member/delete_recipe.php?recipe_id=' . $recipe->id); ?>" method="POST">
-                                                    <input type="hidden" name="recipe['id']" value="<?php echo $recipe->id; ?>">
-                                                    <input type="submit" name="delete" value="Delete Recipe" class="deleteButton">
-                                                </form>
+                                <div class="userProfileRecipeActions">
+                                    <div class="profileEditRecipe">
+                                        <a href="<?php echo url_for('/member/edit_recipe.php?recipe_id=' . $recipe->id); ?>">Edit</a>
+                                    </div>
+                                    <div class="profileDeleteRecipe">
+                                        <button class="deleteRecipeButton">Delete</button>
+                                            <div class="modal" id="deleteRecipeModal<?php echo $recipe->id; ?>">
+                                                <div class="modal-content">
+                                                    <span class="close">&times;</span>
+                                                    <h2>Delete Recipe</h2>
+                                                    <p>Are you sure you want to delete <?php echo h($recipe->recipe_name);?>?</p>
+                                                    <strong>Note: This action cannot be undone.</strong>
+                                                    <form action="<?php echo url_for('/member/delete_recipe.php?recipe_id=' . h(u($recipe->id))); ?>" method="POST">
+                                                        <input type="hidden" name="recipe['id']" value="<?php echo h($recipe->id); ?>">
+                                                        <input type="submit" name="delete" value="Delete Recipe" class="deleteButton">
+                                                    </form>
+                                                </div>
                                             </div>
-                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
-                    <?php endforeach; ?>
-                <?php } ?>
-            </div>
-            <div class="profileSectionHead">
-                <?php if(empty($cookbook)){ ?>
-                    <h3>Create your first cookbook!</h3>
-                    <button id="createCookbookButton">Create Cookbook</button>
-                    <div class="modal" id="createCookbookModal">
-                        <div class="modal-content">
-                            <h4>Create a new cookbook</h4>
-                            <span class="close">&times;</span>
-                                <form action="<?php echo url_for('/member/profile.php?id=' . $user->id);?>" method="post" id="createCookbookForm">
-                                    <div class="formField">
-                                <input type="hidden" name="cookbook[user_id]" value="<?php echo ($session->user_id); ?>">
-                                <label for="cookbookName">Cookbook Name:
-                                    <input type="text" id="cookbookName" name="cookbook[cookbook_name]" pattern="^[A-Za-z \-']+$" required>
-                                </label>
-                                </div>
-                                <input type="submit" value="Create cookbook" class="createUpdateButton">
-                            </form>
-                        </div>
-                    </div>
-                <?php } else { ?>
-                    <img src="<?php echo url_for('/images/icon/cookbook.svg'); ?>" alt="Cookbook Icon" width="30" height="30">
-                    <h3><?php echo $cookbook[0]->cookbook_name; ?></h3>
-            </div>
-            <div class="profileCards">
-                <?php  $cookbookRecipes = CookbookRecipe::get_cookbook_recipes_by_cookbook_id($cookbook[0]->id);
-                        foreach ($cookbookRecipes as $recipe): ?>
-                           <?php $recipe = Recipe::find_by_id($recipe->recipe_id); ?>
-                           <div class="profileRecipeCard">
-                               <?php include(SHARED_PATH . '/recipe_card.php'); ?>
                             </div>
                         <?php endforeach; ?>
-                        <?php } ?>
+                    <?php } ?>
                 </div>
-
+            </section>
+            <section>
+                <div class="profileSectionHead">
+                    <?php if(empty($cookbook)){ ?>
+                        <h3>Create your first cookbook!</h3>
+                        <button id="createCookbookButton">Create Cookbook</button>
+                        <div class="modal" id="createCookbookModal">
+                            <div class="modal-content">
+                                <h4>Create a new cookbook</h4>
+                                <span class="close">&times;</span>
+                                    <form action="<?php echo url_for('/member/profile.php?id=' . h(u($user->id)));?>" method="post" id="createCookbookForm">
+                                        <div class="formField">
+                                        <input type="hidden" name="cookbook[user_id]" value="<?php echo h($user->id); ?>">
+                                            <label for="cookbookName">Cookbook Name:
+                                                <input type="text" id="cookbookName" name="cookbook[cookbook_name]" pattern="^[A-Za-z \-']+$" required>
+                                            </label>
+                                        </div>
+                                    <input type="submit" value="Create cookbook" class="createUpdateButton">
+                                    </form>
+                            </div>
+                        </div>
+                    <?php } else { ?>
+                        <img src="<?php echo url_for('/images/icon/cookbook.svg'); ?>" alt="Cookbook Icon" width="30" height="30">
+                        <h3><?php echo $cookbook[0]->cookbook_name; ?></h3>
+                </div>
+                <div class="profileCards">
+                    <?php  $cookbookRecipes = CookbookRecipe::get_cookbook_recipes_by_cookbook_id($cookbook[0]->id);
+                            foreach ($cookbookRecipes as $recipe): ?>
+                            <?php $recipe = Recipe::find_by_id($recipe->recipe_id); 
+                                    $cookbookRecipe = CookbookRecipe::find_by_cookbook_and_recipe($cookbook[0]->id, $recipe->id)?>
+                            <div class="profileRecipeCard">
+                                <?php include(SHARED_PATH . '/recipe_card.php'); ?>
+                                <div class="userProfileRecipeActions"> 
+                                    <div class="profileDeleteRecipe">
+                                        <button class="deleteRecipeButton">Delete</button>
+                                        <div class="modal" id="removeRecipeFromCookbookModal_<?php echo $recipe->id; ?>">
+                                            <div class="modal-content">
+                                                <span class="close">&times;</span>
+                                                <h2>Remove Recipe</h2>
+                                                <p>Are you sure you want to remove <?php echo h($recipe->recipe_name);?> from <?php echo $cookbook[0]->cookbook_name; ?>?</p>
+                                                <strong>Note: This action cannot be undone.</strong>
+                                                <form action="<?php echo url_for('/member/remove_recipe_from_cookbook.php?cookbook_recipe_id=' . h(u($cookbookRecipe->id))); ?>" method="POST">
+                                                    <input type="hidden" name="cookbook_recipe[id]" value="<?php echo h($cookbookRecipe->id); ?>">
+                                                    <input type="submit" name="removeFromCookbook" value="Remove recipe" class="deleteButton">
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            <?php endforeach; ?>
+                    <?php } ?>
+                </div>
+            </section>
     </div>    
-            
 </main>
-
+<script src="<?php echo url_for('js/profile.js'); ?>" defer></script>
 <?php include(SHARED_PATH . '/public_footer.php'); ?>

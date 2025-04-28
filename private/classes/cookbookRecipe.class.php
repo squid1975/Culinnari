@@ -19,7 +19,7 @@ class CookbookRecipe extends DatabaseObject {
     protected function validate() {
         $this->errors = [];
 
-        if(recipe_exists_in_cookbook($this->cookbook_id, $this->recipe_id)){
+        if(self::recipe_exists_in_cookbook($this->cookbook_id, $this->recipe_id)){
             $this->errors['recipe_id'][] = "Recipe already exists in this cookbook.";
         }
     }
@@ -41,13 +41,25 @@ class CookbookRecipe extends DatabaseObject {
      * @param mixed $recipe_id the id value of the recipe
      */
     public static function recipe_exists_in_cookbook($cookbook_id, $recipe_id) {
+        // Query the database to find the cookbook-recipe association
         $sql = "SELECT * FROM cookbook_recipe WHERE cookbook_id = '" . self::$database->escape_string($cookbook_id) . "' AND recipe_id = '" . self::$database->escape_string($recipe_id) . "' LIMIT 1";
+        
+        // Get the result from the query
         $result = self::find_by_sql($sql);
-        if($result){
-            return true;
+        
+        // Check if the result is not empty
+        if (!empty($result)) {
+            return true; // Recipe exists in the cookbook
         } else {
-            return false;
+            return false; // Recipe does not exist in the cookbook
         }
+    }
+
+    public static function find_by_cookbook_and_recipe($cookbook_id, $recipe_id) {
+        $sql = "SELECT * FROM cookbook_recipe WHERE cookbook_id = '" . self::$database->escape_string($cookbook_id) . "' AND recipe_id = '" . self::$database->escape_string($recipe_id) . "' LIMIT 1";
+        $result =  self::find_by_sql($sql);
+        return $result ? array_shift($result) : null;
+        
     }
 
 }
