@@ -84,7 +84,7 @@ if (is_post_request()) {
 }
 
 ?>
-<script src="<?php echo url_for('/js/viewRecipe.js'); ?>" defer></script>
+
 <main role="main" tabindex="-1">
     <div id="recipePageDisplayWrapper">
         <?php if (isset($_SESSION['message'])): ?>
@@ -103,28 +103,24 @@ if (is_post_request()) {
 
         <section>
             <div id="recipeNameImageDesc">
-                <?php
-
-                if ($recipeImage) {  // If the recipe image exists, display it, else fallback to default image
-                    ?>
-                    <img class="recipeImage" src="<?php echo url_for($recipeImage->recipe_image); ?>" width="400"
-                        height="400" alt="A photo of <?php echo h($recipe->recipe_name); ?>">
+                <?php if ($recipeImage) {  // If the recipe image exists, display it, else fallback to default image ?>
+                <img class="recipeImage" src="<?php echo url_for($recipeImage->recipe_image); ?>" width="400" height="400" alt="A photo of <?php echo h($recipe->recipe_name); ?>">
                 <?php } else { ?>
-                    <img class="recipeImage" src="<?php echo url_for('/images/default_recipe_image.webp'); ?>" width="400"
-                        height="400" alt="Recipe image not found, displaying default recipe image">
+                <img class="recipeImage" src="<?php echo url_for('/images/default_recipe_image.webp'); ?>" width="400" height="400" alt="Recipe image not found, displaying default recipe image">
                 <?php } ?>
                 <h2><?php echo h($recipe->recipe_name); ?></h2>
                 <p id="recipeDisplayrecipeDescription"><?php echo h($recipe->recipe_description); ?></p>
 
-                <div class="star-rating">
+                <div class="starRating">
                     <?php
                     // Fetch the average rating for the recipe
                     $average_rating = Rating::get_average_rating($recipe->id);
                     if ($average_rating != 0): ?>
-                        <div>
+                        <div class="starsRatingValue">
                             <?php
                             $full_stars = floor($average_rating);
                             $partial_star = $average_rating - $full_stars;
+                            $totalRatings = Rating::count_ratings($recipe->id);
                             ?>
                             <?php for ($i = 1; $i <= 5; $i++): ?>
                                 <svg viewBox="0 0 24 24" class="star" width="24" height="24">
@@ -143,6 +139,7 @@ if (is_post_request()) {
                                         fill="gold" clip-path="url(#star-clip-<?php echo $recipe->id . '-' . $i; ?>)"></path>
                                 </svg>
                             <?php endfor; ?>
+                            <span id="totalRatings">(<?php echo h($totalRatings); ?>)</span>
                         </div>
                     <?php else: ?>
                         <span>No ratings yet</span>
@@ -152,16 +149,16 @@ if (is_post_request()) {
 
                 <div id="recipeDisplayDietIconsCategoriesDifficulty">
                     <div id="recipeDisplayDietIcons">
-                    <?php $diet_icons = Recipe::get_diet_icons($recipe->id); ?>
-                    <?php $diet_icon_names = Recipe::get_diet_names($recipe->id); // Get diet icon names ?>
-                    <?php if($diet_icons && $diet_icon_names): ?>
-                        <?php foreach ($diet_icons as $index => $diet_icon): ?>
-                            <img src="<?php echo url_for($diet_icon); ?>" 
-                                alt="<?php echo h($diet_icon_names[$index]) . ' diet icon for ' . $recipe->recipe_name; ?>" 
-            
-                                width="20" height="20">
-                        <?php endforeach; ?>
-                    <?php endif; ?>
+                        <?php $diet_icons = Recipe::get_diet_icons($recipe->id); ?>
+                        <?php $diet_icon_names = Recipe::get_diet_names($recipe->id); // Get diet icon names ?>
+                        <?php if($diet_icons && $diet_icon_names): ?>
+                            <?php foreach ($diet_icons as $index => $diet_icon): ?>
+                                <img src="<?php echo url_for($diet_icon); ?>" 
+                                    alt="<?php echo h($diet_icon_names[$index]) . ' diet icon for ' . $recipe->recipe_name; ?>" 
+                
+                                    width="20" height="20">
+                            <?php endforeach; ?>
+                        <?php endif; ?>
                     </div>
 
                     <div id="recipeDisplayCategories">
@@ -187,9 +184,8 @@ if (is_post_request()) {
                         <?php }
                         ; ?>
                     </div>
-
-
                 </div>
+
                 <div id="recipeDisplayprepCook">
                     <?php
                     // Convert prep time from seconds to hours and minutes
@@ -260,12 +256,12 @@ if (is_post_request()) {
                                     </form>
                                 <?php } else { ?>
                                     <p>You don't have any cookbooks yet! Create one to save this recipe.</p>
-                                    <a href="<?php echo url_for('/member/profile.php?id=' . $session->user_id); ?>" class="createUpdateButton">Create a Cookbook</a>
+                                    <a href="<?php echo url_for('/member/profile.php?id=' . $user->id); ?>" class="createUpdateButton">Create a Cookbook</a>
                                 <?php } ?>
                                 </div>
                             </div>
                         </div>
-                        <?php if ($recipe->user_id != $session->user_id): ?>
+                        <?php if ($recipe->user_id != $user->id): ?>
                             <div id="recipeDisplayRateStar">
                                 <a href="#recipeDisplayAddRating">
                                     <img src="<?php echo url_for('/images/icon/star.svg'); ?>" width="20" height="20"
@@ -295,40 +291,40 @@ if (is_post_request()) {
                     </div>
                     <div id="recipeDisplayIngredientList">
                         <ul>
-                            <?php if (!empty($ingredients)): ?>
-                                <?php foreach ($ingredients as $ingredient): ?>
-                                    <li class="recipeIngredientListing">
-                                        <span
-                                            class="recipeDisplayMeasurementAmount"><?php echo decimal_to_fraction($ingredient->ingredient_quantity); ?></span>
-                                        <?php if (!empty($ingredient->ingredient_measurement_name) && $ingredient->ingredient_measurement_name !== 'n/a'): ?>
-                                            <span><?php echo h($ingredient->ingredient_measurement_name); ?></span>
-                                        <?php endif; ?>
-                                        <?php echo h($ingredient->ingredient_name); ?>
-                                    </li>
-                                <?php endforeach; ?>
-                            <?php endif; ?>
+                        <?php if (!empty($ingredients)): ?>
+                            <?php foreach ($ingredients as $ingredient): ?>
+                                <li class="recipeIngredientListing">
+                                <span class="recipeDisplayMeasurementAmount"><?php echo decimal_to_fraction($ingredient->ingredient_quantity); ?></span>
+                                <?php if (!empty($ingredient->ingredient_measurement_name) && $ingredient->ingredient_measurement_name !== 'n/a'): ?>
+                                <span><?php echo h($ingredient->ingredient_measurement_name); ?></span>
+                                <?php endif; ?>
+                                <?php echo h($ingredient->ingredient_name); ?>
+                                </li>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
                         </ul>
                     </div>
                 </div>
             </section>
+                        
             <section>
-                <div id="recipeDisplaySteps">
-                    <h3>Steps</h3>
-                    <ol>
-                        <?php if (!empty($steps)): ?>
-                            <?php foreach ($steps as $step): ?>
-                                <li><?php echo h($step->step_description); ?></li>
-                            <?php endforeach; ?>
-                        <?php endif; ?>
-                    </ol>
-                </div>
+            <div id="recipeDisplaySteps">
+                <h3>Steps</h3>
+                <ol>
+                    <?php if (!empty($steps)): ?>
+                    <?php foreach ($steps as $step): ?>
+                    <li><?php echo h($step->step_description); ?></li>
+                    <?php endforeach; ?>
+                    <?php endif; ?>
+                </ol>
+            </div>
             </section>
         </div>
-
+                
         <?php if ($recipe_video): ?>
             <section>
-                <div id="recipeDisplayVideo">
-                    <h3>YouTube Video</h3>
+            <div id="recipeDisplayVideo">
+            <h3>YouTube Video</h3>
                     <div id="videoContainer">
                         <iframe width="560" height="315" src="<?php echo h($recipe_video->recipe_video_url); ?>"
                             allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -348,7 +344,7 @@ if (is_post_request()) {
                 <?php } else { ?>
                 <p>Tried this recipe? Add your rating!</p>
                 <?php } ?>
-                <div class="star-widget">
+                <div class="starWidget">
                     <form action="<?php echo url_for('view_recipe.php?recipe_id=' . h(u($recipe->id))); ?>" method="post">
                         <input type="hidden" name="rating[recipe_id]" value="<?php echo h($recipe->id); ?>">
                         <input type="hidden" name="rating[user_id]" value="<?php echo h($session->user_id); ?>">
@@ -385,5 +381,5 @@ if (is_post_request()) {
         <?php endif; ?>
     </div>
 </main>
-
+<script src="<?php echo url_for('/js/viewRecipe.js'); ?>" defer></script>
 <?php include(SHARED_PATH . '/public_footer.php'); ?>
