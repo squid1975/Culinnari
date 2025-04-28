@@ -7,8 +7,9 @@ $mealTypes = MealType::find_all();
 $styles = Style::find_all();
 $diets = Diet::find_all();
 $errors = [];
-
-$current_user_id = $session->user_id;
+$username = $session->username;
+$user = User::find_by_username($username);
+$current_user_id = $user->id;
 
 if (is_post_request()) {
     // Get arrays of values 
@@ -475,7 +476,7 @@ else {
                         <?php foreach ($mealTypes as $mealType): ?>
                             <label>
                                 <input type="checkbox" name="meal_types[]"
-                                    id="mealType-<?php echo str_replace(' ', '',$mealType->meal_type_name); ?>" value=<?php echo $mealType->id; ?>>
+                                    id="mealType-<?php echo str_replace(' ', '',$mealType->meal_type_name); ?>" value="<?php echo $mealType->id; ?>">
                                 <?php echo ucfirst($mealType->meal_type_name); ?>
                             </label>
                         <?php endforeach; ?>
