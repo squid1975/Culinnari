@@ -17,7 +17,9 @@ $steps = Step::find_by_recipe_id(($id));
 $recipe_video = RecipeVideo::find_by_recipe_id($id);
 
 if($session->is_logged_in()) {
-    $user = User::find_by_id($session->user_id);
+    $username = $session->username;
+    $user = User::find_by_username($username);
+    $current_user_id = $user->id;
     $cookbooks = Cookbook::find_by_user_id($user->id);
     $recipe_id = $recipe->id;
     
@@ -80,9 +82,6 @@ if (is_post_request()) {
         redirect_to(url_for('/view_recipe.php?recipe_id=' . $recipe->id));
     }
 }
-
-
-
 
 ?>
 <script src="<?php echo url_for('/js/viewRecipe.js'); ?>" defer></script>
@@ -244,7 +243,7 @@ if (is_post_request()) {
                                     <span class="close">&times;</span>
                                     <h3>Save to Cookbook</h3>
                                     <?php if ($cookbooks){ ?>
-                                    <form action="<?php echo url_for('view_recipe.php?recipe_id=' . $recipe->id); ?>" method="post">
+                                    <form action="<?php echo url_for('view_recipe.php?recipe_id=' . h(u($recipe->id))); ?>" method="post">
                                         <input type="hidden" name="cookbook_recipe[recipe_id]" value="<?php echo h($recipe->id); ?>">
                                         <?php foreach ($cookbooks as $cookbook): ?>
                                         <label for="cookbook_<?php echo h($cookbook->id); ?>">
@@ -340,17 +339,17 @@ if (is_post_request()) {
             </section>
         <?php endif; ?>
 
-        <?php if ($session->is_logged_in() && ($recipe->user_id != $session->user_id)): ?>
+        <?php if ($session->is_logged_in() && ($recipe->user_id != $user->id)): ?>
             <section id="recipeDisplayAddRating">
                 <h3>Add Rating</h3>
-                <?php $ratingExists = Rating::find_by_user_and_recipe($session->user_id, $recipe->id); ?>
+                <?php $ratingExists = Rating::find_by_user_and_recipe($user->id, $recipe->id); ?>
                 <?php if ($ratingExists){ ?>
                     <p>You rated this recipe <?php echo h(number_format($ratingExists->rating_value, 0)); ?> stars on <?php echo formatDate($ratingExists->rating_date); ?>.</p>
                 <?php } else { ?>
                 <p>Tried this recipe? Add your rating!</p>
                 <?php } ?>
                 <div class="star-widget">
-                    <form action="<?php echo url_for('view_recipe.php?recipe_id=' . $recipe->id); ?>" method="post">
+                    <form action="<?php echo url_for('view_recipe.php?recipe_id=' . h(u($recipe->id))); ?>" method="post">
                         <input type="hidden" name="rating[recipe_id]" value="<?php echo h($recipe->id); ?>">
                         <input type="hidden" name="rating[user_id]" value="<?php echo h($session->user_id); ?>">
                         <fieldset>
