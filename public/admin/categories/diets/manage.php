@@ -51,9 +51,9 @@ if(is_post_request()){
                 <div class="edit">
                     <h3>Edit Diet</h3>
                     <form action="<?php echo (url_for('/admin/categories/diets/edit.php?diet_id=' . $diet->id));?>" method="post" id="editDietForm">
-                        <?php if (isset($diet_errors['diet_name'])): ?>
+                    <?php if (isset($diet_errors['diet_name'])): ?>
                         <div class="error-messages">
-                          <?php foreach ($diet_errors as $error): ?>
+                          <?php foreach ($diet_errors['diet_name'] as $error): ?>
                             <p class="error"><?php echo h($error); ?></p>
                           <?php endforeach; ?>
                         </div>
