@@ -54,7 +54,12 @@ class CookbookRecipe extends DatabaseObject {
             return false; // Recipe does not exist in the cookbook
         }
     }
-
+    /**
+     * Finds the record that matches the provided cookbook and recipe ids
+     * @param mixed $cookbook_id The id of the cookbook
+     * @param mixed $recipe_id The id of the recipe 
+     * 
+     */
     public static function find_by_cookbook_and_recipe($cookbook_id, $recipe_id) {
         $sql = "SELECT * FROM cookbook_recipe WHERE cookbook_id = '" . self::$database->escape_string($cookbook_id) . "' AND recipe_id = '" . self::$database->escape_string($recipe_id) . "' LIMIT 1";
         $result =  self::find_by_sql($sql);
