@@ -3,13 +3,16 @@ require_once('../../private/initialize.php');
 $title = 'Edit Recipe | Culinnari';
 include(SHARED_PATH . '/public_header.php'); 
 require_login();
+$username = $session->username;
+$user = User::find_by_username($username);
 $recipe_id = $_GET['recipe_id'] ?? null; // Get the recipe ID from the URL
 $recipe = Recipe::find_by_id($recipe_id);
-if(!$recipe || $recipe->user_id != $_SESSION['user_id']) {
-    redirect_to(url_for('/member/profile.php?id=' . $_SESSION['user_id']));
-    $_SESSION['message'] = "You do not have permission to access this resource.";
-    exit;
+if(!$recipe || $recipe->user_id != $user->id) {
+    $_SESSION['message'] = "There was an error retrieving the recipe.";
+    redirect_to(url_for('/member/profile.php?id=' . $user->id));
 }
+
+
 $errors = [];   
 $mealTypes = MealType::find_all();
 $styles = Style::find_all();
@@ -33,9 +36,192 @@ $existingImage = !empty($recipe_images) ? $recipe_images[0]->recipe_image : null
 $defaultImage = url_for('/images/default_recipe_image.webp'); 
 $recipe_video = RecipeVideo::find_by_recipe_id($recipe_id);
 
-if(is_post_request()) {
-    $_SESSION['message'] = "Recipe update functionality is not available yet.";
-    redirect_to(url_for('/member/profile.php?id=' . $_SESSION['user_id']));
+if (is_post_request()) {
+    
+    // Get and validate form data (same as creation)
+    $steps = $_POST['step'] ?? [];
+    if(empty($steps)){
+        $errors['steps'] = "At least one step is required.";
+    }
+    $ingredients = $_POST['ingredient'] ?? [];
+    if(empty($ingredients)){
+        $errors['ingredients'] = "At least one ingredient is required.";
+    }
+    $selectedMealTypes = $_POST['meal_types'] ?? [];
+    if(count($selectedMealTypes) > 3){
+        $errors['meal_types'] = "You can select up to 3 meal types only.";
+    }
+    $selectedStyles = $_POST['styles'] ?? [];
+    if(count($selectedStyles) > 3){
+        $errors['styles'] = 'You can select up to 3 styles only.';
+    }
+    $selectedDiets = $_POST['diets']?? [];
+    if(count($selectedDiets) > 3){
+        $errors['diets'] = 'You can select up to 3 diets only.';
+    }
+
+    // Handle time conversion (same as creation)
+    $prep_hours = (int)($_POST['prep_hours']) ?? 0;
+    $prep_minutes = (int)($_POST['prep_minutes'])?? 0;
+    $recipe_prep_time_seconds = (int) $prep_hours * 3600 + $prep_minutes * 60;    
+    $cook_hours = isset($_POST['cook_hours']) ? (int)$_POST['cook_hours'] : 0;
+    $cook_minutes = isset($_POST['cook_minutes']) ? (int)$_POST['cook_minutes'] : 0;
+    $recipe_cook_time_seconds = timetoSeconds($cook_hours, $cook_minutes);
+
+    // Validate time values
+    if ($recipe_cook_time_seconds === 0 && $recipe_prep_time_seconds === 0) {
+        $errors['time'] = "Please enter a value for the prep and/or cook time.";
+    } else {
+        $_POST['recipe_prep_time_seconds'] = $recipe_prep_time_seconds;
+        $_POST['recipe_cook_time_seconds'] = $recipe_cook_time_seconds;
+    }
+
+    // // Image Upload (same as creation)
+    // if (isset($_FILES['recipe_image']) && $_FILES['recipe_image']['error'] === UPLOAD_ERR_OK) {
+    //     // Handle image upload and conversion (same as creation)
+    //     // You can keep the same image upload logic but update the existing recipe image if uploaded
+    // }
+
+    // // Handle video URL if provided
+    // if (isset($_POST['recipe_video_url']) && !empty($_POST['recipe_video_url'])) {
+    //     $inputUrl = trim($_POST['recipe_video_url']);
+    //     $videoID = extractYouTubeID($inputUrl);  
+    //     $embeddableURL = convertToEmbedURL($videoID);
+    // }
+
+    // If no errors, proceed with updating the recipe and related tables
+    if (empty($errors)) {
+        $_POST['recipe_image'] = $imageURL;
+        try {
+            // Merge attributes and save the recipe
+            $args = $_POST['recipe'];
+            $args += ['recipe_prep_time_seconds' => $recipe_prep_time_seconds];
+            $args += ['recipe_cook_time_seconds' => $recipe_cook_time_seconds];
+            $args += ['user_id' => (int)$user->id];
+            $recipe->merge_attributes($args);
+            $result = $recipe->save();
+
+            if (!$result) { // If recipe insertion fails
+                throw new Exception("Unable to update recipe.");
+                $recipe_errors = $recipe->errors;
+            }
+
+            // // Update Ingredients
+            // foreach ($ingredients as $index => &$ingredientValues) {
+            //     $ingredient = Ingredient::find_by_recipe_id_and_order($recipe_id, $index + 1);
+            //     $ingredientValues['ingredient_recipe_order'] = $index + 1;
+            //     if ($ingredientValues['ingredient_measurement_name'] == "") {
+            //         $ingredientValues['ingredient_measurement_name'] = 'n/a';
+            //     }
+            //     $ingredientValues['ingredient_quantity'] = fractionToDecimal($ingredientValues['ingredient_quantity']);
+            //     if ($ingredient) {
+            //         $ingredient->merge_attributes($ingredientValues); // Merge attributes
+            //         $ingredient->save(); // Save the updated ingredient
+            //         if(!$result) {
+            //             throw new Exception("Unable to update ingredient.");
+            //         }
+            //     } else {
+            //         $ingredient = new Ingredient($ingredientValues);
+            //         $ingredient->save(); // Create new if not found
+            //         if(!$result) {
+            //             throw new Exception("Unable to add new ingredient.");
+            //         }
+            //     }
+            // }
+
+            // // Update Steps
+            // foreach($steps as $index => &$stepValue) {
+            //     $step = Step::find_by_recipe_id_and_step_number($recipe_id, $index + 1);
+            //     $stepValue['step_number'] = $index + 1;
+            //     if ($step) {
+            //         $step->merge_attributes($stepValue); // Merge attributes
+            //         $step->save(); // Save the updated step
+            //         if(!$result) {
+            //             throw new Exception("Unable to update step.");
+            //         }
+            //     } else {
+            //         $step = new Step($stepValue);
+            //         $step->save(); // Create new if not found
+            //         if(!$result) {
+            //             throw new Exception("Unable to create new step.");
+            //         }
+            //     }
+            // }
+
+            // // Update Meal Types
+            // if(!empty($selectedMealTypes)){
+            //     foreach($selectedMealTypes as $mealTypeId){
+            //         $recipeMealType = RecipeMealType::find_by_recipe_id_and_meal_type_id($recipe_id, $mealTypeId);
+            //         if (!$recipeMealType) {
+            //             $recipeMealType = new RecipeMealType(['meal_type_id' => $mealTypeId, 'recipe_id' => $recipe_id]);
+            //         }
+            //         $recipeMealType->save();
+            //     }
+            // }
+
+            // // Update Diets
+            // if(!empty($selectedDiets)){
+            //     foreach($selectedDiets as $dietId){
+            //         $recipeDietType = RecipeDiet::find_by_recipe_id_and_diet_id($recipe_id, $dietId);
+            //         if (!$recipeDietType) {
+            //             $recipeDietType = new RecipeDiet(['diet_id' => $dietId, 'recipe_id' => $recipe_id]);
+            //         }
+            //         $recipeDietType->save();
+            //     }
+            // }
+
+            // // Update Styles
+            // if(!empty($selectedStyles)){
+            //     foreach($selectedStyles as $styleId){
+            //         $recipeStyle = RecipeStyle::find_by_recipe_id_and_style_id($recipe_id, $styleId);
+            //         if (!$recipeStyle) {
+            //             $recipeStyle = new RecipeStyle(['style_id' => $styleId, 'recipe_id' => $recipe_id]);
+            //         }
+            //         $recipeStyle->save();
+            //     }
+            // }
+
+            // // Update Recipe Image
+            // if ($imageURL !== '/images/default_recipe_image.webp') {
+            //     $recImg = ['recipe_image' => $imageURL, 'recipe_id' => $recipe_id];
+            //     $recipeImage = RecipeImage::find_by_recipe_id($recipe_id);
+            //     if ($recipeImage) {
+            //         $recipeImage->merge_attributes($recImg); // Merge attributes
+            //         $recipeImage->save(); // Save the updated image record
+            //     } else {
+            //         $recipeImage = new RecipeImage($recImg);
+            //         $recipeImage->save(); // Create new if not found
+            //     }
+            // }
+
+            // // Update Recipe Video URL (if exists)
+            // if ($videoID) {
+            //     $recVid = ['recipe_video_url' => $embeddableURL, 'recipe_id' => $recipe_id];
+            //     $recipeVideo = RecipeVideo::find_by_recipe_id($recipe_id);
+            //     if ($recipeVideo) {
+            //         $recipeVideo->merge_attributes($recVid); // Merge attributes
+            //         $recipeVideo->save(); // Save the updated video
+            //     } else {
+            //         $recipeVideo = new RecipeVideo($recVid);
+            //         $recipeVideo->save(); // Create new if not found
+            //     }
+            // }
+
+            // Commit changes
+            $database->commit();
+            $_SESSION['message'] = 'Recipe updated successfully.';
+            redirect_to(url_for('/member/profile.php?id=' . $user->id));
+        } catch (Exception $e) {
+            $database->rollback(); // Rollback changes if anything fails
+            $errors[] = $e->getMessage();
+            $_SESSION['errors'] = [$e->getMessage()];
+            redirect_to(url_for('/member/edit_recipe.php?id=' . $recipe_id));
+        }
+    }
+
+} else {
+    // Show the form with current recipe data populated
+    
 }
 ?>
 
@@ -49,18 +235,33 @@ if(is_post_request()) {
             <p>Fields marked with * required.</p>
             <?php echo display_errors($errors); ?>
         </div>
-        <form action="<?php echo url_for('/member/edit_recipe.php?recipe_id =' . $recipe_id);?>" method="POST" enctype="multipart/form-data" class="recipeForm">
+        <form action="<?php echo url_for('/member/edit_recipe.php?recipe_id=' . h(u($recipe_id)));?>" method="POST" enctype="multipart/form-data" class="recipeForm">
             <input type="hidden" name="recipe[id]" value="<?php echo h($recipe->id); ?>">
 
+            <?php if (isset($recipe_errors['recipe_name'])): ?>
+                    <div class="error-messages">
+                    <?php foreach ($recipe_errors['recipe_name'] as $error): ?>
+                        <p class="error"><?php echo h($error); ?></p>
+                        <?php endforeach; ?>
+                    </div>
+            <?php endif; ?>
             <label for="recipeName" class="recipePartName">Recipe Name:*</label>
             <input type="text" id="recipeName" name="recipe[recipe_name]" maxlength="100" required value="<?php echo h($recipe->recipe_name); ?>">
 
+
             <label for="recipeDescription" class="recipePartName">Description:*</label>
-            <span>Description must be no more than 255 characters.</span>
+            <span id="recipeDescriptionDirections">Limit 255 characters.</span>
+            <?php if (isset($recipe_errors['recipe_description'])): ?>
+                    <div class="error-messages">
+                    <?php foreach ($recipe_errors['recipe_description'] as $error): ?>
+                        <p class="error"><?php echo h($error); ?></p>
+                        <?php endforeach; ?>
+                    </div>
+            <?php endif; ?>
             <textarea id="recipeDescription" name="recipe[recipe_description]" maxlength="255" rows="4" cols="50" required><?php echo $recipe->recipe_description; ?></textarea>
 
             <fieldset>
-                <legend>Difficulty</legend>
+                <legend id="recipeDifficultyLabel">Difficulty</legend>
                 <div class="radio-group">
                     <div class="formField">
                         <input type="radio" id="beginner" name="recipe[recipe_difficulty]" value="beginner" <?php if($recipe->recipe_difficulty == 'beginner') echo 'checked'; ?>>
@@ -78,11 +279,13 @@ if(is_post_request()) {
                     </div>
                 </div>
             </fieldset>
+
             <div id="timeInput">
-            <?php if (!empty($errors['time'])): ?>
-                <p class="error-message"><?php echo $errors['time']; ?></p>
+                <?php if (!empty($errors['time'])): ?>
+                    <p class="error-message"><?php echo $errors['time']; ?></p>
                 <?php endif; ?>
                     <fieldset>
+                        <span id="timeDirections">A value is required for either the prep or cook time.*</span>
                         <legend>Prep Time</legend>
                         <div class="timeContainer">
                             <label for="prepTimeHours">Hours:
@@ -97,14 +300,23 @@ if(is_post_request()) {
                         <legend>Cook Time</legend>
                         <div class="timeContainer">
                             <label for="cookTimeHours">Hours:
-                                <input type="number" id="cookTimeHours" name="cook_hours" min="0" max="99" step="1" placeholder="Hrs" value="<?php echo floor($recipe->recipe_cook_time_seconds / 3600); ?>"></label>
-                            
-                            <label for="cookTimeMinutes">Minutes:<input type="number" id="cookTimeMinutes" name="cook_minutes" min="0" max="59" step="1" placeholder="Min" value="<?php echo ($recipe->recipe_cook_time_seconds % 3600) / 60; ?>"></label>
+                                <input type="number" id="cookTimeHours" name="cook_hours" min="0" max="99" step="1" placeholder="Hrs" value="<?php echo floor($recipe->recipe_cook_time_seconds / 3600); ?>">
+                            </label>
+                            <label for="cookTimeMinutes">Minutes:
+                                <input type="number" id="cookTimeMinutes" name="cook_minutes" min="0" max="59" step="1" placeholder="Min" value="<?php echo ($recipe->recipe_cook_time_seconds % 3600) / 60; ?>">
+                            </label>
                         </div>
                     </fieldset>    
             </div>
 
             <div id="totalServingsContainer">
+                <?php if (isset($recipe_errors['recipe_total_servings'])): ?>
+                        <div class="error-messages">
+                        <?php foreach ($recipe_errors['recipe_total_servings'] as $error): ?>
+                            <p class="error"><?php echo h($error); ?></p>
+                            <?php endforeach; ?>
+                        </div>
+                <?php endif; ?>
                 <label for="totalServings" class="recipePartName">Total Servings:*</label>
                 <input type="number" id="totalServings" name="recipe[recipe_total_servings]" min="1" max="99" step="1" required value="<?php echo ($recipe->recipe_total_servings); ?>">
             </div>
@@ -114,6 +326,27 @@ if(is_post_request()) {
                 <span id="ingredientDirections">Type the measurement amount and select a unit if applicable. Type the ingredient name with any special instructions in parentheses. Click 'plus' to add.</span>
                 <?php if (!empty($errors['ingredients'])): ?>
                 <p class="error-message"><?php echo $errors['ingredients']; ?></p>
+                <?php endif; ?>
+                <?php if (isset($ingredient_errors['ingredient_name'])): ?>
+                        <div class="error-messages">
+                        <?php foreach ($ingredient_errors['ingredient_name'] as $error): ?>
+                            <p class="error"><?php echo h($error); ?></p>
+                            <?php endforeach; ?>
+                        </div>
+                <?php endif; ?>
+                <?php if (isset($ingredient_errors['ingredient_quantity'])): ?>
+                        <div class="error-messages">
+                        <?php foreach ($ingredient_errors['ingredient_quantity'] as $error): ?>
+                            <p class="error"><?php echo h($error); ?></p>
+                            <?php endforeach; ?>
+                        </div>
+                <?php endif; ?>
+                <?php if (isset($ingredient_errors['ingredient_measurement_name'])): ?>
+                        <div class="error-messages">
+                        <?php foreach ($ingredient_errors['ingredient_measurement_name'] as $error): ?>
+                            <p class="error"><?php echo h($error); ?></p>
+                            <?php endforeach; ?>
+                        </div>
                 <?php endif; ?>
                 <div id="ingredientInputs">
                     <label for="measurementAmount">Amount:*
@@ -173,7 +406,6 @@ if(is_post_request()) {
                             </div>
                         </div>
                         <?php endforeach; ?>
-
                 </div>    
             </fieldset>
 
@@ -276,7 +508,7 @@ if(is_post_request()) {
             <input type="url" id="youtube_link" name="recipe_video_url" placeholder="https://www.youtube.com/watch?v=..." value="<?php if($recipe_video): echo h(($recipe_video->recipe_video_url)); endif;?>">
             
             <div class="recipeSubmitReset">
-                <span>Edit recipe feature not available yet.</span>
+                <input type="submit" value="Update Recipe" id="createRecipeButton">
             </div>
         </form>
     </div>
