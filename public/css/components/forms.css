@@ -9,7 +9,6 @@
     margin-right: 10px;
 }
 
-
 /************************************ LOGIN/REGISTRATION PAGE ********************/
 .container {
     background: #fff;
@@ -271,14 +270,15 @@ label.recipePartName {
     width: fit-content;
 }
 
-#recipeDescription {
-    border-radius: 5px;
-    padding: 3px;
+#recipeName {
+    font-size: 18px;
+    padding: 10px;
     width: 100%;
 }
 
-#recipeName {
-    padding: 10px;
+#recipeDescription {
+    border-radius: 5px;
+    padding: 3px;
     width: 100%;
 }
 
@@ -331,9 +331,19 @@ legend {
     margin-bottom: 10px;
 }
 
-#ingredientInputs input#ingredientName {
-    width: 250px;
+#ingredientInputs input#measurementAmount {
+    font-size: 15px;
 }
+
+#ingredientInputs select#ingredientUnit {
+    font-size: 17px;
+}
+
+#ingredientInputs input#ingredientName {
+    font-size: 17px;
+    max-width: 250px;
+}
+
 
 #ingredientInputSet {
     display: flex;
@@ -346,6 +356,7 @@ legend {
     justify-content: space-evenly;
     margin: 10px 0;
 }
+
 
 .removeIngredient {
     padding: 5px 10px;
@@ -533,6 +544,7 @@ button.removeIngredient:hover {
 /***************************************************************** MEDIA QUERIES ******************************************************************/
 
 @media screen and (max-width: 1050px) {
+
     .filters {
         display: none;
     }
@@ -560,15 +572,30 @@ button.removeIngredient:hover {
 }
 
 @media screen and (max-width: 800px) {
+
     #ingredientInputs {
         display: block;
         width: fit-content;
     }
 
+    #ingredientInputs label input,
+    #ingredientInputs select {
+        width: 200px;
+    }
+
+    .addedIngredients {
+        max-width: 400px;
+    }
+
     .addedIngredients .ingredientInputSet {
         align-items: flex-start;
         flex-direction: column;
+        max-width: 400px;
         position: relative;
+    }
+
+    .addedIngredients .ingredientInputSet input {
+        max-width: 150px;
     }
 
     .removeIngredient {
