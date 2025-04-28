@@ -9,7 +9,9 @@ if($style === false){
     redirect_to(url_for('/admin/categories/index.php'));
 }
 
-$style_errors = [];
+$style_errors = $_SESSION['style_errors'] ?? [];
+unset($_SESSION['style_errors']);
+
 
 if(is_post_request()){
     

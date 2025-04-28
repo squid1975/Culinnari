@@ -10,6 +10,9 @@ if($diet === false){
     redirect_to(url_for('/admin/categories/index.php'));
 }
 
+$diet_errors = $_SESSION['diet_errors'] ?? [];
+unset($_SESSION['diet_errors']);
+
 if(is_post_request()){
 
         $result = $diet->delete();
@@ -48,6 +51,13 @@ if(is_post_request()){
                 <div class="edit">
                     <h3>Edit Diet</h3>
                     <form action="<?php echo (url_for('/admin/categories/diets/edit.php?diet_id=' . $diet->id));?>" method="post" id="editDietForm">
+                        <?php if (isset($diet_errors['diet_name'])): ?>
+                        <div class="error-messages">
+                          <?php foreach ($diet_errors as $error): ?>
+                            <p class="error"><?php echo h($error); ?></p>
+                          <?php endforeach; ?>
+                        </div>
+                      <?php endif; ?>
                         <div class="formField">
                             <label for="dietName">Diet Name:</label>
                             <input type="text" name="diet[diet_name]" value="<?php echo h($diet->diet_name); ?>" pattern="^[A-Za-z\-']+( [A-Za-z\-']+)*$" id="dietName" required>

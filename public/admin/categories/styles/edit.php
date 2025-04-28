@@ -8,19 +8,18 @@ if($style === false){
     redirect_to(url_for('/admin/categories/index.php'));
 }
 
-$style_errors = [];
 
 if(is_post_request()){
-    $args = $_POST['style'];
+    $args = $_POST['style'] ?? [];
     $style->merge_attributes($args);
     $result = $style->save();
 
     if($result){
         $_SESSION['message'] = 'The style was updated successfully.';
-        redirect_to(url_for('/admin/categories/styles/manage.php?style_id=' . $style->id));
+    } else {
+        $_SESSION['style_errors'] = $style->errors; // <-- store errors in session
     }
-    else {
-        // Handle errors 
-        $style_errors = $style->errors;
-    }
+
+    // Redirect either way
+    redirect_to(url_for('/admin/categories/styles/manage.php?style_id=' . $style->id));
 }

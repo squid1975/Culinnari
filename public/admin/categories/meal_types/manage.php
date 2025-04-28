@@ -10,7 +10,8 @@ if($meal_type === false){
     redirect_to(url_for('/admin/categories/index.php'));
 }
 
-$meal_type_errors = [];
+$meal_type_errors = $_SESSION['meal_type_errors'] ?? [];
+unset($_SESSION['meal_type_errors']);
 
 if(is_post_request()){
 
@@ -46,21 +47,21 @@ if(is_post_request()){
             <div class="session-message">
                 <?php echo $_SESSION['message']; ?>
             </div>
-            <?php unset($_SESSION['message']); // Clear message after displaying ?>
+            <?php unset($_SESSION['message']); ?>
         <?php endif; ?>
         <section>
             <h2>Manage Meal Type: <?php echo h($meal_type->meal_type_name); ?> </h2>
-            <?php if (isset($meal_type_errors['meal_type_name'])): ?>
-                <div class="error-messages">
-                  <?php foreach ($meal_type_errors['meal_type_name'] as $error): ?>
-                    <p class="error"><?php echo h($error); ?></p>
-                  <?php endforeach; ?>
-                </div>
-              <?php endif; ?>
             
             <div class="edit">
                 <h3>Edit Meal Type</h3>
                 <form action="<?php echo url_for('/admin/categories/meal_types/edit.php?meal_type_id=' . $meal_type->id);?>" method="post" id="editMealTypeForm">
+                    <?php if (isset($meal_type_errors['meal_type_name'])): ?>
+                        <div class="error-messages">
+                          <?php foreach ($meal_type_errors['meal_type_name'] as $error): ?>
+                            <p class="error"><?php echo h($error); ?></p>
+                          <?php endforeach; ?>
+                        </div>
+                      <?php endif; ?>
                     <div class="formField">
                         <label for="mealTypeName">Meal Type Name:</label>
                         <input type="text" name="meal_type[meal_type_name]" id="mealTypeName" pattern="^[A-Za-z\-']+( [A-Za-z\-']+)*$" value="<?php echo h($meal_type->meal_type_name); ?>" required maxlength="50">
