@@ -5,7 +5,8 @@ $username = $session->username;
 $user = User::find_by_username($username);
 
 if (!isset($_GET['recipe_id'])) {
-    redirect_to(url_for('/profile.php'));
+    $_SESSION['message'] = 'Error. Please try again later.';
+    redirect_to(url_for('/member/profile.php?id=' . h($user->id)));
 }
 
 $id = $_GET['recipe_id'];
@@ -32,9 +33,13 @@ if (is_post_request()) {
     }
 
     $result = $recipe->delete();
-    $_SESSION['message'] = 'The recipe was deleted successfully.';
-    redirect_to(url_for('/member/profile.php?id=' . h($user->id)));
+    if($result === true){
+        $_SESSION['message'] = 'The recipe was deleted successfully.';
+        redirect_to(url_for('/member/profile.php?id=' . h($user->id)));
+    } else {
+        $_SESSION['message'] = 'Unable to delete recipe. Try again later.';
+        redirect_to(url_for('/member/profile.php?id=' . h($user->id)));
+    }
 } else {
-    $_SESSION['message'] = 'Something went wrong. Please try again later.';
-    redirect_to(url_for('/member/profile.php?id=' . h($user->id)));
+    //
 }
