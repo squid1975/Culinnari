@@ -74,6 +74,7 @@ enteredSteps.addEventListener("click", function (event) {
 recipeForm.addEventListener('submit', function (event) {
     event.preventDefault();
     const errors = validateRecipeForm();
+    
     if(errors.length === 0) {
         recipeForm.submit();
     } else {
@@ -81,6 +82,7 @@ recipeForm.addEventListener('submit', function (event) {
         errorsBox.innerHTML = ""; // Clear previous error messages
         errorsBox.textContent = "Please fix the errors below:";
         recipeFormHeading.appendChild(errorsBox);
+        
 
     }
 
@@ -269,10 +271,15 @@ function validateRecipeForm() {
             field: 'recipeDescriptionDirections',
             message: 'Please enter a recipe description.'
         });
-    } else if (!/^[A-Za-z0-9\-'\s]+$/.test(recipeDescription)) {
+    } else if (recipeDescription.length < 10 || recipeDescription.length > 255) {
         errors.push({
             field: 'recipeDescriptionDirections',
-            message: "Recipe description can only contain letters, numbers, hyphens, apostrophes, and spaces."
+            message: 'Recipe description must be between 10 and 255 characters.'
+        });
+    } else if (!/^[A-Za-z0-9\-'\.\s]+$/.test(recipeDescription)) {
+        errors.push({
+            field: 'recipeDescriptionDirections',
+            message: "Recipe description can only contain letters, numbers, hyphens, apostrophes, spaces, and periods."
         });
     }
     
@@ -281,6 +288,25 @@ function validateRecipeForm() {
         errors.push({
             field: 'recipeDifficultyLabel',
             message: 'Please select a difficulty level.'
+        });
+    }
+
+    const recipeTotalServings = document.querySelector('#totalServings').value.trim();
+
+    if (recipeTotalServings === "") {
+        errors.push({
+            field: 'totalServingsContainer',
+            message: 'Recipe servings cannot be blank.'
+        });
+    } else if (isNaN(recipeTotalServings) || Number(recipeTotalServings) <= 0) {
+        errors.push({
+            field: 'totalServingsContainer',
+            message: 'Total servings must be a positive number.'
+        });
+    } else if (Number(recipeTotalServings) > 99) {
+        errors.push({
+            field: 'totalServingsContainer',
+            message: 'Total servings cannot exceed 99.'
         });
     }
 
@@ -354,7 +380,7 @@ function displayErrors(errors) {
     errors.forEach(error => {
         const inputField = document.getElementById(error.field);
         if (inputField) {
-            const existingError = inputField.parentNode.querySelector('.error-message');
+            const existingError = inputField.querySelector('.error-message');
             if (existingError) {
                 existingError.remove();
             }
@@ -362,7 +388,7 @@ function displayErrors(errors) {
             errorMessage.classList.add('error-message');
             errorMessage.style.color = 'red';
             errorMessage.textContent = error.message;
-            inputField.appendChild(errorMessage);
+            inputField.insertAdjacentElement('beforeBegin',errorMessage);
         }
     });
 }
