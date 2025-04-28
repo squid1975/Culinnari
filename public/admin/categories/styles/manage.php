@@ -2,8 +2,8 @@
 $title = 'Manage Style | Culinnari';
 include(SHARED_PATH . '/public_header.php');
 require_mgmt_login();
-$style_id = $_GET['style_id'] ?? '1';
-$style = Style::find_by_id($style_id);
+$id = $_GET['style_id'] ?? '1';
+$style = Style::find_by_id($id);
 if($style === false){
     $_SESSION['message'] = 'Style not found.';
     redirect_to(url_for('/admin/categories/index.php'));
@@ -13,21 +13,6 @@ $style_errors = [];
 
 if(is_post_request()){
     
-    if(isset($_POST['update'])){
-        $args = $_POST['style'];
-        $style->merge_attributes($args);
-        $result = $style->save();
-        if($result === true){
-            $_SESSION['message'] = 'The style was updated successfully.';
-            redirect_to(url_for('/admin/categories/styles/manage.php?style_id=' . $style->id));
-        }
-        else {
-            // Handle errors 
-            $style_errors = $style->errors;
-        }
-    }
-
-    if(isset($_POST['delete'])){
         $result = $style->delete();
         if($result === true){
             $_SESSION['message'] = 'The style was deleted successfully.';
@@ -38,7 +23,7 @@ if(is_post_request()){
             $_SESSION['message'] = 'Error deleting style.';
             redirect_to(url_for('/admin/categories/styles/manage.php?style_id=' . $style->id));
         }
-    }
+    
 
 } else {
     // Display the form
@@ -73,13 +58,13 @@ if(is_post_request()){
                         <?php endforeach; ?>
                         </div>
                     <?php endif; ?>
-                    <form action="<?php echo url_for('/admin/categories/styles/manage.php?style_id=' . $style->id);?>" method="post" id="editStyleForm">
+                    <form action="<?php echo url_for('/admin/categories/styles/edit.php?style_id=' . $style->id);?>" method="post" id="editStyleForm">
                         <div class="formField">
                             <label for="styleName">Style Name</label>
                             <input type="text" name="style[style_name]" value="<?php echo h($style->style_name); ?>" id="styleName" maxlength="50"  pattern="^[A-Za-z\-']+( [A-Za-z\-']+)*$" required>
                         </div>
                         <div>
-                            <input type="submit" name="update" value="Update Style" class="createUpdateButton">
+                            <input type="submit" name="edit" value="Update Style" class="createUpdateButton">
                         </div>
                     </form>
                 </div>

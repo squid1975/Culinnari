@@ -6,34 +6,22 @@ require_mgmt_login();
 $dietId = $_GET['diet_id'] ?? 1;
 $diet = Diet::find_by_id($dietId);
 if($diet === false){
+    $_SESSION['message'] = 'Diet not found.';
     redirect_to(url_for('/admin/categories/index.php'));
 }
 
 if(is_post_request()){
-    if(isset($_POST['update'])){
-        $args = $_POST['diet'];
-        $diet->merge_attributes($args);
-        $result = $diet->save();
-        if($result === true){
-            $_SESSION['message'] = 'The diet was updated successfully.';
-            redirect_to(url_for('/admin/categories/diets/manage.php?diet_id=' . $dietId));
-        }
-        else {
-            // Handle errors
-        }
-    }
 
-    if(isset($_POST['delete'])){
         $result = $diet->delete();
         if($result === true){
             $_SESSION['message'] = 'The diet was deleted successfully.';
             redirect_to(url_for('/admin/categories/index.php'));
         }
         else {
-            
+            // Handle error
+            $_SESSION['message'] = 'Error deleting diet.';
+            redirect_to(url_for('/admin/categories/diets/manage.php?diet_id=' . $diet->id));
         }
-    }
-
 } else {
     // Display the form
     // No action needed here as we are already fetching the diet details above
@@ -59,7 +47,7 @@ if(is_post_request()){
                 <h2 class="dietHeading">Manage Diet: <?php echo h($diet->diet_name); ?></h2>
                 <div class="edit">
                     <h3>Edit Diet</h3>
-                    <form action="<?php echo (url_for('/admin/categories/diets/manage.php?diet_id=' . $diet->id));?>" method="post" id="editDietForm">
+                    <form action="<?php echo (url_for('/admin/categories/diets/edit.php?diet_id=' . $diet->id));?>" method="post" id="editDietForm">
                         <div class="formField">
                             <label for="dietName">Diet Name:</label>
                             <input type="text" name="diet[diet_name]" value="<?php echo h($diet->diet_name); ?>" pattern="^[A-Za-z\-']+( [A-Za-z\-']+)*$" id="dietName" required>

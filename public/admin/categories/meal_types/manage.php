@@ -11,21 +11,9 @@ if($meal_type === false){
 }
 
 $meal_type_errors = [];
-if(is_post_request()){
-    if(isset($_POST['update'])){
-        $args = $_POST['meal_type'];
-        $meal_type->merge_attributes($args);
-        $result = $meal_type->save();
-        if($result === true){
-            $_SESSION['message'] = 'The meal type was updated successfully.';
-            redirect_to(url_for('/admin/categories/meal_types/manage.php?meal_type_id=' . $meal_type->id));
-        } else {
-            // show errors
-            $meal_type_errors = $meal_type->errors;
-        }
-    }
 
-    if(isset($_POST['delete'])){
+if(is_post_request()){
+
         $result = $meal_type->delete();
         if($result === true){
             $_SESSION['message'] = 'The meal type was deleted successfully.';
@@ -36,7 +24,7 @@ if(is_post_request()){
             $_SESSION['message'] = 'Error deleting meal type';
             redirect_to(url_for('/admin/categories/styles/manage.php?meal_type_id=' . $meal_type->id));
         }
-    }
+    
        
 } else {
     // Display the form
@@ -72,7 +60,7 @@ if(is_post_request()){
             
             <div class="edit">
                 <h3>Edit Meal Type</h3>
-                <form action="<?php echo url_for('/admin/categories/meal_types/manage.php?meal_type_id=' . $meal_type->id);?>" method="post" id="editMealTypeForm">
+                <form action="<?php echo url_for('/admin/categories/meal_types/edit.php?meal_type_id=' . $meal_type->id);?>" method="post" id="editMealTypeForm">
                     <div class="formField">
                         <label for="mealTypeName">Meal Type Name:</label>
                         <input type="text" name="meal_type[meal_type_name]" id="mealTypeName" pattern="^[A-Za-z\-']+( [A-Za-z\-']+)*$" value="<?php echo h($meal_type->meal_type_name); ?>" required maxlength="50">

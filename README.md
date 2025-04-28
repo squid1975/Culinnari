@@ -5,13 +5,15 @@ Culinnari is a recipe-sharing platform created as part of my Capstone Project us
 
 ## Features
 - User authentication (login/signup/logout)
-- Create, view, and delete recipes
-- Upload recipe image
 - Search recipes by categories, total time, recipe name/description, recipe difficulty. 
 - Sort recipe searches by post date, name, or rating value.
 - Responsive design (400px - 1300px) 
 
-- Create a cookbook and save recipes into your cookbook
+- **Members Only** 
+    - Create a cookbook and save recipes into your cookbook
+    - Remove recipes from cookbook
+    - Create and delete recipes
+    - Rate recipes 
 
 
 ## Tech Stack
@@ -20,10 +22,14 @@ Culinnari is a recipe-sharing platform created as part of my Capstone Project us
 - Database: MySQL
 - Other Tools: dbdiagram.io (ERD/schema design)
 
+## Image and Media Sources
+All images used in this project were either created by me, my husband, or sourced from free Image platforms. 
+Images uploaded by users are stored in the images/uploads/recipe_image/ directory. For a complete list of media sources, please reference /assets/media_sources/. 
+
 ## Installation
 1. **Clone the repository**
    ```` bash
-   git clone 
+   git clone https://github.com/squid1975/Culinnari.git
 2. **Import the database**
 - Open your database management tool (phpMyAdmin)
 - Create a new database if one does not exist
@@ -37,7 +43,9 @@ Culinnari is a recipe-sharing platform created as part of my Capstone Project us
     - define('DB_NAME', 'your_db_name'); // The name of your database
 
 4. **Set up server environment**
-    Make sure you're running a local server (ex: XAMPP, MAMP, WAMP) and that PHP is enabled. I used Laragon for this project. 
+- Make sure you're running a local server (ex: XAMPP, MAMP, WAMP) and that PHP is enabled, installed, and running. Check by visiting localhost in your browser and ensure the server is working. I used [Laragon](https://laragon.org/) for this project. 
+- Once the server environment is set up, place the project folder in the htdocs directory (for XAMPP) or the equivalent for your server (e.g. www for MAMP, www for Laragon)
+- Start the local server (Apache and MySQL) and navigate to http://localhost/ followed by the folder name of the project (http://localhost/Culinnari/)
 
 ## Project Structure
 - Public: Publicly available files (css, js, images, members only pages, admin only pages)
