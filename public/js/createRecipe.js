@@ -50,9 +50,11 @@ const clearRecipeFormModal = document.getElementById('clearRecipeFormModal');
 const confirmFormResetButton = document.getElementById('confirmFormReset');
 const cancelResetButton = document.getElementById('cancelReset');
 
+// Event Listeners for adding ingredients, steps
 addIngredientButton.addEventListener('click', addIngredient);
 addStepButton.addEventListener('click', addStep);
 
+// Event Listener to remove ingredient
 enteredIngredients.addEventListener("click", function (event) {
     if (event.target.classList.contains("removeIngredient")) {
         const ingredientSet = event.target.closest(".addedIngredients");
@@ -62,6 +64,7 @@ enteredIngredients.addEventListener("click", function (event) {
     }
 });
 
+// Event Listener to remove step
 enteredSteps.addEventListener("click", function (event) {
     if (event.target.classList.contains("removeStep")) {
         const stepSet = event.target.closest(".addedSteps");
@@ -71,10 +74,10 @@ enteredSteps.addEventListener("click", function (event) {
     }
 });
 
+// Event Listener for recipe form validation
 recipeForm.addEventListener('submit', function (event) {
     event.preventDefault();
     const errors = validateRecipeForm();
-    
     if(errors.length === 0) {
         recipeForm.submit();
     } else {
@@ -82,13 +85,10 @@ recipeForm.addEventListener('submit', function (event) {
         errorsBox.innerHTML = ""; // Clear previous error messages
         errorsBox.textContent = "Please fix the errors below:";
         recipeFormHeading.appendChild(errorsBox);
-        
-
     }
-
 });
 
-
+// Functions to limit checkbox selection to 3
 limitCheckboxSelection("meal_types");
 limitCheckboxSelection("styles");
 limitCheckboxSelection("diets");
@@ -194,8 +194,7 @@ function addStep(){
     newStep.innerHTML = `
         <label for="stepInput[${stepIndex}]" class="visuallyHidden">Step:</label>
         <textarea name="step[${stepIndex}][step_description]"  id="stepInput[${stepIndex}]" rows="2" cols="25" maxlength="255">${stepInputValue}</textarea>
-        <button type="button" class="removeStep">X</button>                     
-    `;
+        <button type="button" class="removeStep">X</button>`;
 
     // Append the new ingredient input set to the ingredientDirections container
     enteredSteps.appendChild(newStep);
@@ -373,8 +372,13 @@ function validateRecipeForm() {
 
 
 /**
- * Display error messages for the corresponding input fields
- * @param {Array} errors 
+ * Displays error messages next to the corresponding input fields.
+ * 
+ * @param {Array - Object} errors - An array of error objects, 
+ * each containing a 'field' (the ID of the input container) and a 'message' (the error text).
+ * 
+ * Each error will be displayed as a <span> with the class 'error-message' before the input field.
+ * If an error message already exists for a field, it will be replaced.
  */
 function displayErrors(errors) {
     errors.forEach(error => {
@@ -396,7 +400,7 @@ function displayErrors(errors) {
 /**
  * 
  * @param {Integer} fraction The fraction, whole number, or mixed number to convert to a decimal 
- * @returns 
+ * @returns {number} The decimal equivalent of the input
  */
 function convertToDecimal(fraction) {
     if (fraction.includes(' ')) {
